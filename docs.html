@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>91 IDAM Documentation</title>
+  <style id="docs-css">
+    /* ====== design tokens ====== */
+    :root {
+      --primary: #175973;
+      --primary-hover: #144a5e;
+      --primary-soft: #1759730d;
+      --accent: #B59327;
+      --accent-soft: #f3ebd2;
+      --surface: #ffffff;
+      --surface-alt: #f8f9fa;
+      --bg: #f6f7f9;
+      --text: #1f2937;
+      --text-soft: #4b5563;
+      --text-faint: #6b7280;
+      --border: #e5e7eb;
+      --code-bg: #f3f4f6;
+      --code-border: #e5e7eb;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(23, 89, 115, 0.08);
+      --topbar-h: 64px;
+      --navstrip-h: 48px;
+      --sidebar-w: 280px;
+      --content-max: 880px;
+    }
+    [data-theme="dark"] {
+      --primary: #2e8eaf;
+      --primary-hover: #4ba6c4;
+      --primary-soft: #2e8eaf18;
+      --accent: #d6b14a;
+      --accent-soft: #2a2316;
+      --surface: #161e22;
+      --surface-alt: #1c2429;
+      --bg: #0e1416;
+      --text: #e8eaed;
+      --text-soft: #b6bdc4;
+      --text-faint: #8a939c;
+      --border: #2a363c;
+      --code-bg: #11181c;
+      --code-border: #243036;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ====== Top bar ====== */
+    .docs-topbar {
+      position: sticky; top: 0; z-index: 30;
+      height: var(--topbar-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 24px;
+      padding: 0 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .docs-brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--text); font-weight: 800; font-size: 17px;
+      letter-spacing: -0.015em;
+    }
+    .docs-brand:hover { text-decoration: none; }
+    .docs-brand-mark {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800; font-size: 13px;
+    }
+    .docs-search {
+      position: relative;
+      max-width: 540px;
+      width: 100%;
+      justify-self: center;
+    }
+    .docs-search input {
+      width: 100%; height: 40px;
+      padding: 0 44px 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--surface-alt);
+      color: var(--text); font-size: 14px;
+      outline: none;
+      transition: border 0.15s, box-shadow 0.15s;
+    }
+    .docs-search input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+    }
+    .docs-search-btn {
+      position: absolute;
+      right: 4px; top: 50%; transform: translateY(-50%);
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 0; cursor: pointer;
+      background: var(--primary); color: #fff;
+      font-size: 14px;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .docs-search-btn:hover { background: var(--primary-hover); }
+    .docs-actions { display: flex; align-items: center; gap: 10px; }
+    .docs-action {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      transition: background 0.15s;
+      cursor: pointer;
+      border: 0; background: none;
+    }
+    .docs-action:hover { background: var(--surface-alt); text-decoration: none; }
+
+    /* Primary CTA — Try Demo. Designed to be visually irresistible
+       without screaming "click me". Subtle breathing animation +
+       gradient + glowing shadow + arrow that nudges right on hover. */
+    .docs-action.primary {
+      position: relative;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary) 0%, #2e8eaf 50%, var(--accent) 100%);
+      background-size: 200% 200%;
+      border-radius: 999px;
+      box-shadow:
+        0 4px 12px rgba(23, 89, 115, 0.35),
+        0 0 0 0 rgba(181, 147, 39, 0.5);
+      animation: ctaPulse 2.6s ease-in-out infinite, ctaShimmer 6s ease infinite;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      letter-spacing: 0.005em;
+    }
+    .docs-action.primary::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.2s ease;
+    }
+    .docs-action.primary:hover {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow:
+        0 10px 28px rgba(23, 89, 115, 0.45),
+        0 0 0 6px rgba(181, 147, 39, 0.18);
+      animation-play-state: paused;
+      text-decoration: none;
+    }
+    .docs-action.primary:hover::before { opacity: 1; }
+    .docs-action.primary:active { transform: translateY(0) scale(0.99); }
+
+    @keyframes ctaPulse {
+      0%, 100% {
+        box-shadow:
+          0 4px 12px rgba(23, 89, 115, 0.35),
+          0 0 0 0 rgba(181, 147, 39, 0.55);
+      }
+      50% {
+        box-shadow:
+          0 6px 18px rgba(23, 89, 115, 0.45),
+          0 0 0 10px rgba(181, 147, 39, 0);
+      }
+    }
+    @keyframes ctaShimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+    /* Arrow nudge on hover */
+    .docs-action.primary .cta-arrow {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .docs-action.primary:hover .cta-arrow {
+      transform: translateX(3px);
+    }
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .docs-action.primary { animation: none; }
+    }
+    .theme-toggle {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .theme-toggle:hover { background: var(--surface-alt); }
+
+    /* ====== Green nav strip (matches tpointtech) ====== */
+    .docs-navstrip {
+      background: var(--primary);
+      color: #fff;
+      height: var(--navstrip-h);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 16px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      position: sticky;
+      top: var(--topbar-h);
+      z-index: 20;
+    }
+    .docs-navstrip::-webkit-scrollbar { height: 4px; }
+    .docs-navstrip a {
+      color: rgba(255,255,255,0.85);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .docs-navstrip a:hover, .docs-navstrip a.active {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* ====== Layout ====== */
+    .docs-layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      min-height: calc(100vh - var(--topbar-h) - var(--navstrip-h));
+    }
+    @media (max-width: 920px) {
+      .docs-layout { grid-template-columns: 1fr; }
+      .docs-sidebar { display: none; }
+      .docs-sidebar.open { display: block; position: fixed; top: calc(var(--topbar-h) + var(--navstrip-h)); left: 0; bottom: 0; width: 280px; z-index: 25; box-shadow: var(--shadow-md); }
+    }
+
+    .docs-sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 16px 8px;
+      overflow-y: auto;
+      max-height: calc(100vh - var(--topbar-h) - var(--navstrip-h));
+      position: sticky;
+      top: calc(var(--topbar-h) + var(--navstrip-h));
+    }
+    .sidebar-group {
+      margin-bottom: 6px;
+    }
+    .sidebar-group-head {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      background: none; border: 0;
+      color: var(--text);
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .sidebar-group-head:hover { background: var(--surface-alt); }
+    .sidebar-group-head .chev { transition: transform 0.18s ease; color: var(--text-faint); }
+    .sidebar-group[data-open="true"] .sidebar-group-head .chev { transform: rotate(180deg); }
+    .sidebar-group-items {
+      list-style: none; margin: 0; padding: 0;
+      display: none;
+    }
+    .sidebar-group[data-open="true"] .sidebar-group-items { display: block; }
+    .sidebar-group-items li a {
+      display: block;
+      padding: 7px 14px 7px 28px;
+      font-size: 13.5px;
+      color: var(--text-soft);
+      font-weight: 500;
+      border-radius: 6px;
+      margin: 1px 0;
+      border-left: 2px solid transparent;
+    }
+    .sidebar-group-items li a:hover {
+      color: var(--text);
+      background: var(--surface-alt);
+      text-decoration: none;
+    }
+    .sidebar-group-items li a.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ====== Main content ====== */
+    .docs-main {
+      padding: 24px 36px 64px;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .docs-breadcrumb {
+      font-size: 13px;
+      color: var(--text-faint);
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .docs-breadcrumb a { color: var(--text-faint); }
+    .docs-breadcrumb a:hover { color: var(--primary); }
+    .docs-breadcrumb .sep { color: var(--text-faint); }
+
+    .docs-tabs {
+      display: flex; gap: 8px;
+      flex-wrap: wrap;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 22px;
+    }
+    .docs-tab {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px; font-weight: 600;
+      color: var(--text-soft);
+      cursor: pointer;
+    }
+    .docs-tab:hover { background: var(--surface-alt); color: var(--text); }
+    .docs-tab.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    }
+
+    .docs-article { max-width: var(--content-max); }
+    .docs-article h1, .docs-article h2, .docs-article h3, .docs-article h4 {
+      letter-spacing: -0.015em;
+      color: var(--text);
+      scroll-margin-top: calc(var(--topbar-h) + var(--navstrip-h) + 8px);
+    }
+    .docs-article h1 { font-size: 30px; margin: 0 0 18px; }
+    .docs-article h2 { font-size: 22px; margin: 32px 0 12px; padding-top: 8px; border-top: 1px solid var(--border); }
+    .docs-article h2:first-child { border-top: 0; padding-top: 0; }
+    .docs-article h3 { font-size: 17px; margin: 24px 0 8px; }
+    .docs-article h4 { font-size: 15px; margin: 18px 0 6px; color: var(--text-soft); }
+    .docs-article p { margin: 0 0 14px; color: var(--text); }
+    .docs-article ul, .docs-article ol { padding-left: 22px; margin: 0 0 14px; }
+    .docs-article li { margin: 5px 0; }
+    .docs-article hr { border: 0; border-top: 1px solid var(--border); margin: 28px 0; }
+    .docs-article blockquote {
+      margin: 14px 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 0 8px 8px 0;
+      color: var(--text-soft);
+      font-style: italic;
+    }
+    .docs-article code {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 0.88em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .docs-article pre {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 14px 0;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .docs-article pre code { background: transparent; border: 0; padding: 0; font-size: inherit; }
+    .docs-article table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .docs-article th, .docs-article td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .docs-article th { background: var(--surface-alt); font-weight: 600; color: var(--text); }
+    .docs-article tr:last-child td { border-bottom: 0; }
+    .docs-article kbd {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    /* ====== Search popover ====== */
+    .docs-search-results {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 6px;
+      z-index: 40;
+    }
+    .docs-search-results .result {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .docs-search-results .result:hover {
+      background: var(--surface-alt);
+      text-decoration: none;
+    }
+    .docs-search-results .result-title { font-weight: 600; color: var(--text); }
+    .docs-search-results .result-section { color: var(--text-faint); font-size: 12px; margin-top: 2px; }
+    .docs-search-results .result-snippet mark { background: var(--accent-soft); color: var(--text); padding: 0 2px; border-radius: 2px; }
+    .docs-search-results .empty { padding: 14px; color: var(--text-faint); font-size: 14px; text-align: center; }
+
+    /* ====== Mobile sidebar toggle ====== */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 18px;
+    }
+    @media (max-width: 920px) {
+      .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
+      .docs-search { display: none; }
+      .docs-actions .docs-action.label-only { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="docs-topbar">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">☰</button>
+      <a class="docs-brand" href="#/overview">
+        <span class="docs-brand-mark">91</span>
+        <span>IDAM Docs</span>
+      </a>
+    </div>
+
+    <div class="docs-search">
+      <input id="docs-search-input" type="search" placeholder="Search the documentation…" autocomplete="off" aria-label="Search docs" />
+      <button class="docs-search-btn" type="button" aria-label="Search">🔍</button>
+      <div id="docs-search-results" class="docs-search-results" hidden></div>
+    </div>
+
+    <div class="docs-actions">
+      <a class="docs-action primary" href="./index.html" title="Walk through the live app with guided tooltips">
+        ▶&nbsp;Try Live Demo&nbsp;<span class="cta-arrow">→</span>
+      </a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">🌙</button>
+    </div>
+  </header>
+
+  <nav class="docs-navstrip" id="docs-navstrip" aria-label="Quick navigation"></nav>
+
+  <div class="docs-layout">
+    <aside class="docs-sidebar" id="docs-sidebar" aria-label="Documentation index"></aside>
+    <main class="docs-main">
+      <nav class="docs-breadcrumb" id="docs-breadcrumb"><a href="#/overview">Docs</a></nav>
+      <div class="docs-tabs" id="docs-tabs">
+        <a class="docs-tab active" data-tab="article">📖 Article</a>
+        <a class="docs-tab" href="./index.html">🎯 Interactive Demo</a>
+      </div>
+      <article id="docs-article" class="docs-article">
+        <p style="color: var(--text-faint); font-style: italic;">Loading…</p>
+      </article>
+    </main>
+  </div>
+
+  <!-- Inlined marked.js -->
+  <script id="marked-js">/**
+ * marked v12.0.0 - a markdown parser
+ * Copyright (c) 2011-2024, Christopher Jeffrey. (MIT Licensed)
+ * https://github.com/markedjs/marked
+ */
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).marked={})}(this,(function(e){"use strict";function t(){return{async:!1,breaks:!1,extensions:null,gfm:!0,hooks:null,pedantic:!1,renderer:null,silent:!1,tokenizer:null,walkTokens:null}}function n(t){e.defaults=t}e.defaults={async:!1,breaks:!1,extensions:null,gfm:!0,hooks:null,pedantic:!1,renderer:null,silent:!1,tokenizer:null,walkTokens:null};const s=/[&<>"']/,r=new RegExp(s.source,"g"),i=/[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/,l=new RegExp(i.source,"g"),o={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"},a=e=>o[e];function c(e,t){if(t){if(s.test(e))return e.replace(r,a)}else if(i.test(e))return e.replace(l,a);return e}const h=/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/gi;function p(e){return e.replace(h,((e,t)=>"colon"===(t=t.toLowerCase())?":":"#"===t.charAt(0)?"x"===t.charAt(1)?String.fromCharCode(parseInt(t.substring(2),16)):String.fromCharCode(+t.substring(1)):""))}const u=/(^|[^\[])\^/g;function k(e,t){let n="string"==typeof e?e:e.source;t=t||"";const s={replace:(e,t)=>{let r="string"==typeof t?t:t.source;return r=r.replace(u,"$1"),n=n.replace(e,r),s},getRegex:()=>new RegExp(n,t)};return s}function g(e){try{e=encodeURI(e).replace(/%25/g,"%")}catch(e){return null}return e}const f={exec:()=>null};function d(e,t){const n=e.replace(/\|/g,((e,t,n)=>{let s=!1,r=t;for(;--r>=0&&"\\"===n[r];)s=!s;return s?"|":" |"})).split(/ \|/);let s=0;if(n[0].trim()||n.shift(),n.length>0&&!n[n.length-1].trim()&&n.pop(),t)if(n.length>t)n.splice(t);else for(;n.length<t;)n.push("");for(;s<n.length;s++)n[s]=n[s].trim().replace(/\\\|/g,"|");return n}function x(e,t,n){const s=e.length;if(0===s)return"";let r=0;for(;r<s;){const i=e.charAt(s-r-1);if(i!==t||n){if(i===t||!n)break;r++}else r++}return e.slice(0,s-r)}function b(e,t,n,s){const r=t.href,i=t.title?c(t.title):null,l=e[1].replace(/\\([\[\]])/g,"$1");if("!"!==e[0].charAt(0)){s.state.inLink=!0;const e={type:"link",raw:n,href:r,title:i,text:l,tokens:s.inlineTokens(l)};return s.state.inLink=!1,e}return{type:"image",raw:n,href:r,title:i,text:c(l)}}class w{options;rules;lexer;constructor(t){this.options=t||e.defaults}space(e){const t=this.rules.block.newline.exec(e);if(t&&t[0].length>0)return{type:"space",raw:t[0]}}code(e){const t=this.rules.block.code.exec(e);if(t){const e=t[0].replace(/^ {1,4}/gm,"");return{type:"code",raw:t[0],codeBlockStyle:"indented",text:this.options.pedantic?e:x(e,"\n")}}}fences(e){const t=this.rules.block.fences.exec(e);if(t){const e=t[0],n=function(e,t){const n=e.match(/^(\s+)(?:```)/);if(null===n)return t;const s=n[1];return t.split("\n").map((e=>{const t=e.match(/^\s+/);if(null===t)return e;const[n]=t;return n.length>=s.length?e.slice(s.length):e})).join("\n")}(e,t[3]||"");return{type:"code",raw:e,lang:t[2]?t[2].trim().replace(this.rules.inline.anyPunctuation,"$1"):t[2],text:n}}}heading(e){const t=this.rules.block.heading.exec(e);if(t){let e=t[2].trim();if(/#$/.test(e)){const t=x(e,"#");this.options.pedantic?e=t.trim():t&&!/ $/.test(t)||(e=t.trim())}return{type:"heading",raw:t[0],depth:t[1].length,text:e,tokens:this.lexer.inline(e)}}}hr(e){const t=this.rules.block.hr.exec(e);if(t)return{type:"hr",raw:t[0]}}blockquote(e){const t=this.rules.block.blockquote.exec(e);if(t){const e=x(t[0].replace(/^ *>[ \t]?/gm,""),"\n"),n=this.lexer.state.top;this.lexer.state.top=!0;const s=this.lexer.blockTokens(e);return this.lexer.state.top=n,{type:"blockquote",raw:t[0],tokens:s,text:e}}}list(e){let t=this.rules.block.list.exec(e);if(t){let n=t[1].trim();const s=n.length>1,r={type:"list",raw:"",ordered:s,start:s?+n.slice(0,-1):"",loose:!1,items:[]};n=s?`\\d{1,9}\\${n.slice(-1)}`:`\\${n}`,this.options.pedantic&&(n=s?n:"[*+-]");const i=new RegExp(`^( {0,3}${n})((?:[\t ][^\\n]*)?(?:\\n|$))`);let l="",o="",a=!1;for(;e;){let n=!1;if(!(t=i.exec(e)))break;if(this.rules.block.hr.test(e))break;l=t[0],e=e.substring(l.length);let s=t[2].split("\n",1)[0].replace(/^\t+/,(e=>" ".repeat(3*e.length))),c=e.split("\n",1)[0],h=0;this.options.pedantic?(h=2,o=s.trimStart()):(h=t[2].search(/[^ ]/),h=h>4?1:h,o=s.slice(h),h+=t[1].length);let p=!1;if(!s&&/^ *$/.test(c)&&(l+=c+"\n",e=e.substring(c.length+1),n=!0),!n){const t=new RegExp(`^ {0,${Math.min(3,h-1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ \t][^\\n]*)?(?:\\n|$))`),n=new RegExp(`^ {0,${Math.min(3,h-1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`),r=new RegExp(`^ {0,${Math.min(3,h-1)}}(?:\`\`\`|~~~)`),i=new RegExp(`^ {0,${Math.min(3,h-1)}}#`);for(;e;){const a=e.split("\n",1)[0];if(c=a,this.options.pedantic&&(c=c.replace(/^ {1,4}(?=( {4})*[^ ])/g,"  ")),r.test(c))break;if(i.test(c))break;if(t.test(c))break;if(n.test(e))break;if(c.search(/[^ ]/)>=h||!c.trim())o+="\n"+c.slice(h);else{if(p)break;if(s.search(/[^ ]/)>=4)break;if(r.test(s))break;if(i.test(s))break;if(n.test(s))break;o+="\n"+c}p||c.trim()||(p=!0),l+=a+"\n",e=e.substring(a.length+1),s=c.slice(h)}}r.loose||(a?r.loose=!0:/\n *\n *$/.test(l)&&(a=!0));let u,k=null;this.options.gfm&&(k=/^\[[ xX]\] /.exec(o),k&&(u="[ ] "!==k[0],o=o.replace(/^\[[ xX]\] +/,""))),r.items.push({type:"list_item",raw:l,task:!!k,checked:u,loose:!1,text:o,tokens:[]}),r.raw+=l}r.items[r.items.length-1].raw=l.trimEnd(),r.items[r.items.length-1].text=o.trimEnd(),r.raw=r.raw.trimEnd();for(let e=0;e<r.items.length;e++)if(this.lexer.state.top=!1,r.items[e].tokens=this.lexer.blockTokens(r.items[e].text,[]),!r.loose){const t=r.items[e].tokens.filter((e=>"space"===e.type)),n=t.length>0&&t.some((e=>/\n.*\n/.test(e.raw)));r.loose=n}if(r.loose)for(let e=0;e<r.items.length;e++)r.items[e].loose=!0;return r}}html(e){const t=this.rules.block.html.exec(e);if(t){return{type:"html",block:!0,raw:t[0],pre:"pre"===t[1]||"script"===t[1]||"style"===t[1],text:t[0]}}}def(e){const t=this.rules.block.def.exec(e);if(t){const e=t[1].toLowerCase().replace(/\s+/g," "),n=t[2]?t[2].replace(/^<(.*)>$/,"$1").replace(this.rules.inline.anyPunctuation,"$1"):"",s=t[3]?t[3].substring(1,t[3].length-1).replace(this.rules.inline.anyPunctuation,"$1"):t[3];return{type:"def",tag:e,raw:t[0],href:n,title:s}}}table(e){const t=this.rules.block.table.exec(e);if(!t)return;if(!/[:|]/.test(t[2]))return;const n=d(t[1]),s=t[2].replace(/^\||\| *$/g,"").split("|"),r=t[3]&&t[3].trim()?t[3].replace(/\n[ \t]*$/,"").split("\n"):[],i={type:"table",raw:t[0],header:[],align:[],rows:[]};if(n.length===s.length){for(const e of s)/^ *-+: *$/.test(e)?i.align.push("right"):/^ *:-+: *$/.test(e)?i.align.push("center"):/^ *:-+ *$/.test(e)?i.align.push("left"):i.align.push(null);for(const e of n)i.header.push({text:e,tokens:this.lexer.inline(e)});for(const e of r)i.rows.push(d(e,i.header.length).map((e=>({text:e,tokens:this.lexer.inline(e)}))));return i}}lheading(e){const t=this.rules.block.lheading.exec(e);if(t)return{type:"heading",raw:t[0],depth:"="===t[2].charAt(0)?1:2,text:t[1],tokens:this.lexer.inline(t[1])}}paragraph(e){const t=this.rules.block.paragraph.exec(e);if(t){const e="\n"===t[1].charAt(t[1].length-1)?t[1].slice(0,-1):t[1];return{type:"paragraph",raw:t[0],text:e,tokens:this.lexer.inline(e)}}}text(e){const t=this.rules.block.text.exec(e);if(t)return{type:"text",raw:t[0],text:t[0],tokens:this.lexer.inline(t[0])}}escape(e){const t=this.rules.inline.escape.exec(e);if(t)return{type:"escape",raw:t[0],text:c(t[1])}}tag(e){const t=this.rules.inline.tag.exec(e);if(t)return!this.lexer.state.inLink&&/^<a /i.test(t[0])?this.lexer.state.inLink=!0:this.lexer.state.inLink&&/^<\/a>/i.test(t[0])&&(this.lexer.state.inLink=!1),!this.lexer.state.inRawBlock&&/^<(pre|code|kbd|script)(\s|>)/i.test(t[0])?this.lexer.state.inRawBlock=!0:this.lexer.state.inRawBlock&&/^<\/(pre|code|kbd|script)(\s|>)/i.test(t[0])&&(this.lexer.state.inRawBlock=!1),{type:"html",raw:t[0],inLink:this.lexer.state.inLink,inRawBlock:this.lexer.state.inRawBlock,block:!1,text:t[0]}}link(e){const t=this.rules.inline.link.exec(e);if(t){const e=t[2].trim();if(!this.options.pedantic&&/^</.test(e)){if(!/>$/.test(e))return;const t=x(e.slice(0,-1),"\\");if((e.length-t.length)%2==0)return}else{const e=function(e,t){if(-1===e.indexOf(t[1]))return-1;let n=0;for(let s=0;s<e.length;s++)if("\\"===e[s])s++;else if(e[s]===t[0])n++;else if(e[s]===t[1]&&(n--,n<0))return s;return-1}(t[2],"()");if(e>-1){const n=(0===t[0].indexOf("!")?5:4)+t[1].length+e;t[2]=t[2].substring(0,e),t[0]=t[0].substring(0,n).trim(),t[3]=""}}let n=t[2],s="";if(this.options.pedantic){const e=/^([^'"]*[^\s])\s+(['"])(.*)\2/.exec(n);e&&(n=e[1],s=e[3])}else s=t[3]?t[3].slice(1,-1):"";return n=n.trim(),/^</.test(n)&&(n=this.options.pedantic&&!/>$/.test(e)?n.slice(1):n.slice(1,-1)),b(t,{href:n?n.replace(this.rules.inline.anyPunctuation,"$1"):n,title:s?s.replace(this.rules.inline.anyPunctuation,"$1"):s},t[0],this.lexer)}}reflink(e,t){let n;if((n=this.rules.inline.reflink.exec(e))||(n=this.rules.inline.nolink.exec(e))){const e=t[(n[2]||n[1]).replace(/\s+/g," ").toLowerCase()];if(!e){const e=n[0].charAt(0);return{type:"text",raw:e,text:e}}return b(n,e,n[0],this.lexer)}}emStrong(e,t,n=""){let s=this.rules.inline.emStrongLDelim.exec(e);if(!s)return;if(s[3]&&n.match(/[\p{L}\p{N}]/u))return;if(!(s[1]||s[2]||"")||!n||this.rules.inline.punctuation.exec(n)){const n=[...s[0]].length-1;let r,i,l=n,o=0;const a="*"===s[0][0]?this.rules.inline.emStrongRDelimAst:this.rules.inline.emStrongRDelimUnd;for(a.lastIndex=0,t=t.slice(-1*e.length+n);null!=(s=a.exec(t));){if(r=s[1]||s[2]||s[3]||s[4]||s[5]||s[6],!r)continue;if(i=[...r].length,s[3]||s[4]){l+=i;continue}if((s[5]||s[6])&&n%3&&!((n+i)%3)){o+=i;continue}if(l-=i,l>0)continue;i=Math.min(i,i+l+o);const t=[...s[0]][0].length,a=e.slice(0,n+s.index+t+i);if(Math.min(n,i)%2){const e=a.slice(1,-1);return{type:"em",raw:a,text:e,tokens:this.lexer.inlineTokens(e)}}const c=a.slice(2,-2);return{type:"strong",raw:a,text:c,tokens:this.lexer.inlineTokens(c)}}}}codespan(e){const t=this.rules.inline.code.exec(e);if(t){let e=t[2].replace(/\n/g," ");const n=/[^ ]/.test(e),s=/^ /.test(e)&&/ $/.test(e);return n&&s&&(e=e.substring(1,e.length-1)),e=c(e,!0),{type:"codespan",raw:t[0],text:e}}}br(e){const t=this.rules.inline.br.exec(e);if(t)return{type:"br",raw:t[0]}}del(e){const t=this.rules.inline.del.exec(e);if(t)return{type:"del",raw:t[0],text:t[2],tokens:this.lexer.inlineTokens(t[2])}}autolink(e){const t=this.rules.inline.autolink.exec(e);if(t){let e,n;return"@"===t[2]?(e=c(t[1]),n="mailto:"+e):(e=c(t[1]),n=e),{type:"link",raw:t[0],text:e,href:n,tokens:[{type:"text",raw:e,text:e}]}}}url(e){let t;if(t=this.rules.inline.url.exec(e)){let e,n;if("@"===t[2])e=c(t[0]),n="mailto:"+e;else{let s;do{s=t[0],t[0]=this.rules.inline._backpedal.exec(t[0])?.[0]??""}while(s!==t[0]);e=c(t[0]),n="www."===t[1]?"http://"+t[0]:t[0]}return{type:"link",raw:t[0],text:e,href:n,tokens:[{type:"text",raw:e,text:e}]}}}inlineText(e){const t=this.rules.inline.text.exec(e);if(t){let e;return e=this.lexer.state.inRawBlock?t[0]:c(t[0]),{type:"text",raw:t[0],text:e}}}}const m=/^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/,y=/(?:[*+-]|\d{1,9}[.)])/,$=k(/^(?!bull )((?:.|\n(?!\s*?\n|bull ))+?)\n {0,3}(=+|-+) *(?:\n+|$)/).replace(/bull/g,y).getRegex(),z=/^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/,T=/(?!\s*\])(?:\\.|[^\[\]\\])+/,R=k(/^ {0,3}\[(label)\]: *(?:\n *)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n *)?| *\n *)(title))? *(?:\n+|$)/).replace("label",T).replace("title",/(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex(),_=k(/^( {0,3}bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g,y).getRegex(),A="address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul",S=/<!--(?:-?>|[\s\S]*?(?:-->|$))/,I=k("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n *)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$))","i").replace("comment",S).replace("tag",A).replace("attribute",/ +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex(),E=k(z).replace("hr",m).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("|table","").replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list"," {0,3}(?:[*+-]|1[.)]) ").replace("html","</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag",A).getRegex(),Z={blockquote:k(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph",E).getRegex(),code:/^( {4}[^\n]+(?:\n(?: *(?:\n|$))*)?)+/,def:R,fences:/^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/,heading:/^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,hr:m,html:I,lheading:$,list:_,newline:/^(?: *(?:\n|$))+/,paragraph:E,table:f,text:/^[^\n]+/},q=k("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr",m).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("blockquote"," {0,3}>").replace("code"," {4}[^\\n]").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list"," {0,3}(?:[*+-]|1[.)]) ").replace("html","</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag",A).getRegex(),L={...Z,table:q,paragraph:k(z).replace("hr",m).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("table",q).replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list"," {0,3}(?:[*+-]|1[.)]) ").replace("html","</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag",A).getRegex()},P={...Z,html:k("^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:\"[^\"]*\"|'[^']*'|\\s[^'\"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))").replace("comment",S).replace(/tag/g,"(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),def:/^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,heading:/^(#{1,6})(.*)(?:\n+|$)/,fences:f,lheading:/^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/,paragraph:k(z).replace("hr",m).replace("heading"," *#{1,6} *[^\n]").replace("lheading",$).replace("|table","").replace("blockquote"," {0,3}>").replace("|fences","").replace("|list","").replace("|html","").replace("|tag","").getRegex()},Q=/^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,v=/^( {2,}|\\)\n(?!\s*$)/,B="\\p{P}\\p{S}",M=k(/^((?![*_])[\spunctuation])/,"u").replace(/punctuation/g,B).getRegex(),O=k(/^(?:\*+(?:((?!\*)[punct])|[^\s*]))|^_+(?:((?!_)[punct])|([^\s_]))/,"u").replace(/punct/g,B).getRegex(),C=k("^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)[punct](\\*+)(?=[\\s]|$)|[^punct\\s](\\*+)(?!\\*)(?=[punct\\s]|$)|(?!\\*)[punct\\s](\\*+)(?=[^punct\\s])|[\\s](\\*+)(?!\\*)(?=[punct])|(?!\\*)[punct](\\*+)(?!\\*)(?=[punct])|[^punct\\s](\\*+)(?=[^punct\\s])","gu").replace(/punct/g,B).getRegex(),D=k("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)[punct](_+)(?=[\\s]|$)|[^punct\\s](_+)(?!_)(?=[punct\\s]|$)|(?!_)[punct\\s](_+)(?=[^punct\\s])|[\\s](_+)(?!_)(?=[punct])|(?!_)[punct](_+)(?!_)(?=[punct])","gu").replace(/punct/g,B).getRegex(),j=k(/\\([punct])/,"gu").replace(/punct/g,B).getRegex(),H=k(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme",/[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email",/[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(),U=k(S).replace("(?:--\x3e|$)","--\x3e").getRegex(),X=k("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment",U).replace("attribute",/\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(),F=/(?:\[(?:\\.|[^\[\]\\])*\]|\\.|`[^`]*`|[^\[\]\\`])*?/,N=k(/^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/).replace("label",F).replace("href",/<(?:\\.|[^\n<>\\])+>|[^\s\x00-\x1f]*/).replace("title",/"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex(),G=k(/^!?\[(label)\]\[(ref)\]/).replace("label",F).replace("ref",T).getRegex(),J=k(/^!?\[(ref)\](?:\[\])?/).replace("ref",T).getRegex(),K={_backpedal:f,anyPunctuation:j,autolink:H,blockSkip:/\[[^[\]]*?\]\([^\(\)]*?\)|`[^`]*?`|<[^<>]*?>/g,br:v,code:/^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,del:f,emStrongLDelim:O,emStrongRDelimAst:C,emStrongRDelimUnd:D,escape:Q,link:N,nolink:J,punctuation:M,reflink:G,reflinkSearch:k("reflink|nolink(?!\\()","g").replace("reflink",G).replace("nolink",J).getRegex(),tag:X,text:/^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/,url:f},V={...K,link:k(/^!?\[(label)\]\((.*?)\)/).replace("label",F).getRegex(),reflink:k(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label",F).getRegex()},W={...K,escape:k(Q).replace("])","~|])").getRegex(),url:k(/^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,"i").replace("email",/[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(),_backpedal:/(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/,del:/^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,text:/^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/},Y={...W,br:k(v).replace("{2,}","*").getRegex(),text:k(W.text).replace("\\b_","\\b_| {2,}\\n").replace(/\{2,\}/g,"*").getRegex()},ee={normal:Z,gfm:L,pedantic:P},te={normal:K,gfm:W,breaks:Y,pedantic:V};class ne{tokens;options;state;tokenizer;inlineQueue;constructor(t){this.tokens=[],this.tokens.links=Object.create(null),this.options=t||e.defaults,this.options.tokenizer=this.options.tokenizer||new w,this.tokenizer=this.options.tokenizer,this.tokenizer.options=this.options,this.tokenizer.lexer=this,this.inlineQueue=[],this.state={inLink:!1,inRawBlock:!1,top:!0};const n={block:ee.normal,inline:te.normal};this.options.pedantic?(n.block=ee.pedantic,n.inline=te.pedantic):this.options.gfm&&(n.block=ee.gfm,this.options.breaks?n.inline=te.breaks:n.inline=te.gfm),this.tokenizer.rules=n}static get rules(){return{block:ee,inline:te}}static lex(e,t){return new ne(t).lex(e)}static lexInline(e,t){return new ne(t).inlineTokens(e)}lex(e){e=e.replace(/\r\n|\r/g,"\n"),this.blockTokens(e,this.tokens);for(let e=0;e<this.inlineQueue.length;e++){const t=this.inlineQueue[e];this.inlineTokens(t.src,t.tokens)}return this.inlineQueue=[],this.tokens}blockTokens(e,t=[]){let n,s,r,i;for(e=this.options.pedantic?e.replace(/\t/g,"    ").replace(/^ +$/gm,""):e.replace(/^( *)(\t+)/gm,((e,t,n)=>t+"    ".repeat(n.length)));e;)if(!(this.options.extensions&&this.options.extensions.block&&this.options.extensions.block.some((s=>!!(n=s.call({lexer:this},e,t))&&(e=e.substring(n.raw.length),t.push(n),!0)))))if(n=this.tokenizer.space(e))e=e.substring(n.raw.length),1===n.raw.length&&t.length>0?t[t.length-1].raw+="\n":t.push(n);else if(n=this.tokenizer.code(e))e=e.substring(n.raw.length),s=t[t.length-1],!s||"paragraph"!==s.type&&"text"!==s.type?t.push(n):(s.raw+="\n"+n.raw,s.text+="\n"+n.text,this.inlineQueue[this.inlineQueue.length-1].src=s.text);else if(n=this.tokenizer.fences(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.heading(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.hr(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.blockquote(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.list(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.html(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.def(e))e=e.substring(n.raw.length),s=t[t.length-1],!s||"paragraph"!==s.type&&"text"!==s.type?this.tokens.links[n.tag]||(this.tokens.links[n.tag]={href:n.href,title:n.title}):(s.raw+="\n"+n.raw,s.text+="\n"+n.raw,this.inlineQueue[this.inlineQueue.length-1].src=s.text);else if(n=this.tokenizer.table(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.lheading(e))e=e.substring(n.raw.length),t.push(n);else{if(r=e,this.options.extensions&&this.options.extensions.startBlock){let t=1/0;const n=e.slice(1);let s;this.options.extensions.startBlock.forEach((e=>{s=e.call({lexer:this},n),"number"==typeof s&&s>=0&&(t=Math.min(t,s))})),t<1/0&&t>=0&&(r=e.substring(0,t+1))}if(this.state.top&&(n=this.tokenizer.paragraph(r)))s=t[t.length-1],i&&"paragraph"===s.type?(s.raw+="\n"+n.raw,s.text+="\n"+n.text,this.inlineQueue.pop(),this.inlineQueue[this.inlineQueue.length-1].src=s.text):t.push(n),i=r.length!==e.length,e=e.substring(n.raw.length);else if(n=this.tokenizer.text(e))e=e.substring(n.raw.length),s=t[t.length-1],s&&"text"===s.type?(s.raw+="\n"+n.raw,s.text+="\n"+n.text,this.inlineQueue.pop(),this.inlineQueue[this.inlineQueue.length-1].src=s.text):t.push(n);else if(e){const t="Infinite loop on byte: "+e.charCodeAt(0);if(this.options.silent){console.error(t);break}throw new Error(t)}}return this.state.top=!0,t}inline(e,t=[]){return this.inlineQueue.push({src:e,tokens:t}),t}inlineTokens(e,t=[]){let n,s,r,i,l,o,a=e;if(this.tokens.links){const e=Object.keys(this.tokens.links);if(e.length>0)for(;null!=(i=this.tokenizer.rules.inline.reflinkSearch.exec(a));)e.includes(i[0].slice(i[0].lastIndexOf("[")+1,-1))&&(a=a.slice(0,i.index)+"["+"a".repeat(i[0].length-2)+"]"+a.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex))}for(;null!=(i=this.tokenizer.rules.inline.blockSkip.exec(a));)a=a.slice(0,i.index)+"["+"a".repeat(i[0].length-2)+"]"+a.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);for(;null!=(i=this.tokenizer.rules.inline.anyPunctuation.exec(a));)a=a.slice(0,i.index)+"++"+a.slice(this.tokenizer.rules.inline.anyPunctuation.lastIndex);for(;e;)if(l||(o=""),l=!1,!(this.options.extensions&&this.options.extensions.inline&&this.options.extensions.inline.some((s=>!!(n=s.call({lexer:this},e,t))&&(e=e.substring(n.raw.length),t.push(n),!0)))))if(n=this.tokenizer.escape(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.tag(e))e=e.substring(n.raw.length),s=t[t.length-1],s&&"text"===n.type&&"text"===s.type?(s.raw+=n.raw,s.text+=n.text):t.push(n);else if(n=this.tokenizer.link(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.reflink(e,this.tokens.links))e=e.substring(n.raw.length),s=t[t.length-1],s&&"text"===n.type&&"text"===s.type?(s.raw+=n.raw,s.text+=n.text):t.push(n);else if(n=this.tokenizer.emStrong(e,a,o))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.codespan(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.br(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.del(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.autolink(e))e=e.substring(n.raw.length),t.push(n);else if(this.state.inLink||!(n=this.tokenizer.url(e))){if(r=e,this.options.extensions&&this.options.extensions.startInline){let t=1/0;const n=e.slice(1);let s;this.options.extensions.startInline.forEach((e=>{s=e.call({lexer:this},n),"number"==typeof s&&s>=0&&(t=Math.min(t,s))})),t<1/0&&t>=0&&(r=e.substring(0,t+1))}if(n=this.tokenizer.inlineText(r))e=e.substring(n.raw.length),"_"!==n.raw.slice(-1)&&(o=n.raw.slice(-1)),l=!0,s=t[t.length-1],s&&"text"===s.type?(s.raw+=n.raw,s.text+=n.text):t.push(n);else if(e){const t="Infinite loop on byte: "+e.charCodeAt(0);if(this.options.silent){console.error(t);break}throw new Error(t)}}else e=e.substring(n.raw.length),t.push(n);return t}}class se{options;constructor(t){this.options=t||e.defaults}code(e,t,n){const s=(t||"").match(/^\S*/)?.[0];return e=e.replace(/\n$/,"")+"\n",s?'<pre><code class="language-'+c(s)+'">'+(n?e:c(e,!0))+"</code></pre>\n":"<pre><code>"+(n?e:c(e,!0))+"</code></pre>\n"}blockquote(e){return`<blockquote>\n${e}</blockquote>\n`}html(e,t){return e}heading(e,t,n){return`<h${t}>${e}</h${t}>\n`}hr(){return"<hr>\n"}list(e,t,n){const s=t?"ol":"ul";return"<"+s+(t&&1!==n?' start="'+n+'"':"")+">\n"+e+"</"+s+">\n"}listitem(e,t,n){return`<li>${e}</li>\n`}checkbox(e){return"<input "+(e?'checked="" ':"")+'disabled="" type="checkbox">'}paragraph(e){return`<p>${e}</p>\n`}table(e,t){return t&&(t=`<tbody>${t}</tbody>`),"<table>\n<thead>\n"+e+"</thead>\n"+t+"</table>\n"}tablerow(e){return`<tr>\n${e}</tr>\n`}tablecell(e,t){const n=t.header?"th":"td";return(t.align?`<${n} align="${t.align}">`:`<${n}>`)+e+`</${n}>\n`}strong(e){return`<strong>${e}</strong>`}em(e){return`<em>${e}</em>`}codespan(e){return`<code>${e}</code>`}br(){return"<br>"}del(e){return`<del>${e}</del>`}link(e,t,n){const s=g(e);if(null===s)return n;let r='<a href="'+(e=s)+'"';return t&&(r+=' title="'+t+'"'),r+=">"+n+"</a>",r}image(e,t,n){const s=g(e);if(null===s)return n;let r=`<img src="${e=s}" alt="${n}"`;return t&&(r+=` title="${t}"`),r+=">",r}text(e){return e}}class re{strong(e){return e}em(e){return e}codespan(e){return e}del(e){return e}html(e){return e}text(e){return e}link(e,t,n){return""+n}image(e,t,n){return""+n}br(){return""}}class ie{options;renderer;textRenderer;constructor(t){this.options=t||e.defaults,this.options.renderer=this.options.renderer||new se,this.renderer=this.options.renderer,this.renderer.options=this.options,this.textRenderer=new re}static parse(e,t){return new ie(t).parse(e)}static parseInline(e,t){return new ie(t).parseInline(e)}parse(e,t=!0){let n="";for(let s=0;s<e.length;s++){const r=e[s];if(this.options.extensions&&this.options.extensions.renderers&&this.options.extensions.renderers[r.type]){const e=r,t=this.options.extensions.renderers[e.type].call({parser:this},e);if(!1!==t||!["space","hr","heading","code","table","blockquote","list","html","paragraph","text"].includes(e.type)){n+=t||"";continue}}switch(r.type){case"space":continue;case"hr":n+=this.renderer.hr();continue;case"heading":{const e=r;n+=this.renderer.heading(this.parseInline(e.tokens),e.depth,p(this.parseInline(e.tokens,this.textRenderer)));continue}case"code":{const e=r;n+=this.renderer.code(e.text,e.lang,!!e.escaped);continue}case"table":{const e=r;let t="",s="";for(let t=0;t<e.header.length;t++)s+=this.renderer.tablecell(this.parseInline(e.header[t].tokens),{header:!0,align:e.align[t]});t+=this.renderer.tablerow(s);let i="";for(let t=0;t<e.rows.length;t++){const n=e.rows[t];s="";for(let t=0;t<n.length;t++)s+=this.renderer.tablecell(this.parseInline(n[t].tokens),{header:!1,align:e.align[t]});i+=this.renderer.tablerow(s)}n+=this.renderer.table(t,i);continue}case"blockquote":{const e=r,t=this.parse(e.tokens);n+=this.renderer.blockquote(t);continue}case"list":{const e=r,t=e.ordered,s=e.start,i=e.loose;let l="";for(let t=0;t<e.items.length;t++){const n=e.items[t],s=n.checked,r=n.task;let o="";if(n.task){const e=this.renderer.checkbox(!!s);i?n.tokens.length>0&&"paragraph"===n.tokens[0].type?(n.tokens[0].text=e+" "+n.tokens[0].text,n.tokens[0].tokens&&n.tokens[0].tokens.length>0&&"text"===n.tokens[0].tokens[0].type&&(n.tokens[0].tokens[0].text=e+" "+n.tokens[0].tokens[0].text)):n.tokens.unshift({type:"text",text:e+" "}):o+=e+" "}o+=this.parse(n.tokens,i),l+=this.renderer.listitem(o,r,!!s)}n+=this.renderer.list(l,t,s);continue}case"html":{const e=r;n+=this.renderer.html(e.text,e.block);continue}case"paragraph":{const e=r;n+=this.renderer.paragraph(this.parseInline(e.tokens));continue}case"text":{let i=r,l=i.tokens?this.parseInline(i.tokens):i.text;for(;s+1<e.length&&"text"===e[s+1].type;)i=e[++s],l+="\n"+(i.tokens?this.parseInline(i.tokens):i.text);n+=t?this.renderer.paragraph(l):l;continue}default:{const e='Token with "'+r.type+'" type was not found.';if(this.options.silent)return console.error(e),"";throw new Error(e)}}}return n}parseInline(e,t){t=t||this.renderer;let n="";for(let s=0;s<e.length;s++){const r=e[s];if(this.options.extensions&&this.options.extensions.renderers&&this.options.extensions.renderers[r.type]){const e=this.options.extensions.renderers[r.type].call({parser:this},r);if(!1!==e||!["escape","html","link","image","strong","em","codespan","br","del","text"].includes(r.type)){n+=e||"";continue}}switch(r.type){case"escape":{const e=r;n+=t.text(e.text);break}case"html":{const e=r;n+=t.html(e.text);break}case"link":{const e=r;n+=t.link(e.href,e.title,this.parseInline(e.tokens,t));break}case"image":{const e=r;n+=t.image(e.href,e.title,e.text);break}case"strong":{const e=r;n+=t.strong(this.parseInline(e.tokens,t));break}case"em":{const e=r;n+=t.em(this.parseInline(e.tokens,t));break}case"codespan":{const e=r;n+=t.codespan(e.text);break}case"br":n+=t.br();break;case"del":{const e=r;n+=t.del(this.parseInline(e.tokens,t));break}case"text":{const e=r;n+=t.text(e.text);break}default:{const e='Token with "'+r.type+'" type was not found.';if(this.options.silent)return console.error(e),"";throw new Error(e)}}}return n}}class le{options;constructor(t){this.options=t||e.defaults}static passThroughHooks=new Set(["preprocess","postprocess","processAllTokens"]);preprocess(e){return e}postprocess(e){return e}processAllTokens(e){return e}}class oe{defaults={async:!1,breaks:!1,extensions:null,gfm:!0,hooks:null,pedantic:!1,renderer:null,silent:!1,tokenizer:null,walkTokens:null};options=this.setOptions;parse=this.#e(ne.lex,ie.parse);parseInline=this.#e(ne.lexInline,ie.parseInline);Parser=ie;Renderer=se;TextRenderer=re;Lexer=ne;Tokenizer=w;Hooks=le;constructor(...e){this.use(...e)}walkTokens(e,t){let n=[];for(const s of e)switch(n=n.concat(t.call(this,s)),s.type){case"table":{const e=s;for(const s of e.header)n=n.concat(this.walkTokens(s.tokens,t));for(const s of e.rows)for(const e of s)n=n.concat(this.walkTokens(e.tokens,t));break}case"list":{const e=s;n=n.concat(this.walkTokens(e.items,t));break}default:{const e=s;this.defaults.extensions?.childTokens?.[e.type]?this.defaults.extensions.childTokens[e.type].forEach((s=>{const r=e[s].flat(1/0);n=n.concat(this.walkTokens(r,t))})):e.tokens&&(n=n.concat(this.walkTokens(e.tokens,t)))}}return n}use(...e){const t=this.defaults.extensions||{renderers:{},childTokens:{}};return e.forEach((e=>{const n={...e};if(n.async=this.defaults.async||n.async||!1,e.extensions&&(e.extensions.forEach((e=>{if(!e.name)throw new Error("extension name required");if("renderer"in e){const n=t.renderers[e.name];t.renderers[e.name]=n?function(...t){let s=e.renderer.apply(this,t);return!1===s&&(s=n.apply(this,t)),s}:e.renderer}if("tokenizer"in e){if(!e.level||"block"!==e.level&&"inline"!==e.level)throw new Error("extension level must be 'block' or 'inline'");const n=t[e.level];n?n.unshift(e.tokenizer):t[e.level]=[e.tokenizer],e.start&&("block"===e.level?t.startBlock?t.startBlock.push(e.start):t.startBlock=[e.start]:"inline"===e.level&&(t.startInline?t.startInline.push(e.start):t.startInline=[e.start]))}"childTokens"in e&&e.childTokens&&(t.childTokens[e.name]=e.childTokens)})),n.extensions=t),e.renderer){const t=this.defaults.renderer||new se(this.defaults);for(const n in e.renderer){if(!(n in t))throw new Error(`renderer '${n}' does not exist`);if("options"===n)continue;const s=n,r=e.renderer[s],i=t[s];t[s]=(...e)=>{let n=r.apply(t,e);return!1===n&&(n=i.apply(t,e)),n||""}}n.renderer=t}if(e.tokenizer){const t=this.defaults.tokenizer||new w(this.defaults);for(const n in e.tokenizer){if(!(n in t))throw new Error(`tokenizer '${n}' does not exist`);if(["options","rules","lexer"].includes(n))continue;const s=n,r=e.tokenizer[s],i=t[s];t[s]=(...e)=>{let n=r.apply(t,e);return!1===n&&(n=i.apply(t,e)),n}}n.tokenizer=t}if(e.hooks){const t=this.defaults.hooks||new le;for(const n in e.hooks){if(!(n in t))throw new Error(`hook '${n}' does not exist`);if("options"===n)continue;const s=n,r=e.hooks[s],i=t[s];le.passThroughHooks.has(n)?t[s]=e=>{if(this.defaults.async)return Promise.resolve(r.call(t,e)).then((e=>i.call(t,e)));const n=r.call(t,e);return i.call(t,n)}:t[s]=(...e)=>{let n=r.apply(t,e);return!1===n&&(n=i.apply(t,e)),n}}n.hooks=t}if(e.walkTokens){const t=this.defaults.walkTokens,s=e.walkTokens;n.walkTokens=function(e){let n=[];return n.push(s.call(this,e)),t&&(n=n.concat(t.call(this,e))),n}}this.defaults={...this.defaults,...n}})),this}setOptions(e){return this.defaults={...this.defaults,...e},this}lexer(e,t){return ne.lex(e,t??this.defaults)}parser(e,t){return ie.parse(e,t??this.defaults)}#e(e,t){return(n,s)=>{const r={...s},i={...this.defaults,...r};!0===this.defaults.async&&!1===r.async&&(i.silent||console.warn("marked(): The async option was set to true by an extension. The async: false option sent to parse will be ignored."),i.async=!0);const l=this.#t(!!i.silent,!!i.async);if(null==n)return l(new Error("marked(): input parameter is undefined or null"));if("string"!=typeof n)return l(new Error("marked(): input parameter is of type "+Object.prototype.toString.call(n)+", string expected"));if(i.hooks&&(i.hooks.options=i),i.async)return Promise.resolve(i.hooks?i.hooks.preprocess(n):n).then((t=>e(t,i))).then((e=>i.hooks?i.hooks.processAllTokens(e):e)).then((e=>i.walkTokens?Promise.all(this.walkTokens(e,i.walkTokens)).then((()=>e)):e)).then((e=>t(e,i))).then((e=>i.hooks?i.hooks.postprocess(e):e)).catch(l);try{i.hooks&&(n=i.hooks.preprocess(n));let s=e(n,i);i.hooks&&(s=i.hooks.processAllTokens(s)),i.walkTokens&&this.walkTokens(s,i.walkTokens);let r=t(s,i);return i.hooks&&(r=i.hooks.postprocess(r)),r}catch(e){return l(e)}}}#t(e,t){return n=>{if(n.message+="\nPlease report this to https://github.com/markedjs/marked.",e){const e="<p>An error occurred:</p><pre>"+c(n.message+"",!0)+"</pre>";return t?Promise.resolve(e):e}if(t)return Promise.reject(n);throw n}}}const ae=new oe;function ce(e,t){return ae.parse(e,t)}ce.options=ce.setOptions=function(e){return ae.setOptions(e),ce.defaults=ae.defaults,n(ce.defaults),ce},ce.getDefaults=t,ce.defaults=e.defaults,ce.use=function(...e){return ae.use(...e),ce.defaults=ae.defaults,n(ce.defaults),ce},ce.walkTokens=function(e,t){return ae.walkTokens(e,t)},ce.parseInline=ae.parseInline,ce.Parser=ie,ce.parser=ie.parse,ce.Renderer=se,ce.TextRenderer=re,ce.Lexer=ne,ce.lexer=ne.lex,ce.Tokenizer=w,ce.Hooks=le,ce.parse=ce;const he=ce.options,pe=ce.setOptions,ue=ce.use,ke=ce.walkTokens,ge=ce.parseInline,fe=ce,de=ie.parse,xe=ne.lex;e.Hooks=le,e.Lexer=ne,e.Marked=oe,e.Parser=ie,e.Renderer=se,e.TextRenderer=re,e.Tokenizer=w,e.getDefaults=t,e.lexer=xe,e.marked=ce,e.options=he,e.parse=fe,e.parseInline=ge,e.parser=de,e.setOptions=pe,e.use=ue,e.walkTokens=ke}));
+</script>
+
+  <!-- Inlined doc data + app logic -->
+  <script id="docs-data">
+    window.__DOCS__ = [{"group": "General", "id": "overview", "title": "General Guide", "content": "# 91 IDAM — General Guide\n\nWelcome to **91 IDAM** — a one-stop, tech-enabled real estate platform for Tamil Nadu and beyond. Whether you're buying your first home, listing a property, or running a real-estate business, 91 IDAM is built to make every step simple, transparent and legal.\n\nThis guide walks you through what each part of the app does and how to use it.\n\n## What is 91 IDAM?\n\n91 IDAM combines **four solutions** into one platform:\n\n1. **Property Services** — buy, sell, or rent verified properties with full legal support.\n2. **Franchise Partnership** — start your own 91 IDAM franchise with our proven business system.\n3. **Vendor Network** — builders, lawyers, surveyors and loan agents get verified projects through our CRM.\n4. **Enterprise Solutions** — bulk real-estate execution for corporates, PG operators, government and large investors.\n\nLive at: **https://91idam.com**\n\n## Who is 91 IDAM for?\n\n| You are… | What you'll do here |\n|---|---|\n| A **buyer** | Search verified properties, contact agents, schedule visits |\n| A **seller** | List your property, get verified, accept buyer enquiries |\n| A **tenant / landlord** | Find rentals or list rooms; rental agreements supported |\n| An **NRI investor** | Remote property investment with full legal verification |\n| An **agent** | Get certified, manage listings, track leads via CRM |\n| A **franchise entrepreneur** | Apply, get trained, launch your unit |\n| A **vendor** (lawyer, builder, etc.) | Receive verified project assignments |\n| An **admin** | Approve agents and properties, moderate listings |\n\n## How to start using 91 IDAM\n\n1. **Open the home page** — search properties or browse what's listed.\n2. **Log in** to send enquiries, save favourites, or list a property. Login uses your email + password + a 6-digit OTP. Accounts are issued by the 91 IDAM team — request one via the Contact page or one of the registration forms.\n3. **Search or list** — use Properties to browse, or List Your Property to add yours.\n4. **Contact an agent** — every property card has a contact button. Send a message, the agent will reach out within 1-2 days.\n5. **Manage everything** from your dashboard — your listings, enquiries, contacts and profile are all in one place.\n\n## What's in this documentation\n\nThe sidebar groups every part of the app:\n\n- **App Walkthrough** — what each page does, with step-by-step usage\n- **Help** — FAQs, troubleshooting, quick answers\n\nClick any item in the sidebar to read the full guide for that section.\n\n## Quick links\n\n- 🎯 **[Try the interactive demo](./tour)** — see every page with guided tooltips\n- 🏠 **[Home page guide](./modules/home)** — start here\n- 🔍 **[How to search properties](./modules/search-property)**\n- 🏷️ **[How to list a property](./modules/start-selling)**\n- ❓ **[Common questions (FAQ)](./FAQ)**\n\n## Need help?\n\nStuck on something? Check the **Troubleshooting** page in the sidebar, or use the **Contact us** form on the live site at **91idam.com/contact**.\n"}, {"group": "General", "id": "user-guide", "title": "User Guide", "content": "# User Guide\n\nStep-by-step walkthroughs for everyday tasks on 91 IDAM.\n\n## 1. Log in\n\n1. Click **Login** in the top-right of the header.\n2. Enter your registered email and password.\n3. A 6-digit OTP is emailed to you. Enter it to verify your identity.\n4. You're now logged in. Each future login uses email + password + OTP.\n\n> Locked out after 5 failed OTPs? The account is frozen for 24 hours and you'll receive a lockout email.\n\n## 2. Search properties\n\nThe fastest path is the **hero search bar** on the home page. Type a location, project name or keyword — suggestions appear after 2 characters.\n\nFor full filters, click **Properties** in the header (or press *View all* in the suggestion list).\n\n| Filter | Options |\n|---|---|\n| Budget | 9 preset ranges (Under 5 Lac → Above 5 Cr) |\n| Property type | Residential / Commercial |\n| Area (sq.ft) | Numeric range |\n| Posted by | Owner / Builder / Dealer |\n| Localities | Free text |\n| Approved by | DTCP / RERA / CMDA |\n| Ownership | Freehold / DTCP / CMDA / Patta / Leasehold |\n| Facing | N / S / E / W and combinations |\n| Road width | Numeric range |\n\nSort with the dropdown above results: Newest, Price (low/high), Area (small/large), Title (A-Z / Z-A).\n\n## 3. Open a property's details\n\nClick any card in the search results. The detail page has:\n\n- **Image gallery** — full-screen on click\n- **Summary** — price, BHK, area, type, ownership, status\n- **Map** — Google Maps URL is stored verbatim and opens in a new tab\n- **Contact** — opens the enquiry popup (login required)\n\n## 4. Contact an owner / agent\n\n1. Click **Contact** on a property card or detail page.\n2. Login is required. Use the modal that appears.\n3. The enquiry is recorded against the property and surfaced to the owner under **Profile → View Responses**.\n\n## 5. List a property\n\nYou must be logged in. Two entry points:\n\n- Header → Profile → \"Add new property\" (in My Listings section)\n- Direct: `/start-selling`\n\nRequired fields:\n\n- Title\n- Property type (Residential / Commercial) — drives later category options\n- Location: area name, city, pincode (Google Maps URL is optional, stored as-is)\n- Selling price + area (sq.ft)\n- At least one image (max 10, JPG/PNG, ≤5 MB each)\n\nSubmit goes to the super-admin for approval. You're notified by email once published.\n\n## 6. Manage your dashboard\n\nThe user profile (`/user-profile`) has a sidebar with these sections:\n\n| Section | What it does |\n|---|---|\n| Profile | Update name, email, phone, profile picture |\n| Change password | Old + new password |\n| My Listings | Your posted properties — edit, delete, view enquiries |\n| View Responses | Enquiries grouped by property — approve / reject |\n| Contacted | Agents you've contacted |\n| Manage *(super-admin only)* | Review pending agents and properties |\n| Requests *(super-admin only)* | Pending registration requests |\n\n## 7. Browse agents\n\nHeader → **Our Agents** → grid of all verified agents. Click any card to open the full profile (photo, listings, contact details, ratings).\n\n## 8. Become a partner\n\nHeader → **Individuals** or **Franchise Partners** dropdown → **Form Registration** opens a modal capturing your interest. The lead is forwarded to the 91 IDAM partnerships team via Zoho CRM.\n\n## 9. Take the in-app tour\n\nLook for the floating **\"Take a tour\"** button (bottom-right) — it appears on every page that has a guided walkthrough configured. The home tour also auto-starts on your first visit.\n"}, {"group": "General", "id": "admin-guide", "title": "Admin Guide", "content": "# Admin Guide\n\nFor Super Admins and Franchise Admins of 91 IDAM.\n\n## 1. Roles\n\n| Role | Scope |\n|---|---|\n| **Super Admin** | Platform-wide. Approves properties, manages users, creates franchise orgs. |\n| **Franchise Admin** | One franchise org. Manages users and properties under that org. |\n| **Agent** | Create + view properties (no edit/delete on others). |\n| **Admin (Org)** | CRUD inside their org. |\n| **User (Org)** | Create + read inside their org. |\n\nPermissions are enforced server-side on every request via the security filter, not by the UI.\n\n## 2. The Manage tab\n\nVisible only to super-admins. Located at **Profile → Manage**.\n\nIt lets you:\n\n- Review pending agents — approve or reject each.\n- Review pending properties — approve, reject or delete.\n- Drill into individual records to inspect submitted data.\n\nThe same flow is wired into Zoho CRM — when an agent registers via the public site, a CRM lead is created and surfaced here for human approval.\n\n## 3. The Requests tab\n\nSuper-admin only. Shows pending registration requests submitted via the **Individuals** and **Franchise Partners** modals on the public site. Each row links back to the originating Zoho lead.\n\n## 4. Property approval flow\n\n```\nOwner submits via /start-selling\n        │\n        ▼\nProperty created in \"Pending\" status\n        │\n        ▼\nSuper-admin reviews under Profile → Manage\n        │\n        ├── Approve  → status = \"Active\", visible in /search-property\n        └── Reject   → status = \"Rejected\", owner notified by email\n```\n\nMail templates for each transition live at:\n\n```\n/opt/tomcat/latest/webapps/<app>/WEB-INF/classes/mail_templates/idam/\n```\n\nEditing a template on the production server takes effect on the next email send (no restart needed unless you've changed packaged classes).\n\n## 5. Agent approval flow\n\nThe agent registration flow runs through the CRM. The unified approve/reject endpoint also decrypts the agent's stored name when surfacing to the admin.\n\n1. Public agent registration form → CRM lead created.\n2. Super-admin opens the Manage tab → sees the lead.\n3. Approve → agent record activated, mapped URLs and contacts populated.\n4. Reject → lead closed; the public page shows a generic \"Application closed\" message.\n\n## 6. Session & lockout management\n\n- Sessions are tracked per device/location. View them under **Profile → Profile**.\n- Force-logout a session via the row's menu.\n- After 5 failed OTP attempts the account is auto-locked for 24 h. To unlock manually before that, clear the lockout flag in the user record (server-side query).\n\n## 7. Email deliverability\n\nIf users report not receiving OTP/notification emails:\n\n1. Check Tomcat `catalina.out` for SMTP errors.\n2. Verify SMTP credentials in the application config (server-side).\n3. Confirm the template is well-formed HTML — broken markup will cause some clients to silently drop the message.\n4. Check rate limiting — max 3 OTP sends per 15 minutes per user.\n\n## 8. Data hygiene\n\n- Properties marked Rejected stay in the DB but are filtered from the public search.\n- Mobile numbers in registration responses are stripped server-side before being shown to admins (privacy guard added on `0f6f77b2`).\n- Duplicate email submissions on the public registration form are blocked at the API layer.\n\n## 9. Ops cheat sheet\n\n| Action | Where |\n|---|---|\n| Restart Tomcat | `systemctl restart tomcat` (verify your unit name) |\n| Tail logs | `tail -f /opt/tomcat/latest/logs/catalina.out` |\n| Edit mail template | `/opt/tomcat/latest/webapps/<app>/WEB-INF/classes/mail_templates/idam/` |\n| Hot redeploy WAR | drop the new WAR into `/opt/tomcat/latest/webapps/` |\n"}, {"group": "App Walkthrough", "id": "home", "title": "Home page", "content": "# Home page\n\n## What is this page for?\n\nThe **home page** is your starting point on 91 IDAM. From here you can search for properties, see what services we offer, and quickly find the section you need — buyers, sellers, agents, franchise partners or enterprises.\n\n## What you can do here\n\n- **Quick property search** — type a city, locality or project name in the big search bar\n- **Browse by category** — switch between *All*, *Residential* and *Commercial* with the radio buttons\n- **See who we serve** — four cards explain who 91 IDAM is for\n- **Choose who's selling** — Dealer / Owner / Builder, each with thousands of properties\n- **List your property** — a one-click \"Got a property to sell?\" CTA\n- **Compare us** — see how 91 IDAM is different from traditional brokers\n- **Read testimonials** — real customer stories\n\n## How to search from the home page\n\n1. Type into the search bar — for example, *\"OMR\"*, *\"Coimbatore\"*, *\"3BHK Chennai\"*\n2. After 2 letters, live suggestions appear\n3. Pick **Residential** or **Commercial** if you want to narrow down\n4. Click **🔍 Search** (or press Enter) → opens the full Search Properties page\n\n## Header navigation\n\nThe top of every page has the same menu:\n\n| Link | Goes to |\n|---|---|\n| **Home** | This page |\n| **Properties** | Full search page with filters |\n| **Individuals ▾** | Registration enquiry for buyers, sellers, NRIs, tenants |\n| **Franchise Partners ▾** | Apply to run a 91 IDAM franchise |\n| **Our Agents** | Browse all certified agents |\n| **Login** | Sign in to your account |\n\n## Tips\n\n- The home page is **public** — no login needed. Login is only required to send an enquiry or list a property.\n- The hero search bar takes you to the **Properties** page; use that page for advanced filters like budget, ownership type, and approvals (DTCP/RERA/CMDA).\n"}, {"group": "App Walkthrough", "id": "search-property", "title": "Search Properties", "content": "# Search Properties\n\n## What is this page for?\n\nThe **Search Properties** page is where you browse every property listed on 91 IDAM. It's like the home of all listings — filter by budget, location, type, and more to find the right match. Every property here is **legally verified** by our team.\n\n## What you can do here\n\n- Browse 10,000+ verified properties across Tamil Nadu\n- Filter by **budget**, **type**, **area**, **city**, **approval** (DTCP/RERA/CMDA), **facing direction** and 5 more options\n- Sort results by newest, price (low to high or high to low), or area\n- Click any property card to see full details, photos, and contact the agent\n- See who posted each listing — Owner, Builder, or Dealer\n\n## How to find a property\n\n### Step 1 — Apply filters\nUse the left sidebar:\n- **Budget** — pick one or more ranges (e.g., ₹50 L – ₹1 Cr)\n- **Property Type** — Residential or Commercial\n- **Posted by** — Owner / Builder / Dealer\n- **Approved by** — DTCP / RERA / CMDA (legal certifications)\n- **Facing** — North / East / South / West (vastu preference)\n\nTick the boxes you want. The result count updates instantly.\n\n### Step 2 — Sort the results\nAbove the cards on the right, use the **Sort by** dropdown to order results:\n- Newest first *(default)*\n- Price: Low to High\n- Price: High to Low\n- Area: Small to Large\n\n### Step 3 — Open a property\nClick any card to see full details — photos, amenities, location, and the agent's contact card.\n\n### Step 4 — Contact the agent or owner\nEach card has a **📞 Contact** button. Click it to send a message. *(Login required so the seller can reply to you.)*\n\n## What each result card shows\n\n- 🖼️ Cover photo\n- 💰 Price (with \"Negotiable\" tag if applicable)\n- 🏠 Property type, BHK, area in sq.ft\n- 📍 Location and locality\n- 👤 Owner / agent name (verified ✓)\n- 📝 Short description\n\n## Tips\n\n- Use **multiple filters** together — e.g., budget ₹50 L–1 Cr + Residential + DTCP-approved + Coimbatore.\n- Active filters appear as **removable chips** at the top of the sidebar. Click ✕ on a chip to remove it, or **CLEAR ALL** to reset.\n- If no results match, try removing one filter at a time.\n- The page shows 24 results per page — use the pagination at the bottom.\n"}, {"group": "App Walkthrough", "id": "property-details", "title": "Property Details", "content": "# Property Details\n\n## What is this page for?\n\nThe **Property Details** page shows everything about a single property — photos, full description, attributes (BHK, parking, facing), exact location on a map, and a contact card to reach the owner or agent. This is where you decide whether to schedule a visit or send an enquiry.\n\n## What you can do here\n\n- View the **full photo gallery** (up to 10 photos) — click any photo for fullscreen\n- Read the **complete property summary** — price, BHK, area, ownership type\n- See **all property attributes** — bathrooms, parking, facing, floor, age\n- View **amenities** — pool, gym, security, garden, power backup, etc.\n- See the **exact location** on Google Maps\n- Browse **similar properties** nearby\n- **Contact the agent or owner** directly\n\n## What you'll see on the page\n\n### 1. Photo gallery (top)\nThe cover photo is large, with thumbnails below for the remaining shots. Click any photo to view it fullscreen.\n\n### 2. Property summary\n- 💰 **Price** — bold orange, with *(Negotiable)* tag if the owner has marked it negotiable\n- 🏠 **Type & category** — Residential / Commercial, plot / villa / apartment, BHK\n- 📐 **Area** — sq.ft of built-up area\n- ✅ **Status** — Active means available; the listing has been approved by us\n\n### 3. Property attributes\nA grid showing details:\n- Bathrooms, parking, facing direction\n- Number of floors, age of property, furnishing status\n- Plot area, road width\n\n### 4. Description\nA free-form description written by the owner — usually covers neighbourhood, key features, why the property stands out.\n\n### 5. Amenities\nVisual chips showing what's included — 🏊 pool, 🏋️ gym, 👮 security, 🌳 garden, ⚡ power backup, etc.\n\n### 6. Location\nFull address + a \"Open in Maps ↗\" button that opens Google Maps in a new tab.\n\n### 7. Similar properties\n3 nearby listings you might also like — handy to compare without leaving the page.\n\n### 8. Contact card (sticky on the right)\nShows the agent's photo, name, certification badges (verified ⭐), rating and number of past sales. The big **Contact owner / agent** button is your way to reach out.\n\n## How to contact the owner / agent\n\n1. Click the big **Contact owner / agent** button on the right\n2. If you're not logged in, the login window opens first — sign in\n3. Type your message — when you'd like to visit, what you're looking for\n4. Submit\n5. The owner sees your enquiry in their dashboard and replies to your email / phone within 1-2 days\n\n## Tips\n\n- **Login is required** before you can send an enquiry — this prevents spam and lets the owner reach you back.\n- The contact card is **sticky** — it stays visible as you scroll the page, so the Contact button is always one click away.\n- If a property is marked **Pending**, you can't reach it from search — admins are still reviewing it. Only **Active** properties appear publicly.\n"}, {"group": "App Walkthrough", "id": "our-agents", "title": "Our Agents", "content": "# Our Agents\n\n## What is this page for?\n\nThe **Our Agents** page is a directory of every certified real-estate agent on 91 IDAM. Browse them all, see their photo, city, certifications and ratings, and click any agent to view their full profile and contact them.\n\n## What you can do here\n\n- Browse all certified 91 IDAM agents in a single grid\n- See each agent's **city**, **specialisation**, **listings count** and **rating**\n- Click **DETAILS** on any card to open the full agent profile\n- Contact agents directly (login required to send a message)\n\n## What an agent card shows\n\n| Field | What it means |\n|---|---|\n| 📷 Photo | Agent's profile picture |\n| 👤 Name | Real name (decrypted on read for privacy) |\n| 📍 City | Where the agent operates |\n| 🏷️ Title | \"Senior Agent\" / \"Agent\" / \"Specialist\" |\n| 📋 Listings | How many properties they've posted |\n| ⭐ Rating | Average rating from buyer enquiries (out of 5) |\n| 💼 Sales | Total deals closed |\n\n## How to find the right agent\n\n1. Browse the grid — agents are shown in a 3-column card layout\n2. Look for the **city** that matches your interest\n3. Check the **specialisation** — some agents focus on residential, others on commercial or NRI buyers\n4. Higher **ratings** + more **sales** = more experienced agent\n5. Click **DETAILS** to see their full profile, listings and reviews\n\n## Why every agent is verified\n\nEvery agent on this directory has been approved by the 91 IDAM super-admin team. We check:\n\n- ✅ Real ID (Aadhaar / PAN)\n- ✅ Business credentials\n- ✅ References\n- ✅ Track record\n\nPending and rejected agents are **not shown here** — only Active agents.\n\n## Tips\n\n- The full **Contact details** (phone, email) are only visible after you click **Contact Me** on their profile and log in. This protects agents from spam and scraping.\n- Agent names appear in plain English even though we store them encrypted in the database — for your protection.\n"}, {"group": "App Walkthrough", "id": "agent-detail", "title": "Agent Profile", "content": "# Agent Profile\n\n## What is this page for?\n\nThe **Agent Profile** page is the full view of a single agent — bio, certifications, every property they have listed, buyer reviews, and a direct way to contact them. You land here when you click **DETAILS** on an agent card from the Our Agents directory.\n\n## What you can do here\n\n- See the agent's **full photo and bio**\n- Read about their **specialisation** (premium villas, NRI buyers, commercial plots, etc.)\n- View their **certification badges** — DTCP, RERA, top-agent recognitions\n- Browse **every property** they have actively listed\n- Read **buyer reviews and ratings**\n- **Contact them** directly via a dedicated button\n\n## What's on the page\n\n### Left side — photo + Contact Me\n- A larger version of the agent's photo\n- A big **Contact Me** button — opens the contact form\n- Their phone and email (visible after you click Contact Me)\n\n### Right side — three tabs\n\n#### About tab *(default)*\n- Their company affiliation (e.g., \"VKV Realty\")\n- Full name and title (e.g., \"Senior Agent · Chennai\")\n- Star rating + total reviews count\n- Earned badges: DTCP Certified, RERA Registered, Top Agent recognitions\n- A bio paragraph — years of experience, area of expertise, languages spoken\n- Specialty list — bullet points of what they're best known for\n\n#### Properties tab\nA grid of all the active listings that agent has posted. Click any property to open its full details.\n\n#### Reviews tab\nBuyer feedback from past enquiries — names, star ratings, written comments.\n\n## How to contact an agent\n\n1. Click **Contact Me** on the left side\n2. If not logged in, sign in or create an account\n3. Type your message — what you're looking for, when you'd like to visit\n4. Submit\n5. The agent gets your message and will reach you back within 1-2 days via email or phone\n\n## Tips\n\n- The **Properties tab** is the fastest way to see all listings from one trusted agent.\n- If an agent has many high ratings and a long sales history, they're likely a safer bet — especially for first-time buyers.\n- The agent's contact details (phone, email) are only revealed after you submit your enquiry — this prevents spam.\n"}, {"group": "App Walkthrough", "id": "authentication", "title": "Sign In & Security", "content": "# Sign In & Account Security\n\n## What is this for?\n\nThe **Sign In** flow is how you log into 91 IDAM. It uses email + password as the first factor, then a **6-digit OTP** sent to your email as a second factor. This two-step process keeps your account safe.\n\n## What you can do\n\n- **Sign in** with your email and password\n- **Reset your password** if you forgot it\n- **Stay signed in** for 30 days with \"Remember me\"\n\n> Accounts are created by the 91 IDAM team. To get an account, contact us via the [Contact](./contact) page or one of the registration forms (Individuals / Franchise Partners) in the top menu.\n\n## How sign-in works\n\n### Step 1 — Open the login form\n- Click the **Login** button at the top-right of any page\n- A login window opens over the page (no separate page navigation)\n\n### Step 2 — Enter email and password\n- Type your registered email\n- A green ✓ tick appears when the format is correct\n- Type your password\n- *(Optional)* check **\"Remember me for 30 days\"** to stay signed in\n\n### Step 3 — Click \"Send OTP\"\n- A 6-digit code is sent to your email within seconds\n- The OTP screen replaces the login form\n\n### Step 4 — Enter the OTP\n- Type the 6 digits from your email\n- Auto-advances to the next box; paste also works\n- Click **Verify & continue** (or press Enter)\n\n### Step 5 — You're in\n- You'll land back on whichever page you started from\n- Your name appears at the top-right where the Login button was\n\n## How to reset a forgotten password\n\n1. Click **Login** at the top-right\n2. In the login window, click **Forgot password?**\n3. Enter your registered email\n4. Within minutes, you'll receive an email with a **reset link** (valid for 24 hours)\n5. Click the link → it opens a page where you set a new password\n6. Sign in with the new password\n\n## Security limits\n\nFor your safety, a few rules are enforced:\n\n| Rule | What happens |\n|---|---|\n| Max **3 OTPs** sent in 15 minutes | After that, wait 15 minutes and try again |\n| **5 wrong** OTP attempts | Account locks for **24 hours** — you'll get an email |\n| Reset link expires after **24 hours** | Request a new one if it expires |\n| Reset link is bound to the **device that requested it** | Open the email on the same browser/laptop you started on |\n\n## Tips\n\n- The login window is **layered over the current page** — closing it returns you to where you were.\n- \"Remember me\" sets a 30-day session — convenient but only use on devices you trust.\n- Email change requires re-verification with a fresh OTP.\n- Password change requires entering your current password first.\n"}, {"group": "App Walkthrough", "id": "user-profile", "title": "Your Dashboard", "content": "# Your Dashboard\n\n## What is this page for?\n\nAfter you sign in, the **Dashboard** is your personal home base. From here you can manage your listings, see who's enquired about them, update your profile, and (if you're a super-admin) moderate the entire platform.\n\nYou only see this page when logged in.\n\n## Layout\n\nA **sidebar on the left** lets you switch sections. The **main area on the right** shows the content of whichever section you've picked. The default section is **My Listings**.\n\n## Sections in the sidebar\n\n### My Listings *(default)*\nAll properties **you have posted**. Each row shows:\n- Status badge — **Active** (live), **Pending** (awaiting approval), **Rejected**\n- Title, area, price\n- How many enquiries you've received\n- How many people have viewed it\n- **Edit** / **Delete** action buttons\n\nA big **\"+ Add new property\"** button at the top takes you to the listing form.\n\n### View Responses\nEvery enquiry from buyers on your listings, **grouped by property**. Click a property header to expand:\n- Buyer name, contact, message\n- Status badge — **PENDING** (new), **APPROVED**, **CONTACTED** (you've called)\n- A **Mark Contacted** button you click after calling the buyer\n\n### Contacted\nPeople who have reached out to you via the agent contact form on your profile. Same fields as View Responses but separate inbox — useful as a \"saved contacts\" log.\n\n### Profile\nYour personal info — name, email, phone, profile picture. Edit and save.\n\n### Change password\nChange your account password. Old password is required for security.\n\n### Manage *(super-admin only)*\nModerate the entire platform — see [Manage section](./modules/admin-guide).\n\n### Requests *(super-admin only)*\nPending applications from the public site — Individuals, Franchise Partners, Vendor, Enterprise.\n\n## How to use the Dashboard\n\n### To see new buyer enquiries\n1. Click **View Responses** in the sidebar\n2. Each property card shows how many enquiries it has\n3. Click any property header to see the buyers who reached out\n4. Read their message, then call them — once you've called, click **Mark Contacted**\n\n### To edit a listing\n1. Click **My Listings**\n2. Find the property → click **📝 Edit**\n3. Update fields, save → goes back through approval\n\n### To delete a listing\n1. Click **My Listings**\n2. Find the property → click **🗑 Delete**\n3. Confirm in the popup\n4. The listing is removed from the public site immediately\n\n## Mobile\n\nOn small screens, the sidebar is hidden by default. Tap the **☰ menu** icon at the top-left to slide it in. Tap the dim background to close.\n\n## Tips\n\n- The default landing section is **My Listings** — handy because that's the most common reason to visit the dashboard.\n- Status badges are colour-coded: green (Active), yellow (Pending), blue (Contacted), red (Rejected).\n- A rejected listing usually means **missing documents** — check the rejection reason and resubmit with the correct files.\n"}, {"group": "App Walkthrough", "id": "start-selling", "title": "List Your Property", "content": "# List Your Property\n\n## What is this page for?\n\nThe **List Your Property** page is where you submit a property to be sold or rented on 91 IDAM. Fill out the form with details, upload photos, and our team reviews it within 24-48 hours. Once approved, your listing goes live on the search page.\n\nYou must be **logged in** to list a property. If you're not, the page redirects you to sign in first.\n\n## What you can do here\n\n- Submit a new property listing — sale or rent\n- Upload up to 10 photos\n- Provide all the details buyers want to see\n- Track the listing's status (Pending → Active or Rejected)\n\n## How to list a property — step by step\n\n### Step 1 — Title and description\n- **Title** — short and descriptive, e.g., *\"3 BHK Villa, OMR Padur\"*\n- **Description** — sell the place: location highlights, neighbourhood, key features\n\n### Step 2 — Property type\nChoose **Residential Plot/Land** or **Commercial Plot/Land**. This decides what fields appear next.\n\n### Step 3 — Road Width Type\nSelect the unit of road width measurement — **Feet** is most common in Tamil Nadu.\n\n### Step 4 — Location Details\n- **State** — usually Tamil Nadu\n- **City/District** — Chennai, Coimbatore, etc.\n- **Pincode** — 6 digits\n- **Locality / Area** — *\"OMR, Padur\"* or *\"RS Puram\"*\n- **Google Maps URL** *(optional)* — paste the share link from Google Maps. Helps buyers see the exact location.\n\n### Step 5 — Price & Area\n- **Selling Price (₹)** — full amount in rupees, e.g., 8500000 for ₹85 L\n- **Built-up area (sq.ft)** — total constructed area\n\n### Step 6 — Property specs\n- Bathrooms, parking spots, facing direction (East / North preferred for vastu)\n- Approval — DTCP / RERA / CMDA (whichever applies to your property)\n\n### Step 7 — Upload photos\n- Up to **10 photos**, JPG or PNG\n- Each photo must be **5 MB or less**\n- The **first photo** becomes the cover image — choose your best shot\n- Drag and drop, or click to browse\n\n### Step 8 — Submit\nClick **Submit Property Details**. You'll see a success message and the listing appears in your dashboard with status **Pending**.\n\n## What happens after you submit\n\n1. **Pending review** — within 24-48 hours, our admin team checks the legal documents and photos\n2. **Approved → Active** — the listing goes live on the search page; you'll receive an email\n3. **Rejected** — if there's an issue (missing patta, unclear photos), you'll see the reason in your dashboard. Fix it and resubmit\n\n## Tips\n\n- Required fields are marked with **\\***. The form won't submit if any are empty.\n- Photos with **good lighting** and **wide-angle shots** get more enquiries.\n- Pricing tip: check similar listings in your locality on the **Properties** page before you set a price.\n- The Google Maps URL is **optional but highly recommended** — buyers feel more confident when they can see the exact location.\n"}, {"group": "App Walkthrough", "id": "about", "title": "About 91 IDAM", "content": "# About 91 IDAM\n\n## What is this page for?\n\nThe **About** page tells you who 91 IDAM is, what we stand for, and where we're headed. Read this if you want to understand our story, values, leadership team, and the kind of customers we serve.\n\n## What you'll find on the page\n\n### Hero — quick facts\n- **Established:** 2025\n- **Headquarters:** Coimbatore, Tamil Nadu\n- **Industry:** Real Estate · Tech-Enabled Brokerage\n- **Business Model:** Franchise\n\n### Mission & Vision\n- **Mission** — Deliver end-to-end real-estate services with speed, simplicity and trust, through a tech-first franchise model.\n- **Vision** — Build India's most trusted real-estate platform, with 100+ franchise locations and ₹200 Cr+ in annual revenue.\n\n### Our 8 core values\nThe principles that guide every transaction:\n\n1. **Commitment to public** — serve communities with honesty\n2. **Transparency** — clear pricing, ethical conduct\n3. **Confidentiality** — data privacy in every deal\n4. **Integrity** — do the right thing, always\n5. **Employee happiness** — people-first culture\n6. **Collaboration** — clients, brokers, partners working as one\n7. **Time value** — respect everyone's time\n8. **Customer-centricity** — peace of mind on every interaction\n\n### What makes us different\nFive things you won't get from traditional brokers:\n\n- 🏢 **Franchise-first model** — local trust at scale\n- 🛠️ **One-stop solution** — sales, rentals, CRM, property management, marketing\n- 💻 **Tech-powered** — CRM dashboards, WhatsApp automation, listing tools\n- 📜 **Legacy + innovation** — 40+ years of industry wisdom + modern tech\n- 🤝 **Trust-focused** — built for long-term client relationships\n\n### Growth roadmap\nA multi-year expansion plan across South India and beyond.\n\n### Leadership\n**Mr. Pratheesh Kumar-E** — Founder & CEO. Visionary leader transforming Indian real estate through technology and ethical practices.\n\n### Who we serve\nSix customer segments:\n\n- 🏠 Home buyers and sellers\n- 🤝 Tenants and landlords\n- 🌍 NRIs investing remotely\n- 🏢 Brokers seeking tech and brand support\n- 🏗️ Developers wanting marketing partnerships\n- 💼 Franchise entrepreneurs\n\n## Tips\n\n- The About page is **public** — no login needed.\n- Want to start a franchise? Click **Franchise Partners** in the top menu, or visit the [Why IDAM](./whyidam) and [How It Works](./howitworks) pages for the full pitch.\n"}, {"group": "App Walkthrough", "id": "whyidam", "title": "Why Choose Us", "content": "# Why Choose 91 IDAM\n\n## What is this page for?\n\nThe **Why IDAM** page explains why 91 IDAM is the better choice than a traditional broker or another property portal. If you're deciding whether to use us — read this first.\n\n## What you'll find on the page\n\n### Hero — our four pillars\nFour highlights that summarise what we offer:\n\n- 🔒 **Legal Safety First** — every property is legally verified\n- 🤝 **Franchise-First Model** — local trust, scaled up\n- 💻 **Tech-Powered Platform** — CRM, automation, dashboards\n- ⚖️ **Trust & Transparency** — fixed fees, no surprises\n\n### Real-estate's biggest problems\nThe industry has issues. We list them honestly:\n\n- ❌ **Legal disputes** — buyers lose lakhs to fraudulent listings\n- ❌ **Hidden brokerage** — agents quote one rate, charge another\n- ❌ **Slow closings** — typical deal takes 4-6 months\n- ❌ **No follow-up** — brokers vanish after the sale\n\n### How 91 IDAM solves them\nFor every problem, we have a concrete solution:\n\n- ✅ **Verified listings** — every document checked (patta, DTCP, RERA, encumbrance)\n- ✅ **Fixed transparent fees** — agreed upfront, no surprises\n- ✅ **2-6 weeks closing** — CRM-driven matching, prefilled paperwork, scheduled visits\n- ✅ **Full lifecycle support** — registration, rental management, post-sale support\n\n### Traditional vs 91 IDAM\nA side-by-side comparison table covering verification, brokerage, time, technology and trust.\n\n### Get started\nThree doors at the bottom:\n\n- **Start buying** — go to the search page\n- **List your property** — create a listing\n- **Become a partner** — apply for franchise\n\n## Tips\n\n- This page is best for **first-time visitors** or anyone comparing 91 IDAM with another portal.\n- If you're already convinced and want to dive in, the **How It Works** page in the menu walks you through each step in detail.\n"}, {"group": "App Walkthrough", "id": "howitworks", "title": "How It Works", "content": "# How 91 IDAM Works\n\n## What is this page for?\n\nThe **How It Works** page explains the step-by-step process for each kind of journey on 91 IDAM. There are four paths — pick the one that matches you and see exactly what happens, what we need from you, and how long each step takes.\n\n## The four journeys\n\nClick any tab at the top to switch:\n\n| Tab | Who it's for |\n|---|---|\n| **Property Transactions** | Buyers and sellers |\n| **Franchise Partnership** | Entrepreneurs wanting to start a 91 IDAM franchise |\n| **Service Providers** | Builders, surveyors, lawyers, loan agents — verified vendor network |\n| **Enterprise Solutions** | Corporates, PG operators, government, large investors |\n\nEach tab shows a 4-step process, with what we do, what you need to provide, and a typical duration.\n\n## Property Transactions — 4 steps *(default)*\n\n### Step 1 — Discovery & verification *(1-2 days)*\n- Browse 10,000+ verified properties or submit yours for listing\n- Initial document check (patta, survey number, DTCP/RERA approvals)\n- Property photos and location mapping\n- Price validation and market analysis\n\n### Step 2 — Legal verification & docs *(3-5 days)*\n- Complete title verification and encumbrance check\n- Validation of approvals and building permissions\n- Legal opinion on ownership and liabilities\n- Digital document storage in our secure locker\n\n### Step 3 — Buyer-seller matching *(1-2 weeks)*\n- Our CRM matches verified buyers with suitable properties\n- Scheduled site visits with our representatives\n- Property inspection and verification on-site\n- Negotiation support and market guidance\n\n### Step 4 — Agreement & registration *(1-2 weeks)*\n- Sale / purchase / rental agreement drafting\n- Registration support and documentation\n- Digital locker update with final documents\n- Post-sale support and rental management (if applicable)\n\n## How to start any journey\n\n1. Click the relevant tab at the top\n2. Read through the 4 steps for your path\n3. Click the big **CTA button** at the top of the steps (e.g., *\"Get Started with Property Services\"* or *\"Apply for Franchise Partnership\"*)\n4. A registration form opens — fill in your details\n5. Our team contacts you within 1-2 business days\n\n## Tips\n\n- The default tab is **Property Transactions** — most visitors land here.\n- If you're not sure which journey applies, check the [About](./about) and [Why IDAM](./whyidam) pages first.\n- The CTA button on each tab opens the same registration form as the dropdowns in the top menu.\n"}, {"group": "App Walkthrough", "id": "careers", "title": "Careers", "content": "# Careers at 91 IDAM\n\n## What is this page for?\n\nThe **Careers** page is for anyone who wants to work with 91 IDAM. Apply for an open position by filling out a simple form — our HR team gets back within 48 hours.\n\n## What you can do here\n\n- Apply for a job at 91 IDAM\n- See the **Why work with us** section — culture, benefits, growth opportunities\n- Browse current open positions\n\n## How to apply\n\n### Step 1 — Fill out the form\nRequired fields:\n- **Full Name**\n- **Email Address**\n- **Phone Number** (10-digit Indian mobile)\n- **Position Applied For** (e.g., *\"Sales Executive\"*, *\"Backend Developer\"*)\n\nOptional fields:\n- **Years of Experience** — Fresher / 1-3 / 3-5 / 5+ years\n- **Cover Letter / Message** — tell us why you'd be a good fit\n\n### Step 2 — Submit\nClick **Submit Application**. You'll see a *\"Application Received!\"* confirmation.\n\n### Step 3 — We'll get back to you\n- Our HR team reviews your application within **48 hours**\n- If shortlisted, you'll get an email or call to schedule the next round\n- If not, we keep your details for future openings\n\n## Tips\n\n- Use a **professional email** — avoids spam filters and looks credible\n- A short, sincere message in the cover letter helps you stand out\n- **Duplicate applications** with the same email are automatically blocked — apply once and wait for response\n- No login is required to apply — anyone can use this form\n"}, {"group": "App Walkthrough", "id": "contact", "title": "Contact Us", "content": "# Contact Us\n\n## What is this page for?\n\nThe **Contact Us** page is the way to reach the 91 IDAM team for general questions, support, partnership enquiries, or feedback. You can call, email, or send a message via the form — our team responds within 1-2 business days.\n\n## What you can do here\n\n- See our **office location** on a Google Map\n- Find our **phone number** and **email**\n- Send us a **message** via the contact form\n- Check our **office hours**\n\n## Quick contact\n\n- 📞 **Phone:** +91 97510 00065\n- ✉️ **Email:** hello@91idam.com\n- 🕒 **Hours:** Monday – Saturday, 9 AM – 7 PM\n- 📍 **Office:** Coimbatore, Tamil Nadu\n\n## How to send a message\n\n### Step 1 — Fill out the form\nRequired fields:\n- **First name** + **Last name**\n- **Email**\n- **Subject** — short title (e.g., *\"Property in OMR\"*, *\"Franchise enquiry\"*)\n- **Message** — at least 10 characters; tell us what you need\n\n### Step 2 — Click **Send message**\nYou'll see a green tick: *\"Message sent successfully!\"*\n\n### Step 3 — We respond\nOur team replies within **1-2 business days** to the email you provided.\n\n## When to use this page (vs other contact options)\n\n| If you want to… | Use this instead |\n|---|---|\n| Contact the owner of a specific property | The **Contact** button on the property page |\n| Reach a specific agent | The **Contact Me** button on the agent's profile |\n| Apply for a job | The **Careers** page |\n| Become a partner | The **Individuals / Franchise Partners** dropdowns in the top menu |\n| Ask anything else (general queries, complaints, partnerships, press) | **This page** |\n\n## Tips\n\n- For property-specific questions, **always use the property page's Contact button** — that way the agent has the context to help you faster.\n- The contact form is **public** — no login required.\n- \"Open in Maps ↗\" on the location card opens Google Maps for directions.\n"}, {"group": "Help", "id": "faq", "title": "FAQ", "content": "# FAQ\n\n## For end users\n\n**Q: Why am I asked for an OTP every time I log in?**\nA: 91 IDAM uses MFA — email password is the first factor, OTP is the second. This is required by default; there is currently no opt-out.\n\n**Q: My OTP didn't arrive.**\nA: Check spam. If it's still missing after 60 seconds, click *Resend OTP* (max 3 sends per 15 minutes). If the third send still doesn't arrive, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md#otp-not-received).\n\n**Q: I forgot my password.**\nA: Click **Forgot password** on the login modal. A 24-hour reset link is sent to your email. The link is tied to your IP for brute-force protection — open it from the same network you requested it on.\n\n**Q: My account is locked. How do I unlock?**\nA: After 5 failed OTPs the account locks for 24 hours automatically. You'll receive a notification email. After 24 h, login resumes normally. To unlock sooner, contact support.\n\n**Q: How long until my submitted property goes live?**\nA: All listings go through super-admin approval. Typical turnaround is 24–48 hours. You'll be emailed once it's live or rejected.\n\n**Q: Can I edit a published listing?**\nA: Yes. Go to **Profile → My Listings**, click your property, edit and resubmit. Edits also need re-approval but usually clear faster.\n\n**Q: How do I withdraw a listing?**\nA: **Profile → My Listings → Delete**. The listing is removed from public search; the record stays in the DB for audit.\n\n**Q: Why are some agents/properties not showing?**\nA: The public site only shows records with status = Active. Pending and Rejected records are hidden by design.\n\n## For admins\n\n**Q: Can I bulk-approve listings?**\nA: Not in the current UI — approvals are one-at-a-time under **Profile → Manage**. If you need bulk, run a server-side update on the property table directly.\n\n**Q: How do I reset a user's password without email access?**\nA: Use the server-side admin endpoint or update the password hash directly in the user table. Inform the user out-of-band.\n\n**Q: Where do mail templates live?**\nA:\n```\n/opt/tomcat/latest/webapps/<app>/WEB-INF/classes/mail_templates/idam/\n```\nEdit in place; changes apply on the next send.\n\n**Q: How do I create a new franchise org?**\nA: Super-admin → Manage → Franchise Orgs (or via the back-office endpoint if not yet exposed in UI). Each org gets its own role setup and admin.\n\n## For developers\n\n**Q: How is auth state stored?**\nA: Server-side session cookie + Redux slice (`authSlice`). On app launch, `App.jsx` calls `authAPI.checkAuthAndFetchUser()` and rehydrates Redux. localStorage is *not* used for auth.\n\n**Q: Where are routes defined?**\nA: `src/routes/routeConfig.js`. Each entry has `path`, `element`, and `layout` (true = wrap with `Layout` which includes Header + Footer).\n\n**Q: How do I run Playwright screenshots?**\nA: Start the dev server (`npm run dev_only`) on port 3000, then `node scripts/screenshots/capture.js` from this user-guide folder. Output lands in `docs-portal/assets/screenshots/`. See `scripts/screenshots/README.md` for full setup.\n"}, {"group": "Help", "id": "troubleshooting", "title": "Troubleshooting", "content": "# Troubleshooting\n\n## End-user issues\n\n### OTP not received\n\n1. Wait 60 seconds, then click **Resend OTP**.\n2. Check spam / promotions / \"All mail\" in Gmail.\n3. Confirm the email address is typed correctly.\n4. Ask your IT to whitelist the sender domain (`@91idam.com`).\n5. If still nothing, contact support — there may be an SMTP outage.\n\n### \"Account locked\" message\n\nAfter 5 failed OTPs you're locked for 24 h. Wait it out or contact support.\n\n### Forgot-password link expired\n\nReset links are valid for 24 h and bound to the IP that requested them. Request a new one. If you're still on a different network, switch back or contact support.\n\n### Property not showing after submission\n\nWait for super-admin approval (typically 24–48 h). You'll be emailed once it's live or rejected.\n\n### Map not loading on property details\n\nThe map uses the Google Maps URL submitted by the seller. If it's missing or malformed, no map will render. Sellers can edit the URL from **My Listings**.\n\n### Image upload fails\n\n- Max 10 images per listing.\n- Each image must be ≤5 MB.\n- Allowed formats: JPG, PNG.\n- Try one image at a time if a batch upload fails — surfaces the offending file.\n\n## Developer issues\n\n### `npm run dev_only` doesn't start\n\nMake sure Node 18+ and npm 9+ are installed. Run `node --version`. If port 3000 is busy, change it via Vite's `--port` flag.\n\n### Build outputs to the wrong directory\n\nVite has dual modes — see `vite.config.js`. Dev mode uses base path `/vrpumps/app/`, production uses `/app/`. Both write to `../src/main/webapp/app`.\n\n### Auth never resolves (infinite loading spinner)\n\n`App.jsx` blocks the app on `authAPI.checkAuthAndFetchUser()`. If it hangs, the backend's `ustat` endpoint is likely unreachable. Check:\n\n- Backend is running and reachable from the dev machine.\n- CORS is configured to allow `http://localhost:3000`.\n- No browser extension is blocking cookies (auth depends on cookies).\n\n### Lint errors after a clean install\n\nRun `npm run lint`. The config is in `eslint.config.js`. Common issue: importing default from a module that exports named only — Vite's resolve is more permissive than ESLint's checker.\n\n## Server-side issues\n\n### Tomcat won't start after a deploy\n\n```\ntail -f /opt/tomcat/latest/logs/catalina.out\n```\n\nMost failures are:\n- WAR explode failure → drop a clean WAR.\n- Port conflict → another Java process holding 8080.\n- DB connection → check the JDBC URL in the deployed `web.xml` / app config.\n\n### \"Email send failed\" in logs\n\n1. Check SMTP creds.\n2. Confirm port 587 (or 25) is open from the Tomcat host.\n3. The mail template may have unbalanced HTML — open it in a browser to verify.\n\n### Property approval emails not firing\n\n- Confirm the approve action actually committed (check the property table).\n- Confirm the template file exists at `/opt/tomcat/latest/webapps/<app>/WEB-INF/classes/mail_templates/idam/`.\n- Check rate limiting — frequent test approvals may hit the 3-per-15-min cap.\n"}];
+    window.__TOP_NAV__ = [["overview", "General Guide"], ["home", "Home"], ["search-property", "Search"], ["start-selling", "List Property"], ["user-profile", "Dashboard"], ["authentication", "Sign In"], ["our-agents", "Agents"], ["howitworks", "How It Works"], ["faq", "FAQ"], ["contact", "Contact"]];
+  </script>
+  <script id="docs-app">
+    (function () {
+      'use strict';
+      const DOCS = window.__DOCS__;
+      const TOP_NAV = window.__TOP_NAV__;
+
+      marked.setOptions({ gfm: true, breaks: false, headerIds: true, mangle: false });
+
+      // ---- Theme ----
+      const THEME_KEY = 'idam.docs.theme';
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.setAttribute('data-theme', 'dark');
+      const themeBtn = document.getElementById('theme-toggle');
+      function syncThemeIcon() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        themeBtn.textContent = isDark ? '☀️' : '🌙';
+      }
+      syncThemeIcon();
+      themeBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem(THEME_KEY, next);
+        syncThemeIcon();
+      });
+
+      // ---- Group docs ----
+      const groups = [];
+      const seen = {};
+      DOCS.forEach((d) => {
+        if (!seen[d.group]) {
+          seen[d.group] = { name: d.group, items: [] };
+          groups.push(seen[d.group]);
+        }
+        seen[d.group].items.push(d);
+      });
+      const docById = Object.fromEntries(DOCS.map(d => [d.id, d]));
+
+      // ---- Render sidebar ----
+      const sidebarEl = document.getElementById('docs-sidebar');
+      sidebarEl.innerHTML = groups.map(g => `
+        <div class="sidebar-group" data-open="true" data-group="${g.name}">
+          <button class="sidebar-group-head" type="button">
+            <span>${escapeHtml(g.name)}</span>
+            <span class="chev">▾</span>
+          </button>
+          <ul class="sidebar-group-items">
+            ${g.items.map(it => `<li><a href="#/${it.id}" data-id="${it.id}">${escapeHtml(it.title)}</a></li>`).join('')}
+          </ul>
+        </div>
+      `).join('');
+      sidebarEl.querySelectorAll('.sidebar-group-head').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const grp = btn.parentElement;
+          grp.dataset.open = grp.dataset.open === 'true' ? 'false' : 'true';
+        });
+      });
+
+      // ---- Render top nav strip ----
+      const navStrip = document.getElementById('docs-navstrip');
+      navStrip.innerHTML = TOP_NAV.map(([id, label]) =>
+        `<a href="#/${id}" data-id="${id}">${escapeHtml(label)}</a>`).join('');
+
+      // ---- Routing ----
+      function pathFromHash() {
+        const h = location.hash.replace(/^#\/?/, '');
+        return h || 'overview';
+      }
+      function render() {
+        const id = pathFromHash();
+        const doc = docById[id];
+        const article = document.getElementById('docs-article');
+        const breadcrumb = document.getElementById('docs-breadcrumb');
+        if (!doc) {
+          article.innerHTML = `<h1>Not found</h1><p>No doc registered for <code>#/${escapeHtml(id)}</code>.</p>`;
+          breadcrumb.innerHTML = `<a href="#/overview">Docs</a>`;
+          return;
+        }
+        // Article
+        article.innerHTML = marked.parse(doc.content || '');
+        // Breadcrumb
+        breadcrumb.innerHTML = `<a href="#/overview">Docs</a> <span class="sep">›</span> <span>${escapeHtml(doc.group)}</span> <span class="sep">›</span> <strong>${escapeHtml(doc.title)}</strong>`;
+        // Highlight in sidebar + nav strip
+        document.querySelectorAll('.sidebar-group-items a').forEach(a => a.classList.toggle('active', a.dataset.id === id));
+        document.querySelectorAll('.docs-navstrip a').forEach(a => a.classList.toggle('active', a.dataset.id === id));
+        // Auto-expand the active group
+        document.querySelectorAll('.sidebar-group').forEach(g => {
+          const has = g.querySelector(`a[data-id="${id}"]`);
+          if (has) g.dataset.open = 'true';
+        });
+        // Scroll to top of content
+        document.querySelector('.docs-main').scrollTop = 0;
+        window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+      }
+      window.addEventListener('hashchange', render);
+      if (!location.hash) location.hash = '#/overview';
+      render();
+
+      // ---- Search ----
+      const searchInput = document.getElementById('docs-search-input');
+      const searchResults = document.getElementById('docs-search-results');
+      let searchIndex = null;
+      function buildIndex() {
+        if (searchIndex) return searchIndex;
+        const idx = [];
+        DOCS.forEach((doc) => {
+          const lines = (doc.content || '').split(/\r?\n/);
+          let cur = { heading: doc.title, anchor: '', body: [] };
+          lines.forEach((line) => {
+            const m = /^(#{1,4})\s+(.+?)\s*$/.exec(line);
+            if (m) {
+              if (cur.heading || cur.body.length) idx.push({ ...cur, doc });
+              cur = { heading: m[2], anchor: slugify(m[2]), body: [] };
+            } else if (line.trim()) {
+              cur.body.push(line);
+            }
+          });
+          if (cur.heading || cur.body.length) idx.push({ ...cur, doc });
+        });
+        searchIndex = idx;
+        return idx;
+      }
+      function slugify(s) { return s.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-'); }
+      function escapeHtml(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+      function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+      function highlight(text, q) {
+        const idx = text.toLowerCase().indexOf(q.toLowerCase());
+        if (idx === -1) return escapeHtml(text.slice(0, 140));
+        const start = Math.max(0, idx - 40);
+        return escapeHtml(text.slice(start, start + 160))
+          .replace(new RegExp(escapeRegExp(q), 'ig'), m => `<mark>${escapeHtml(m)}</mark>`);
+      }
+      function showResults(html) { searchResults.innerHTML = html; searchResults.hidden = false; }
+      function hideSearch() { searchResults.hidden = true; }
+      let timer = null;
+      searchInput.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(runSearch, 100); });
+      searchInput.addEventListener('focus', () => { if (searchInput.value.trim()) runSearch(); });
+      document.addEventListener('click', (e) => {
+        if (!searchResults.contains(e.target) && e.target !== searchInput) hideSearch();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') hideSearch();
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault(); searchInput.focus(); searchInput.select();
+        }
+      });
+      function runSearch() {
+        const q = searchInput.value.trim();
+        if (q.length < 2) { hideSearch(); return; }
+        const idx = buildIndex();
+        const ql = q.toLowerCase();
+        const hits = [];
+        idx.forEach((sec) => {
+          const head = (sec.heading || '').toLowerCase();
+          const body = sec.body.join(' ');
+          let score = 0;
+          if (head.includes(ql)) score += 3;
+          if (body.toLowerCase().includes(ql)) score += 1;
+          if (score) hits.push({ sec, score, body });
+        });
+        hits.sort((a, b) => b.score - a.score);
+        if (!hits.length) { showResults('<div class="empty">No matches.</div>'); return; }
+        showResults(
+          hits.slice(0, 12).map(({ sec, body }) => `
+            <a class="result" href="#/${sec.doc.id}${sec.anchor ? '#' + sec.anchor : ''}" onclick="document.getElementById('docs-search-results').hidden=true">
+              <div class="result-title">${escapeHtml(sec.heading || sec.doc.title)}</div>
+              <div class="result-section">${escapeHtml(sec.doc.group)} / ${escapeHtml(sec.doc.title)}</div>
+              <div class="result-snippet">${highlight(body, q)}</div>
+            </a>
+          `).join('')
+        );
+      }
+
+      // ---- Mobile menu ----
+      document.getElementById('menu-toggle').addEventListener('click', () => {
+        sidebarEl.classList.toggle('open');
+      });
+    })();
+  </script>
+</body>
+</html>
