@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>91 IDAM Documentation</title>
+  <style id="docs-css">
+    /* ====== design tokens ====== */
+    :root {
+      --primary: #175973;
+      --primary-hover: #144a5e;
+      --primary-soft: #1759730d;
+      --accent: #B59327;
+      --accent-soft: #f3ebd2;
+      --surface: #ffffff;
+      --surface-alt: #f8f9fa;
+      --bg: #f6f7f9;
+      --text: #1f2937;
+      --text-soft: #4b5563;
+      --text-faint: #6b7280;
+      --border: #e5e7eb;
+      --code-bg: #f3f4f6;
+      --code-border: #e5e7eb;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(23, 89, 115, 0.08);
+      --topbar-h: 64px;
+      --navstrip-h: 48px;
+      --sidebar-w: 280px;
+      --content-max: 880px;
+    }
+    [data-theme="dark"] {
+      --primary: #2e8eaf;
+      --primary-hover: #4ba6c4;
+      --primary-soft: #2e8eaf18;
+      --accent: #d6b14a;
+      --accent-soft: #2a2316;
+      --surface: #161e22;
+      --surface-alt: #1c2429;
+      --bg: #0e1416;
+      --text: #e8eaed;
+      --text-soft: #b6bdc4;
+      --text-faint: #8a939c;
+      --border: #2a363c;
+      --code-bg: #11181c;
+      --code-border: #243036;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ====== Top bar ====== */
+    .docs-topbar {
+      position: sticky; top: 0; z-index: 30;
+      height: var(--topbar-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 24px;
+      padding: 0 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .docs-brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--text); font-weight: 800; font-size: 17px;
+      letter-spacing: -0.015em;
+    }
+    .docs-brand:hover { text-decoration: none; }
+    .docs-brand-mark {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800; font-size: 13px;
+    }
+    .docs-search {
+      position: relative;
+      max-width: 540px;
+      width: 100%;
+      justify-self: center;
+    }
+    .docs-search input {
+      width: 100%; height: 40px;
+      padding: 0 44px 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--surface-alt);
+      color: var(--text); font-size: 14px;
+      outline: none;
+      transition: border 0.15s, box-shadow 0.15s;
+    }
+    .docs-search input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+    }
+    .docs-search-btn {
+      position: absolute;
+      right: 4px; top: 50%; transform: translateY(-50%);
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 0; cursor: pointer;
+      background: var(--primary); color: #fff;
+      font-size: 14px;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .docs-search-btn:hover { background: var(--primary-hover); }
+    .docs-actions { display: flex; align-items: center; gap: 10px; }
+    .docs-action {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      transition: background 0.15s;
+      cursor: pointer;
+      border: 0; background: none;
+    }
+    .docs-action:hover { background: var(--surface-alt); text-decoration: none; }
+    .docs-action.primary {
+      background: var(--primary); color: #fff;
+    }
+    .docs-action.primary:hover { background: var(--primary-hover); }
+    .theme-toggle {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .theme-toggle:hover { background: var(--surface-alt); }
+
+    /* ====== Green nav strip (matches tpointtech) ====== */
+    .docs-navstrip {
+      background: var(--primary);
+      color: #fff;
+      height: var(--navstrip-h);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 16px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      position: sticky;
+      top: var(--topbar-h);
+      z-index: 20;
+    }
+    .docs-navstrip::-webkit-scrollbar { height: 4px; }
+    .docs-navstrip a {
+      color: rgba(255,255,255,0.85);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .docs-navstrip a:hover, .docs-navstrip a.active {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* ====== Layout ====== */
+    .docs-layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      min-height: calc(100vh - var(--topbar-h) - var(--navstrip-h));
+    }
+    @media (max-width: 920px) {
+      .docs-layout { grid-template-columns: 1fr; }
+      .docs-sidebar { display: none; }
+      .docs-sidebar.open { display: block; position: fixed; top: calc(var(--topbar-h) + var(--navstrip-h)); left: 0; bottom: 0; width: 280px; z-index: 25; box-shadow: var(--shadow-md); }
+    }
+
+    .docs-sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 16px 8px;
+      overflow-y: auto;
+      max-height: calc(100vh - var(--topbar-h) - var(--navstrip-h));
+      position: sticky;
+      top: calc(var(--topbar-h) + var(--navstrip-h));
+    }
+    .sidebar-group {
+      margin-bottom: 6px;
+    }
+    .sidebar-group-head {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      background: none; border: 0;
+      color: var(--text);
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .sidebar-group-head:hover { background: var(--surface-alt); }
+    .sidebar-group-head .chev { transition: transform 0.18s ease; color: var(--text-faint); }
+    .sidebar-group[data-open="true"] .sidebar-group-head .chev { transform: rotate(180deg); }
+    .sidebar-group-items {
+      list-style: none; margin: 0; padding: 0;
+      display: none;
+    }
+    .sidebar-group[data-open="true"] .sidebar-group-items { display: block; }
+    .sidebar-group-items li a {
+      display: block;
+      padding: 7px 14px 7px 28px;
+      font-size: 13.5px;
+      color: var(--text-soft);
+      font-weight: 500;
+      border-radius: 6px;
+      margin: 1px 0;
+      border-left: 2px solid transparent;
+    }
+    .sidebar-group-items li a:hover {
+      color: var(--text);
+      background: var(--surface-alt);
+      text-decoration: none;
+    }
+    .sidebar-group-items li a.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ====== Main content ====== */
+    .docs-main {
+      padding: 24px 36px 64px;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .docs-breadcrumb {
+      font-size: 13px;
+      color: var(--text-faint);
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .docs-breadcrumb a { color: var(--text-faint); }
+    .docs-breadcrumb a:hover { color: var(--primary); }
+    .docs-breadcrumb .sep { color: var(--text-faint); }
+
+    .docs-tabs {
+      display: flex; gap: 8px;
+      flex-wrap: wrap;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 22px;
+    }
+    .docs-tab {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px; font-weight: 600;
+      color: var(--text-soft);
+      cursor: pointer;
+    }
+    .docs-tab:hover { background: var(--surface-alt); color: var(--text); }
+    .docs-tab.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    }
+
+    .docs-article { max-width: var(--content-max); }
+    .docs-article h1, .docs-article h2, .docs-article h3, .docs-article h4 {
+      letter-spacing: -0.015em;
+      color: var(--text);
+      scroll-margin-top: calc(var(--topbar-h) + var(--navstrip-h) + 8px);
+    }
+    .docs-article h1 { font-size: 30px; margin: 0 0 18px; }
+    .docs-article h2 { font-size: 22px; margin: 32px 0 12px; padding-top: 8px; border-top: 1px solid var(--border); }
+    .docs-article h2:first-child { border-top: 0; padding-top: 0; }
+    .docs-article h3 { font-size: 17px; margin: 24px 0 8px; }
+    .docs-article h4 { font-size: 15px; margin: 18px 0 6px; color: var(--text-soft); }
+    .docs-article p { margin: 0 0 14px; color: var(--text); }
+    .docs-article ul, .docs-article ol { padding-left: 22px; margin: 0 0 14px; }
+    .docs-article li { margin: 5px 0; }
+    .docs-article hr { border: 0; border-top: 1px solid var(--border); margin: 28px 0; }
+    .docs-article blockquote {
+      margin: 14px 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 0 8px 8px 0;
+      color: var(--text-soft);
+      font-style: italic;
+    }
+    .docs-article code {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 0.88em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .docs-article pre {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 14px 0;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .docs-article pre code { background: transparent; border: 0; padding: 0; font-size: inherit; }
+    .docs-article table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .docs-article th, .docs-article td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .docs-article th { background: var(--surface-alt); font-weight: 600; color: var(--text); }
+    .docs-article tr:last-child td { border-bottom: 0; }
+    .docs-article kbd {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    /* ====== Search popover ====== */
+    .docs-search-results {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 6px;
+      z-index: 40;
+    }
+    .docs-search-results .result {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .docs-search-results .result:hover {
+      background: var(--surface-alt);
+      text-decoration: none;
+    }
+    .docs-search-results .result-title { font-weight: 600; color: var(--text); }
+    .docs-search-results .result-section { color: var(--text-faint); font-size: 12px; margin-top: 2px; }
+    .docs-search-results .result-snippet mark { background: var(--accent-soft); color: var(--text); padding: 0 2px; border-radius: 2px; }
+    .docs-search-results .empty { padding: 14px; color: var(--text-faint); font-size: 14px; text-align: center; }
+
+    /* ====== Mobile sidebar toggle ====== */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 18px;
+    }
+    @media (max-width: 920px) {
+      .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
+      .docs-search { display: none; }
+      .docs-actions .docs-action.label-only { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="docs-topbar">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">☰</button>
+      <a class="docs-brand" href="#/overview">
+        <span class="docs-brand-mark">91</span>
+        <span>IDAM Docs</span>
+      </a>
+    </div>
+
+    <div class="docs-search">
+      <input id="docs-search-input" type="search" placeholder="Search the documentation…" autocomplete="off" aria-label="Search docs" />
+      <button class="docs-search-btn" type="button" aria-label="Search">🔍</button>
+      <div id="docs-search-results" class="docs-search-results" hidden></div>
+    </div>
+
+    <div class="docs-actions">
+      <a class="docs-action primary" href="./index.html">▶ Try Demo</a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">🌙</button>
+    </div>
+  </header>
+
+  <nav class="docs-navstrip" id="docs-navstrip" aria-label="Quick navigation"></nav>
+
+  <div class="docs-layout">
+    <aside class="docs-sidebar" id="docs-sidebar" aria-label="Documentation index"></aside>
+    <main class="docs-main">
+      <nav class="docs-breadcrumb" id="docs-breadcrumb"><a href="#/overview">Docs</a></nav>
+      <div class="docs-tabs" id="docs-tabs">
+        <a class="docs-tab active" data-tab="article">📖 Article</a>
+        <a class="docs-tab" href="./index.html">🎯 Interactive Demo</a>
+      </div>
+      <article id="docs-article" class="docs-article">
+        <p style="color: var(--text-faint); font-style: italic;">Loading…</p>
+      </article>
+    </main>
+  </div>
+
+  <!-- Inlined marked.js -->
+  <script id="marked-js">/**
+ * marked v12.0.0 - a markdown parser
+ * Copyright (c) 2011-2024, Christopher Jeffrey. (MIT Licensed)
+ * https://github.com/markedjs/marked
+ */
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).marked={})}(this,(function(e){"use strict";function t(){return{async:!1,breaks:!1,extensions:null,gfm:!0,hooks:null,pedantic:!1,renderer:null,silent:!1,tokenizer:null,walkTokens:null}}function n(t){e.defaults=t}e.defaults={async:!1,breaks:!1,extensions:null,gfm:!0,hooks:null,pedantic:!1,renderer:null,silent:!1,tokenizer:null,walkTokens:null};const s=/[&<>"']/,r=new RegExp(s.source,"g"),i=/[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/,l=new RegExp(i.source,"g"),o={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"},a=e=>o[e];function c(e,t){if(t){if(s.test(e))return e.replace(r,a)}else if(i.test(e))return e.replace(l,a);return e}const h=/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/gi;function p(e){return e.replace(h,((e,t)=>"colon"===(t=t.toLowerCase())?":":"#"===t.charAt(0)?"x"===t.charAt(1)?String.fromCharCode(parseInt(t.substring(2),16)):String.fromCharCode(+t.substring(1)):""))}const u=/(^|[^\[])\^/g;function k(e,t){let n="string"==typeof e?e:e.source;t=t||"";const s={replace:(e,t)=>{let r="string"==typeof t?t:t.source;return r=r.replace(u,"$1"),n=n.replace(e,r),s},getRegex:()=>new RegExp(n,t)};return s}function g(e){try{e=encodeURI(e).replace(/%25/g,"%")}catch(e){return null}return e}const f={exec:()=>null};function d(e,t){const n=e.replace(/\|/g,((e,t,n)=>{let s=!1,r=t;for(;--r>=0&&"\\"===n[r];)s=!s;return s?"|":" |"})).split(/ \|/);let s=0;if(n[0].trim()||n.shift(),n.length>0&&!n[n.length-1].trim()&&n.pop(),t)if(n.length>t)n.splice(t);else for(;n.length<t;)n.push("");for(;s<n.length;s++)n[s]=n[s].trim().replace(/\\\|/g,"|");return n}function x(e,t,n){const s=e.length;if(0===s)return"";let r=0;for(;r<s;){const i=e.charAt(s-r-1);if(i!==t||n){if(i===t||!n)break;r++}else r++}return e.slice(0,s-r)}function b(e,t,n,s){const r=t.href,i=t.title?c(t.title):null,l=e[1].replace(/\\([\[\]])/g,"$1");if("!"!==e[0].charAt(0)){s.state.inLink=!0;const e={type:"link",raw:n,href:r,title:i,text:l,tokens:s.inlineTokens(l)};return s.state.inLink=!1,e}return{type:"image",raw:n,href:r,title:i,text:c(l)}}class w{options;rules;lexer;constructor(t){this.options=t||e.defaults}space(e){const t=this.rules.block.newline.exec(e);if(t&&t[0].length>0)return{type:"space",raw:t[0]}}code(e){const t=this.rules.block.code.exec(e);if(t){const e=t[0].replace(/^ {1,4}/gm,"");return{type:"code",raw:t[0],codeBlockStyle:"indented",text:this.options.pedantic?e:x(e,"\n")}}}fences(e){const t=this.rules.block.fences.exec(e);if(t){const e=t[0],n=function(e,t){const n=e.match(/^(\s+)(?:```)/);if(null===n)return t;const s=n[1];return t.split("\n").map((e=>{const t=e.match(/^\s+/);if(null===t)return e;const[n]=t;return n.length>=s.length?e.slice(s.length):e})).join("\n")}(e,t[3]||"");return{type:"code",raw:e,lang:t[2]?t[2].trim().replace(this.rules.inline.anyPunctuation,"$1"):t[2],text:n}}}heading(e){const t=this.rules.block.heading.exec(e);if(t){let e=t[2].trim();if(/#$/.test(e)){const t=x(e,"#");this.options.pedantic?e=t.trim():t&&!/ $/.test(t)||(e=t.trim())}return{type:"heading",raw:t[0],depth:t[1].length,text:e,tokens:this.lexer.inline(e)}}}hr(e){const t=this.rules.block.hr.exec(e);if(t)return{type:"hr",raw:t[0]}}blockquote(e){const t=this.rules.block.blockquote.exec(e);if(t){const e=x(t[0].replace(/^ *>[ \t]?/gm,""),"\n"),n=this.lexer.state.top;this.lexer.state.top=!0;const s=this.lexer.blockTokens(e);return this.lexer.state.top=n,{type:"blockquote",raw:t[0],tokens:s,text:e}}}list(e){let t=this.rules.block.list.exec(e);if(t){let n=t[1].trim();const s=n.length>1,r={type:"list",raw:"",ordered:s,start:s?+n.slice(0,-1):"",loose:!1,items:[]};n=s?`\\d{1,9}\\${n.slice(-1)}`:`\\${n}`,this.options.pedantic&&(n=s?n:"[*+-]");const i=new RegExp(`^( {0,3}${n})((?:[\t ][^\\n]*)?(?:\\n|$))`);let l="",o="",a=!1;for(;e;){let n=!1;if(!(t=i.exec(e)))break;if(this.rules.block.hr.test(e))break;l=t[0],e=e.substring(l.length);let s=t[2].split("\n",1)[0].replace(/^\t+/,(e=>" ".repeat(3*e.length))),c=e.split("\n",1)[0],h=0;this.options.pedantic?(h=2,o=s.trimStart()):(h=t[2].search(/[^ ]/),h=h>4?1:h,o=s.slice(h),h+=t[1].length);let p=!1;if(!s&&/^ *$/.test(c)&&(l+=c+"\n",e=e.substring(c.length+1),n=!0),!n){const t=new RegExp(`^ {0,${Math.min(3,h-1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ \t][^\\n]*)?(?:\\n|$))`),n=new RegExp(`^ {0,${Math.min(3,h-1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`),r=new RegExp(`^ {0,${Math.min(3,h-1)}}(?:\`\`\`|~~~)`),i=new RegExp(`^ {0,${Math.min(3,h-1)}}#`);for(;e;){const a=e.split("\n",1)[0];if(c=a,this.options.pedantic&&(c=c.replace(/^ {1,4}(?=( {4})*[^ ])/g,"  ")),r.test(c))break;if(i.test(c))break;if(t.test(c))break;if(n.test(e))break;if(c.search(/[^ ]/)>=h||!c.trim())o+="\n"+c.slice(h);else{if(p)break;if(s.search(/[^ ]/)>=4)break;if(r.test(s))break;if(i.test(s))break;if(n.test(s))break;o+="\n"+c}p||c.trim()||(p=!0),l+=a+"\n",e=e.substring(a.length+1),s=c.slice(h)}}r.loose||(a?r.loose=!0:/\n *\n *$/.test(l)&&(a=!0));let u,k=null;this.options.gfm&&(k=/^\[[ xX]\] /.exec(o),k&&(u="[ ] "!==k[0],o=o.replace(/^\[[ xX]\] +/,""))),r.items.push({type:"list_item",raw:l,task:!!k,checked:u,loose:!1,text:o,tokens:[]}),r.raw+=l}r.items[r.items.length-1].raw=l.trimEnd(),r.items[r.items.length-1].text=o.trimEnd(),r.raw=r.raw.trimEnd();for(let e=0;e<r.items.length;e++)if(this.lexer.state.top=!1,r.items[e].tokens=this.lexer.blockTokens(r.items[e].text,[]),!r.loose){const t=r.items[e].tokens.filter((e=>"space"===e.type)),n=t.length>0&&t.some((e=>/\n.*\n/.test(e.raw)));r.loose=n}if(r.loose)for(let e=0;e<r.items.length;e++)r.items[e].loose=!0;return r}}html(e){const t=this.rules.block.html.exec(e);if(t){return{type:"html",block:!0,raw:t[0],pre:"pre"===t[1]||"script"===t[1]||"style"===t[1],text:t[0]}}}def(e){const t=this.rules.block.def.exec(e);if(t){const e=t[1].toLowerCase().replace(/\s+/g," "),n=t[2]?t[2].replace(/^<(.*)>$/,"$1").replace(this.rules.inline.anyPunctuation,"$1"):"",s=t[3]?t[3].substring(1,t[3].length-1).replace(this.rules.inline.anyPunctuation,"$1"):t[3];return{type:"def",tag:e,raw:t[0],href:n,title:s}}}table(e){const t=this.rules.block.table.exec(e);if(!t)return;if(!/[:|]/.test(t[2]))return;const n=d(t[1]),s=t[2].replace(/^\||\| *$/g,"").split("|"),r=t[3]&&t[3].trim()?t[3].replace(/\n[ \t]*$/,"").split("\n"):[],i={type:"table",raw:t[0],header:[],align:[],rows:[]};if(n.length===s.length){for(const e of s)/^ *-+: *$/.test(e)?i.align.push("right"):/^ *:-+: *$/.test(e)?i.align.push("center"):/^ *:-+ *$/.test(e)?i.align.push("left"):i.align.push(null);for(const e of n)i.header.push({text:e,tokens:this.lexer.inline(e)});for(const e of r)i.rows.push(d(e,i.header.length).map((e=>({text:e,tokens:this.lexer.inline(e)}))));return i}}lheading(e){const t=this.rules.block.lheading.exec(e);if(t)return{type:"heading",raw:t[0],depth:"="===t[2].charAt(0)?1:2,text:t[1],tokens:this.lexer.inline(t[1])}}paragraph(e){const t=this.rules.block.paragraph.exec(e);if(t){const e="\n"===t[1].charAt(t[1].length-1)?t[1].slice(0,-1):t[1];return{type:"paragraph",raw:t[0],text:e,tokens:this.lexer.inline(e)}}}text(e){const t=this.rules.block.text.exec(e);if(t)return{type:"text",raw:t[0],text:t[0],tokens:this.lexer.inline(t[0])}}escape(e){const t=this.rules.inline.escape.exec(e);if(t)return{type:"escape",raw:t[0],text:c(t[1])}}tag(e){const t=this.rules.inline.tag.exec(e);if(t)return!this.lexer.state.inLink&&/^<a /i.test(t[0])?this.lexer.state.inLink=!0:this.lexer.state.inLink&&/^<\/a>/i.test(t[0])&&(this.lexer.state.inLink=!1),!this.lexer.state.inRawBlock&&/^<(pre|code|kbd|script)(\s|>)/i.test(t[0])?this.lexer.state.inRawBlock=!0:this.lexer.state.inRawBlock&&/^<\/(pre|code|kbd|script)(\s|>)/i.test(t[0])&&(this.lexer.state.inRawBlock=!1),{type:"html",raw:t[0],inLink:this.lexer.state.inLink,inRawBlock:this.lexer.state.inRawBlock,block:!1,text:t[0]}}link(e){const t=this.rules.inline.link.exec(e);if(t){const e=t[2].trim();if(!this.options.pedantic&&/^</.test(e)){if(!/>$/.test(e))return;const t=x(e.slice(0,-1),"\\");if((e.length-t.length)%2==0)return}else{const e=function(e,t){if(-1===e.indexOf(t[1]))return-1;let n=0;for(let s=0;s<e.length;s++)if("\\"===e[s])s++;else if(e[s]===t[0])n++;else if(e[s]===t[1]&&(n--,n<0))return s;return-1}(t[2],"()");if(e>-1){const n=(0===t[0].indexOf("!")?5:4)+t[1].length+e;t[2]=t[2].substring(0,e),t[0]=t[0].substring(0,n).trim(),t[3]=""}}let n=t[2],s="";if(this.options.pedantic){const e=/^([^'"]*[^\s])\s+(['"])(.*)\2/.exec(n);e&&(n=e[1],s=e[3])}else s=t[3]?t[3].slice(1,-1):"";return n=n.trim(),/^</.test(n)&&(n=this.options.pedantic&&!/>$/.test(e)?n.slice(1):n.slice(1,-1)),b(t,{href:n?n.replace(this.rules.inline.anyPunctuation,"$1"):n,title:s?s.replace(this.rules.inline.anyPunctuation,"$1"):s},t[0],this.lexer)}}reflink(e,t){let n;if((n=this.rules.inline.reflink.exec(e))||(n=this.rules.inline.nolink.exec(e))){const e=t[(n[2]||n[1]).replace(/\s+/g," ").toLowerCase()];if(!e){const e=n[0].charAt(0);return{type:"text",raw:e,text:e}}return b(n,e,n[0],this.lexer)}}emStrong(e,t,n=""){let s=this.rules.inline.emStrongLDelim.exec(e);if(!s)return;if(s[3]&&n.match(/[\p{L}\p{N}]/u))return;if(!(s[1]||s[2]||"")||!n||this.rules.inline.punctuation.exec(n)){const n=[...s[0]].length-1;let r,i,l=n,o=0;const a="*"===s[0][0]?this.rules.inline.emStrongRDelimAst:this.rules.inline.emStrongRDelimUnd;for(a.lastIndex=0,t=t.slice(-1*e.length+n);null!=(s=a.exec(t));){if(r=s[1]||s[2]||s[3]||s[4]||s[5]||s[6],!r)continue;if(i=[...r].length,s[3]||s[4]){l+=i;continue}if((s[5]||s[6])&&n%3&&!((n+i)%3)){o+=i;continue}if(l-=i,l>0)continue;i=Math.min(i,i+l+o);const t=[...s[0]][0].length,a=e.slice(0,n+s.index+t+i);if(Math.min(n,i)%2){const e=a.slice(1,-1);return{type:"em",raw:a,text:e,tokens:this.lexer.inlineTokens(e)}}const c=a.slice(2,-2);return{type:"strong",raw:a,text:c,tokens:this.lexer.inlineTokens(c)}}}}codespan(e){const t=this.rules.inline.code.exec(e);if(t){let e=t[2].replace(/\n/g," ");const n=/[^ ]/.test(e),s=/^ /.test(e)&&/ $/.test(e);return n&&s&&(e=e.substring(1,e.length-1)),e=c(e,!0),{type:"codespan",raw:t[0],text:e}}}br(e){const t=this.rules.inline.br.exec(e);if(t)return{type:"br",raw:t[0]}}del(e){const t=this.rules.inline.del.exec(e);if(t)return{type:"del",raw:t[0],text:t[2],tokens:this.lexer.inlineTokens(t[2])}}autolink(e){const t=this.rules.inline.autolink.exec(e);if(t){let e,n;return"@"===t[2]?(e=c(t[1]),n="mailto:"+e):(e=c(t[1]),n=e),{type:"link",raw:t[0],text:e,href:n,tokens:[{type:"text",raw:e,text:e}]}}}url(e){let t;if(t=this.rules.inline.url.exec(e)){let e,n;if("@"===t[2])e=c(t[0]),n="mailto:"+e;else{let s;do{s=t[0],t[0]=this.rules.inline._backpedal.exec(t[0])?.[0]??""}while(s!==t[0]);e=c(t[0]),n="www."===t[1]?"http://"+t[0]:t[0]}return{type:"link",raw:t[0],text:e,href:n,tokens:[{type:"text",raw:e,text:e}]}}}inlineText(e){const t=this.rules.inline.text.exec(e);if(t){let e;return e=this.lexer.state.inRawBlock?t[0]:c(t[0]),{type:"text",raw:t[0],text:e}}}}const m=/^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/,y=/(?:[*+-]|\d{1,9}[.)])/,$=k(/^(?!bull )((?:.|\n(?!\s*?\n|bull ))+?)\n {0,3}(=+|-+) *(?:\n+|$)/).replace(/bull/g,y).getRegex(),z=/^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/,T=/(?!\s*\])(?:\\.|[^\[\]\\])+/,R=k(/^ {0,3}\[(label)\]: *(?:\n *)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n *)?| *\n *)(title))? *(?:\n+|$)/).replace("label",T).replace("title",/(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex(),_=k(/^( {0,3}bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g,y).getRegex(),A="address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul",S=/<!--(?:-?>|[\s\S]*?(?:-->|$))/,I=k("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n *)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$))","i").replace("comment",S).replace("tag",A).replace("attribute",/ +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex(),E=k(z).replace("hr",m).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("|table","").replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list"," {0,3}(?:[*+-]|1[.)]) ").replace("html","</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag",A).getRegex(),Z={blockquote:k(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph",E).getRegex(),code:/^( {4}[^\n]+(?:\n(?: *(?:\n|$))*)?)+/,def:R,fences:/^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/,heading:/^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,hr:m,html:I,lheading:$,list:_,newline:/^(?: *(?:\n|$))+/,paragraph:E,table:f,text:/^[^\n]+/},q=k("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr",m).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("blockquote"," {0,3}>").replace("code"," {4}[^\\n]").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list"," {0,3}(?:[*+-]|1[.)]) ").replace("html","</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag",A).getRegex(),L={...Z,table:q,paragraph:k(z).replace("hr",m).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("table",q).replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list"," {0,3}(?:[*+-]|1[.)]) ").replace("html","</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag",A).getRegex()},P={...Z,html:k("^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:\"[^\"]*\"|'[^']*'|\\s[^'\"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))").replace("comment",S).replace(/tag/g,"(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),def:/^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,heading:/^(#{1,6})(.*)(?:\n+|$)/,fences:f,lheading:/^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/,paragraph:k(z).replace("hr",m).replace("heading"," *#{1,6} *[^\n]").replace("lheading",$).replace("|table","").replace("blockquote"," {0,3}>").replace("|fences","").replace("|list","").replace("|html","").replace("|tag","").getRegex()},Q=/^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,v=/^( {2,}|\\)\n(?!\s*$)/,B="\\p{P}\\p{S}",M=k(/^((?![*_])[\spunctuation])/,"u").replace(/punctuation/g,B).getRegex(),O=k(/^(?:\*+(?:((?!\*)[punct])|[^\s*]))|^_+(?:((?!_)[punct])|([^\s_]))/,"u").replace(/punct/g,B).getRegex(),C=k("^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)[punct](\\*+)(?=[\\s]|$)|[^punct\\s](\\*+)(?!\\*)(?=[punct\\s]|$)|(?!\\*)[punct\\s](\\*+)(?=[^punct\\s])|[\\s](\\*+)(?!\\*)(?=[punct])|(?!\\*)[punct](\\*+)(?!\\*)(?=[punct])|[^punct\\s](\\*+)(?=[^punct\\s])","gu").replace(/punct/g,B).getRegex(),D=k("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)[punct](_+)(?=[\\s]|$)|[^punct\\s](_+)(?!_)(?=[punct\\s]|$)|(?!_)[punct\\s](_+)(?=[^punct\\s])|[\\s](_+)(?!_)(?=[punct])|(?!_)[punct](_+)(?!_)(?=[punct])","gu").replace(/punct/g,B).getRegex(),j=k(/\\([punct])/,"gu").replace(/punct/g,B).getRegex(),H=k(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme",/[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email",/[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(),U=k(S).replace("(?:--\x3e|$)","--\x3e").getRegex(),X=k("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment",U).replace("attribute",/\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(),F=/(?:\[(?:\\.|[^\[\]\\])*\]|\\.|`[^`]*`|[^\[\]\\`])*?/,N=k(/^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/).replace("label",F).replace("href",/<(?:\\.|[^\n<>\\])+>|[^\s\x00-\x1f]*/).replace("title",/"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex(),G=k(/^!?\[(label)\]\[(ref)\]/).replace("label",F).replace("ref",T).getRegex(),J=k(/^!?\[(ref)\](?:\[\])?/).replace("ref",T).getRegex(),K={_backpedal:f,anyPunctuation:j,autolink:H,blockSkip:/\[[^[\]]*?\]\([^\(\)]*?\)|`[^`]*?`|<[^<>]*?>/g,br:v,code:/^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,del:f,emStrongLDelim:O,emStrongRDelimAst:C,emStrongRDelimUnd:D,escape:Q,link:N,nolink:J,punctuation:M,reflink:G,reflinkSearch:k("reflink|nolink(?!\\()","g").replace("reflink",G).replace("nolink",J).getRegex(),tag:X,text:/^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/,url:f},V={...K,link:k(/^!?\[(label)\]\((.*?)\)/).replace("label",F).getRegex(),reflink:k(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label",F).getRegex()},W={...K,escape:k(Q).replace("])","~|])").getRegex(),url:k(/^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,"i").replace("email",/[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(),_backpedal:/(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/,del:/^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,text:/^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/},Y={...W,br:k(v).replace("{2,}","*").getRegex(),text:k(W.text).replace("\\b_","\\b_| {2,}\\n").replace(/\{2,\}/g,"*").getRegex()},ee={normal:Z,gfm:L,pedantic:P},te={normal:K,gfm:W,breaks:Y,pedantic:V};class ne{tokens;options;state;tokenizer;inlineQueue;constructor(t){this.tokens=[],this.tokens.links=Object.create(null),this.options=t||e.defaults,this.options.tokenizer=this.options.tokenizer||new w,this.tokenizer=this.options.tokenizer,this.tokenizer.options=this.options,this.tokenizer.lexer=this,this.inlineQueue=[],this.state={inLink:!1,inRawBlock:!1,top:!0};const n={block:ee.normal,inline:te.normal};this.options.pedantic?(n.block=ee.pedantic,n.inline=te.pedantic):this.options.gfm&&(n.block=ee.gfm,this.options.breaks?n.inline=te.breaks:n.inline=te.gfm),this.tokenizer.rules=n}static get rules(){return{block:ee,inline:te}}static lex(e,t){return new ne(t).lex(e)}static lexInline(e,t){return new ne(t).inlineTokens(e)}lex(e){e=e.replace(/\r\n|\r/g,"\n"),this.blockTokens(e,this.tokens);for(let e=0;e<this.inlineQueue.length;e++){const t=this.inlineQueue[e];this.inlineTokens(t.src,t.tokens)}return this.inlineQueue=[],this.tokens}blockTokens(e,t=[]){let n,s,r,i;for(e=this.options.pedantic?e.replace(/\t/g,"    ").replace(/^ +$/gm,""):e.replace(/^( *)(\t+)/gm,((e,t,n)=>t+"    ".repeat(n.length)));e;)if(!(this.options.extensions&&this.options.extensions.block&&this.options.extensions.block.some((s=>!!(n=s.call({lexer:this},e,t))&&(e=e.substring(n.raw.length),t.push(n),!0)))))if(n=this.tokenizer.space(e))e=e.substring(n.raw.length),1===n.raw.length&&t.length>0?t[t.length-1].raw+="\n":t.push(n);else if(n=this.tokenizer.code(e))e=e.substring(n.raw.length),s=t[t.length-1],!s||"paragraph"!==s.type&&"text"!==s.type?t.push(n):(s.raw+="\n"+n.raw,s.text+="\n"+n.text,this.inlineQueue[this.inlineQueue.length-1].src=s.text);else if(n=this.tokenizer.fences(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.heading(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.hr(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.blockquote(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.list(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.html(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.def(e))e=e.substring(n.raw.length),s=t[t.length-1],!s||"paragraph"!==s.type&&"text"!==s.type?this.tokens.links[n.tag]||(this.tokens.links[n.tag]={href:n.href,title:n.title}):(s.raw+="\n"+n.raw,s.text+="\n"+n.raw,this.inlineQueue[this.inlineQueue.length-1].src=s.text);else if(n=this.tokenizer.table(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.lheading(e))e=e.substring(n.raw.length),t.push(n);else{if(r=e,this.options.extensions&&this.options.extensions.startBlock){let t=1/0;const n=e.slice(1);let s;this.options.extensions.startBlock.forEach((e=>{s=e.call({lexer:this},n),"number"==typeof s&&s>=0&&(t=Math.min(t,s))})),t<1/0&&t>=0&&(r=e.substring(0,t+1))}if(this.state.top&&(n=this.tokenizer.paragraph(r)))s=t[t.length-1],i&&"paragraph"===s.type?(s.raw+="\n"+n.raw,s.text+="\n"+n.text,this.inlineQueue.pop(),this.inlineQueue[this.inlineQueue.length-1].src=s.text):t.push(n),i=r.length!==e.length,e=e.substring(n.raw.length);else if(n=this.tokenizer.text(e))e=e.substring(n.raw.length),s=t[t.length-1],s&&"text"===s.type?(s.raw+="\n"+n.raw,s.text+="\n"+n.text,this.inlineQueue.pop(),this.inlineQueue[this.inlineQueue.length-1].src=s.text):t.push(n);else if(e){const t="Infinite loop on byte: "+e.charCodeAt(0);if(this.options.silent){console.error(t);break}throw new Error(t)}}return this.state.top=!0,t}inline(e,t=[]){return this.inlineQueue.push({src:e,tokens:t}),t}inlineTokens(e,t=[]){let n,s,r,i,l,o,a=e;if(this.tokens.links){const e=Object.keys(this.tokens.links);if(e.length>0)for(;null!=(i=this.tokenizer.rules.inline.reflinkSearch.exec(a));)e.includes(i[0].slice(i[0].lastIndexOf("[")+1,-1))&&(a=a.slice(0,i.index)+"["+"a".repeat(i[0].length-2)+"]"+a.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex))}for(;null!=(i=this.tokenizer.rules.inline.blockSkip.exec(a));)a=a.slice(0,i.index)+"["+"a".repeat(i[0].length-2)+"]"+a.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);for(;null!=(i=this.tokenizer.rules.inline.anyPunctuation.exec(a));)a=a.slice(0,i.index)+"++"+a.slice(this.tokenizer.rules.inline.anyPunctuation.lastIndex);for(;e;)if(l||(o=""),l=!1,!(this.options.extensions&&this.options.extensions.inline&&this.options.extensions.inline.some((s=>!!(n=s.call({lexer:this},e,t))&&(e=e.substring(n.raw.length),t.push(n),!0)))))if(n=this.tokenizer.escape(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.tag(e))e=e.substring(n.raw.length),s=t[t.length-1],s&&"text"===n.type&&"text"===s.type?(s.raw+=n.raw,s.text+=n.text):t.push(n);else if(n=this.tokenizer.link(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.reflink(e,this.tokens.links))e=e.substring(n.raw.length),s=t[t.length-1],s&&"text"===n.type&&"text"===s.type?(s.raw+=n.raw,s.text+=n.text):t.push(n);else if(n=this.tokenizer.emStrong(e,a,o))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.codespan(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.br(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.del(e))e=e.substring(n.raw.length),t.push(n);else if(n=this.tokenizer.autolink(e))e=e.substring(n.raw.length),t.push(n);else if(this.state.inLink||!(n=this.tokenizer.url(e))){if(r=e,this.options.extensions&&this.options.extensions.startInline){let t=1/0;const n=e.slice(1);let s;this.options.extensions.startInline.forEach((e=>{s=e.call({lexer:this},n),"number"==typeof s&&s>=0&&(t=Math.min(t,s))})),t<1/0&&t>=0&&(r=e.substring(0,t+1))}if(n=this.tokenizer.inlineText(r))e=e.substring(n.raw.length),"_"!==n.raw.slice(-1)&&(o=n.raw.slice(-1)),l=!0,s=t[t.length-1],s&&"text"===s.type?(s.raw+=n.raw,s.text+=n.text):t.push(n);else if(e){const t="Infinite loop on byte: "+e.charCodeAt(0);if(this.options.silent){console.error(t);break}throw new Error(t)}}else e=e.substring(n.raw.length),t.push(n);return t}}class se{options;constructor(t){this.options=t||e.defaults}code(e,t,n){const s=(t||"").match(/^\S*/)?.[0];return e=e.replace(/\n$/,"")+"\n",s?'<pre><code class="language-'+c(s)+'">'+(n?e:c(e,!0))+"</code></pre>\n":"<pre><code>"+(n?e:c(e,!0))+"</code></pre>\n"}blockquote(e){return`<blockquote>\n${e}</blockquote>\n`}html(e,t){return e}heading(e,t,n){return`<h${t}>${e}</h${t}>\n`}hr(){return"<hr>\n"}list(e,t,n){const s=t?"ol":"ul";return"<"+s+(t&&1!==n?' start="'+n+'"':"")+">\n"+e+"</"+s+">\n"}listitem(e,t,n){return`<li>${e}</li>\n`}checkbox(e){return"<input "+(e?'checked="" ':"")+'disabled="" type="checkbox">'}paragraph(e){return`<p>${e}</p>\n`}table(e,t){return t&&(t=`<tbody>${t}</tbody>`),"<table>\n<thead>\n"+e+"</thead>\n"+t+"</table>\n"}tablerow(e){return`<tr>\n${e}</tr>\n`}tablecell(e,t){const n=t.header?"th":"td";return(t.align?`<${n} align="${t.align}">`:`<${n}>`)+e+`</${n}>\n`}strong(e){return`<strong>${e}</strong>`}em(e){return`<em>${e}</em>`}codespan(e){return`<code>${e}</code>`}br(){return"<br>"}del(e){return`<del>${e}</del>`}link(e,t,n){const s=g(e);if(null===s)return n;let r='<a href="'+(e=s)+'"';return t&&(r+=' title="'+t+'"'),r+=">"+n+"</a>",r}image(e,t,n){const s=g(e);if(null===s)return n;let r=`<img src="${e=s}" alt="${n}"`;return t&&(r+=` title="${t}"`),r+=">",r}text(e){return e}}class re{strong(e){return e}em(e){return e}codespan(e){return e}del(e){return e}html(e){return e}text(e){return e}link(e,t,n){return""+n}image(e,t,n){return""+n}br(){return""}}class ie{options;renderer;textRenderer;constructor(t){this.options=t||e.defaults,this.options.renderer=this.options.renderer||new se,this.renderer=this.options.renderer,this.renderer.options=this.options,this.textRenderer=new re}static parse(e,t){return new ie(t).parse(e)}static parseInline(e,t){return new ie(t).parseInline(e)}parse(e,t=!0){let n="";for(let s=0;s<e.length;s++){const r=e[s];if(this.options.extensions&&this.options.extensions.renderers&&this.options.extensions.renderers[r.type]){const e=r,t=this.options.extensions.renderers[e.type].call({parser:this},e);if(!1!==t||!["space","hr","heading","code","table","blockquote","list","html","paragraph","text"].includes(e.type)){n+=t||"";continue}}switch(r.type){case"space":continue;case"hr":n+=this.renderer.hr();continue;case"heading":{const e=r;n+=this.renderer.heading(this.parseInline(e.tokens),e.depth,p(this.parseInline(e.tokens,this.textRenderer)));continue}case"code":{const e=r;n+=this.renderer.code(e.text,e.lang,!!e.escaped);continue}case"table":{const e=r;let t="",s="";for(let t=0;t<e.header.length;t++)s+=this.renderer.tablecell(this.parseInline(e.header[t].tokens),{header:!0,align:e.align[t]});t+=this.renderer.tablerow(s);let i="";for(let t=0;t<e.rows.length;t++){const n=e.rows[t];s="";for(let t=0;t<n.length;t++)s+=this.renderer.tablecell(this.parseInline(n[t].tokens),{header:!1,align:e.align[t]});i+=this.renderer.tablerow(s)}n+=this.renderer.table(t,i);continue}case"blockquote":{const e=r,t=this.parse(e.tokens);n+=this.renderer.blockquote(t);continue}case"list":{const e=r,t=e.ordered,s=e.start,i=e.loose;let l="";for(let t=0;t<e.items.length;t++){const n=e.items[t],s=n.checked,r=n.task;let o="";if(n.task){const e=this.renderer.checkbox(!!s);i?n.tokens.length>0&&"paragraph"===n.tokens[0].type?(n.tokens[0].text=e+" "+n.tokens[0].text,n.tokens[0].tokens&&n.tokens[0].tokens.length>0&&"text"===n.tokens[0].tokens[0].type&&(n.tokens[0].tokens[0].text=e+" "+n.tokens[0].tokens[0].text)):n.tokens.unshift({type:"text",text:e+" "}):o+=e+" "}o+=this.parse(n.tokens,i),l+=this.renderer.listitem(o,r,!!s)}n+=this.renderer.list(l,t,s);continue}case"html":{const e=r;n+=this.renderer.html(e.text,e.block);continue}case"paragraph":{const e=r;n+=this.renderer.paragraph(this.parseInline(e.tokens));continue}case"text":{let i=r,l=i.tokens?this.parseInline(i.tokens):i.text;for(;s+1<e.length&&"text"===e[s+1].type;)i=e[++s],l+="\n"+(i.tokens?this.parseInline(i.tokens):i.text);n+=t?this.renderer.paragraph(l):l;continue}default:{const e='Token with "'+r.type+'" type was not found.';if(this.options.silent)return console.error(e),"";throw new Error(e)}}}return n}parseInline(e,t){t=t||this.renderer;let n="";for(let s=0;s<e.length;s++){const r=e[s];if(this.options.extensions&&this.options.extensions.renderers&&this.options.extensions.renderers[r.type]){const e=this.options.extensions.renderers[r.type].call({parser:this},r);if(!1!==e||!["escape","html","link","image","strong","em","codespan","br","del","text"].includes(r.type)){n+=e||"";continue}}switch(r.type){case"escape":{const e=r;n+=t.text(e.text);break}case"html":{const e=r;n+=t.html(e.text);break}case"link":{const e=r;n+=t.link(e.href,e.title,this.parseInline(e.tokens,t));break}case"image":{const e=r;n+=t.image(e.href,e.title,e.text);break}case"strong":{const e=r;n+=t.strong(this.parseInline(e.tokens,t));break}case"em":{const e=r;n+=t.em(this.parseInline(e.tokens,t));break}case"codespan":{const e=r;n+=t.codespan(e.text);break}case"br":n+=t.br();break;case"del":{const e=r;n+=t.del(this.parseInline(e.tokens,t));break}case"text":{const e=r;n+=t.text(e.text);break}default:{const e='Token with "'+r.type+'" type was not found.';if(this.options.silent)return console.error(e),"";throw new Error(e)}}}return n}}class le{options;constructor(t){this.options=t||e.defaults}static passThroughHooks=new Set(["preprocess","postprocess","processAllTokens"]);preprocess(e){return e}postprocess(e){return e}processAllTokens(e){return e}}class oe{defaults={async:!1,breaks:!1,extensions:null,gfm:!0,hooks:null,pedantic:!1,renderer:null,silent:!1,tokenizer:null,walkTokens:null};options=this.setOptions;parse=this.#e(ne.lex,ie.parse);parseInline=this.#e(ne.lexInline,ie.parseInline);Parser=ie;Renderer=se;TextRenderer=re;Lexer=ne;Tokenizer=w;Hooks=le;constructor(...e){this.use(...e)}walkTokens(e,t){let n=[];for(const s of e)switch(n=n.concat(t.call(this,s)),s.type){case"table":{const e=s;for(const s of e.header)n=n.concat(this.walkTokens(s.tokens,t));for(const s of e.rows)for(const e of s)n=n.concat(this.walkTokens(e.tokens,t));break}case"list":{const e=s;n=n.concat(this.walkTokens(e.items,t));break}default:{const e=s;this.defaults.extensions?.childTokens?.[e.type]?this.defaults.extensions.childTokens[e.type].forEach((s=>{const r=e[s].flat(1/0);n=n.concat(this.walkTokens(r,t))})):e.tokens&&(n=n.concat(this.walkTokens(e.tokens,t)))}}return n}use(...e){const t=this.defaults.extensions||{renderers:{},childTokens:{}};return e.forEach((e=>{const n={...e};if(n.async=this.defaults.async||n.async||!1,e.extensions&&(e.extensions.forEach((e=>{if(!e.name)throw new Error("extension name required");if("renderer"in e){const n=t.renderers[e.name];t.renderers[e.name]=n?function(...t){let s=e.renderer.apply(this,t);return!1===s&&(s=n.apply(this,t)),s}:e.renderer}if("tokenizer"in e){if(!e.level||"block"!==e.level&&"inline"!==e.level)throw new Error("extension level must be 'block' or 'inline'");const n=t[e.level];n?n.unshift(e.tokenizer):t[e.level]=[e.tokenizer],e.start&&("block"===e.level?t.startBlock?t.startBlock.push(e.start):t.startBlock=[e.start]:"inline"===e.level&&(t.startInline?t.startInline.push(e.start):t.startInline=[e.start]))}"childTokens"in e&&e.childTokens&&(t.childTokens[e.name]=e.childTokens)})),n.extensions=t),e.renderer){const t=this.defaults.renderer||new se(this.defaults);for(const n in e.renderer){if(!(n in t))throw new Error(`renderer '${n}' does not exist`);if("options"===n)continue;const s=n,r=e.renderer[s],i=t[s];t[s]=(...e)=>{let n=r.apply(t,e);return!1===n&&(n=i.apply(t,e)),n||""}}n.renderer=t}if(e.tokenizer){const t=this.defaults.tokenizer||new w(this.defaults);for(const n in e.tokenizer){if(!(n in t))throw new Error(`tokenizer '${n}' does not exist`);if(["options","rules","lexer"].includes(n))continue;const s=n,r=e.tokenizer[s],i=t[s];t[s]=(...e)=>{let n=r.apply(t,e);return!1===n&&(n=i.apply(t,e)),n}}n.tokenizer=t}if(e.hooks){const t=this.defaults.hooks||new le;for(const n in e.hooks){if(!(n in t))throw new Error(`hook '${n}' does not exist`);if("options"===n)continue;const s=n,r=e.hooks[s],i=t[s];le.passThroughHooks.has(n)?t[s]=e=>{if(this.defaults.async)return Promise.resolve(r.call(t,e)).then((e=>i.call(t,e)));const n=r.call(t,e);return i.call(t,n)}:t[s]=(...e)=>{let n=r.apply(t,e);return!1===n&&(n=i.apply(t,e)),n}}n.hooks=t}if(e.walkTokens){const t=this.defaults.walkTokens,s=e.walkTokens;n.walkTokens=function(e){let n=[];return n.push(s.call(this,e)),t&&(n=n.concat(t.call(this,e))),n}}this.defaults={...this.defaults,...n}})),this}setOptions(e){return this.defaults={...this.defaults,...e},this}lexer(e,t){return ne.lex(e,t??this.defaults)}parser(e,t){return ie.parse(e,t??this.defaults)}#e(e,t){return(n,s)=>{const r={...s},i={...this.defaults,...r};!0===this.defaults.async&&!1===r.async&&(i.silent||console.warn("marked(): The async option was set to true by an extension. The async: false option sent to parse will be ignored."),i.async=!0);const l=this.#t(!!i.silent,!!i.async);if(null==n)return l(new Error("marked(): input parameter is undefined or null"));if("string"!=typeof n)return l(new Error("marked(): input parameter is of type "+Object.prototype.toString.call(n)+", string expected"));if(i.hooks&&(i.hooks.options=i),i.async)return Promise.resolve(i.hooks?i.hooks.preprocess(n):n).then((t=>e(t,i))).then((e=>i.hooks?i.hooks.processAllTokens(e):e)).then((e=>i.walkTokens?Promise.all(this.walkTokens(e,i.walkTokens)).then((()=>e)):e)).then((e=>t(e,i))).then((e=>i.hooks?i.hooks.postprocess(e):e)).catch(l);try{i.hooks&&(n=i.hooks.preprocess(n));let s=e(n,i);i.hooks&&(s=i.hooks.processAllTokens(s)),i.walkTokens&&this.walkTokens(s,i.walkTokens);let r=t(s,i);return i.hooks&&(r=i.hooks.postprocess(r)),r}catch(e){return l(e)}}}#t(e,t){return n=>{if(n.message+="\nPlease report this to https://github.com/markedjs/marked.",e){const e="<p>An error occurred:</p><pre>"+c(n.message+"",!0)+"</pre>";return t?Promise.resolve(e):e}if(t)return Promise.reject(n);throw n}}}const ae=new oe;function ce(e,t){return ae.parse(e,t)}ce.options=ce.setOptions=function(e){return ae.setOptions(e),ce.defaults=ae.defaults,n(ce.defaults),ce},ce.getDefaults=t,ce.defaults=e.defaults,ce.use=function(...e){return ae.use(...e),ce.defaults=ae.defaults,n(ce.defaults),ce},ce.walkTokens=function(e,t){return ae.walkTokens(e,t)},ce.parseInline=ae.parseInline,ce.Parser=ie,ce.parser=ie.parse,ce.Renderer=se,ce.TextRenderer=re,ce.Lexer=ne,ce.lexer=ne.lex,ce.Tokenizer=w,ce.Hooks=le,ce.parse=ce;const he=ce.options,pe=ce.setOptions,ue=ce.use,ke=ce.walkTokens,ge=ce.parseInline,fe=ce,de=ie.parse,xe=ne.lex;e.Hooks=le,e.Lexer=ne,e.Marked=oe,e.Parser=ie,e.Renderer=se,e.TextRenderer=re,e.Tokenizer=w,e.getDefaults=t,e.lexer=xe,e.marked=ce,e.options=he,e.parse=fe,e.parseInline=ge,e.parser=de,e.setOptions=pe,e.use=ue,e.walkTokens=ke}));
+</script>
+
+  <!-- Inlined doc data + app logic -->
+  <script id="docs-data">
+    window.__DOCS__ = [{"group": "Get Started", "id": "overview", "title": "Overview", "content": "# 91 IDAM — Documentation\n\n> Tech-enabled real estate platform. React 18 + Java Struts2 + Tomcat + Zoho CRM.\n> Live: https://91idam.com\n\nThis directory holds the written user-and-admin documentation for 91 IDAM. The HTML portal at `../docs-portal/` renders these files with sidebar navigation and search. The screenshot script at `../scripts/screenshots/` can capture annotated walkthrough images against a running dev build.\n\n## Map\n\n| Document | What it covers |\n|---|---|\n| [INSTALLATION.md](./INSTALLATION.md) | Local setup, builds, deployment to Tomcat |\n| [USER_GUIDE.md](./USER_GUIDE.md) | End-user workflows: search, contact, list a property, manage account |\n| [ADMIN_GUIDE.md](./ADMIN_GUIDE.md) | Super-admin and franchise-admin operations |\n| [FEATURES.md](./FEATURES.md) | Master feature list (curated from `91IDAM_Project_Features.md`) |\n| [FAQ.md](./FAQ.md) | Common user and admin questions |\n| [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Known issues, fixes, debug tips |\n| [CHANGELOG.md](./CHANGELOG.md) | Release history |\n\n### Module guides\n\nPer-screen reference under `modules/`:\n\n- [Home](./modules/home.md)\n- [Search Property](./modules/search-property.md)\n- [Property Details](./modules/property-details.md)\n- [Our Agents](./modules/our-agents.md)\n- [Agent Detail](./modules/agent-detail.md)\n- [User Profile](./modules/user-profile.md)\n- [Start Selling](./modules/start-selling.md)\n- [Authentication](./modules/authentication.md)\n- [About](./modules/about.md)\n- [Why IDAM](./modules/whyidam.md)\n- [How It Works](./modules/howitworks.md)\n- [Careers](./modules/careers.md)\n- [Contact](./modules/contact.md)\n\n## Roles at a glance\n\n| Role | Can |\n|---|---|\n| **Super Admin** | Approve properties, manage users, create franchise orgs, full access |\n| **Franchise Admin** | Manage own franchise org, users and properties |\n| **Agent** | Create and view properties only |\n| **Admin (Org)** | CRUD within their org |\n| **User (Org)** | Create and read within their org |\n\n## Tech stack\n\n- **Frontend** — React 18, Vite 5, Redux Toolkit, React Router v6, Tailwind v4\n- **Backend** — Java Struts2 on Apache Tomcat 9\n- **CRM** — Zoho (lead/agent flow)\n- **Mail** — SMTP with templated layouts under `WEB-INF/classes/mail_templates/idam/`\n- **Hosting** — Production at `root@91idam.com`, Tomcat at `/opt/tomcat/latest`\n"}, {"group": "Get Started", "id": "installation", "title": "Installation", "content": "# Installation & Deployment\n\n## Prerequisites\n\n| Tool | Version |\n|---|---|\n| Node.js | 18 or higher |\n| npm | 9 or higher |\n| Java | 11 or higher |\n| Apache Tomcat | 9.x |\n| Database | (see backend README — typically MySQL/Postgres) |\n\n## Frontend — local development\n\n```bash\ncd 91idam-react\nnpm install\nnpm run dev_only          # Vite dev server on http://localhost:3000\n```\n\n### Other build modes\n\n```bash\nnpm run dev               # Watch build into ../src/main/webapp/app (dev base path /vrpumps/app/)\nnpm run build             # Watch build into ../src/main/webapp/app (prod base path /app/)\nnpm run lint              # ESLint\nnpm run preview           # Preview production build\n```\n\nThe build emits JS into `js/` and CSS into `css/` subdirectories so it slots cleanly into the WAR under `WEB-INF/`.\n\n## Backend\n\nThe Java Struts2 backend lives alongside the React frontend in this repository (`src/`, `WebContent/`, `.classpath`, `.project`). Build the WAR with your IDE (Eclipse project files are checked in) or via Ant/Maven if a build file is present, then drop it into Tomcat's `webapps/`.\n\n## Production deployment\n\nProduction server: `91idam.com`.\n\n```\nroot@91idam.com:/opt/tomcat/latest        # Tomcat install\n                /opt/tomcat/latest/webapps # WAR drop point\n                WEB-INF/classes/mail_templates/idam/  # mail templates\n```\n\nCommon deploy steps:\n\n1. Build the React bundle into `src/main/webapp/app` (`npm run build`).\n2. Build the WAR.\n3. SCP the WAR to `/opt/tomcat/latest/webapps/`.\n4. Tomcat hot-deploys; if not, restart with `systemctl restart tomcat` (verify your service unit name).\n5. Tail `catalina.out` for boot errors.\n\n## Environment\n\n- **Dev API base** — `http://localhost:8080/vrpumps`\n- **Prod API base** — `https://api.vrpumps.com/vrpumps` (see `src/functions/Utils.js`)\n- **Hash routing** — the frontend uses `HashRouter`, so deep links look like `https://91idam.com/#/search-property`\n\n"}, {"group": "Get Started", "id": "changelog", "title": "Changelog", "content": "# Changelog\n\n> Source-of-truth is `git log`. This file summarises notable releases.\n\n## Recent commits (production branch)\n\n- `cc575423` — Add super-admin Manage tab to delete agents and properties\n- `a77c6880` — Unify CRM agent approve/reject into single endpoint, decrypt agent names\n- `7bf30657` — Add agent signup → CRM approval flow, map URLs, and agent contacts\n- `61407b28` — Filter registration responses, strip mobile, block duplicate emails\n- `0f6f77b2` — Wire Careers form to Zoho, enable request property details click, update mail templates\n\nFor the full history run `git log --oneline production`.\n"}, {"group": "Guides", "id": "user-guide", "title": "User Guide", "content": "# User Guide\n\nStep-by-step walkthroughs for everyday tasks on 91 IDAM.\n\n## 1. Sign up & log in\n\n1. Click **Login** in the top-right of the header.\n2. New user? Click **Sign up** in the modal — enter name, email and password.\n3. A 6-digit OTP is emailed to you. Enter it to verify the account.\n4. After verification you're auto-logged in. Future logins use email + password and OTP.\n\n> Locked out after 5 failed OTPs? The account is frozen for 24 hours and you'll receive a lockout email.\n\n## 2. Search properties\n\nThe fastest path is the **hero search bar** on the home page. Type a location, project name or keyword — suggestions appear after 2 characters.\n\nFor full filters, click **Properties** in the header (or press *View all* in the suggestion list).\n\n| Filter | Options |\n|---|---|\n| Budget | 9 preset ranges (Under 5 Lac → Above 5 Cr) |\n| Property type | Residential / Commercial |\n| Area (sq.ft) | Numeric range |\n| Posted by | Owner / Builder / Dealer |\n| Localities | Free text |\n| Approved by | DTCP / RERA / CMDA |\n| Ownership | Freehold / DTCP / CMDA / Patta / Leasehold |\n| Facing | N / S / E / W and combinations |\n| Road width | Numeric range |\n\nSort with the dropdown above results: Newest, Price (low/high), Area (small/large), Title (A-Z / Z-A).\n\n## 3. Open a property's details\n\nClick any card in the search results. The detail page has:\n\n- **Image gallery** — full-screen on click\n- **Summary** — price, BHK, area, type, ownership, status\n- **Map** — Google Maps URL is stored verbatim and opens in a new tab\n- **Contact** — opens the enquiry popup (login required)\n\n## 4. Contact an owner / agent\n\n1. Click **Contact** on a property card or detail page.\n2. Login is required. Use the modal that appears.\n3. The enquiry is recorded against the property and surfaced to the owner under **Profile → View Responses**.\n\n## 5. List a property\n\nYou must be logged in. Two entry points:\n\n- Header → Profile → \"Add new property\" (in My Listings section)\n- Direct: `/start-selling`\n\nRequired fields:\n\n- Title\n- Property type (Residential / Commercial) — drives later category options\n- Location: area name, city, pincode (Google Maps URL is optional, stored as-is)\n- Selling price + area (sq.ft)\n- At least one image (max 10, JPG/PNG, ≤5 MB each)\n\nSubmit goes to the super-admin for approval. You're notified by email once published.\n\n## 6. Manage your dashboard\n\nThe user profile (`/user-profile`) has a sidebar with these sections:\n\n| Section | What it does |\n|---|---|\n| Profile | Update name, email, phone, profile picture |\n| Change password | Old + new password |\n| My Listings | Your posted properties — edit, delete, view enquiries |\n| View Responses | Enquiries grouped by property — approve / reject |\n| Contacted | Agents you've contacted |\n| Manage *(super-admin only)* | Review pending agents and properties |\n| Requests *(super-admin only)* | Pending registration requests |\n\n## 7. Browse agents\n\nHeader → **Our Agents** → grid of all verified agents. Click any card to open the full profile (photo, listings, contact details, ratings).\n\n## 8. Become a partner\n\nHeader → **Individuals** or **Franchise Partners** dropdown → **Form Registration** opens a modal capturing your interest. The lead is forwarded to the 91 IDAM partnerships team via Zoho CRM.\n\n## 9. Take the in-app tour\n\nLook for the floating **\"Take a tour\"** button (bottom-right) — it appears on every page that has a guided walkthrough configured. The home tour also auto-starts on your first visit.\n"}, {"group": "Guides", "id": "admin-guide", "title": "Admin Guide", "content": "# Admin Guide\n\nFor Super Admins and Franchise Admins of 91 IDAM.\n\n## 1. Roles\n\n| Role | Scope |\n|---|---|\n| **Super Admin** | Platform-wide. Approves properties, manages users, creates franchise orgs. |\n| **Franchise Admin** | One franchise org. Manages users and properties under that org. |\n| **Agent** | Create + view properties (no edit/delete on others). |\n| **Admin (Org)** | CRUD inside their org. |\n| **User (Org)** | Create + read inside their org. |\n\nPermissions are enforced server-side on every request via the security filter, not by the UI.\n\n## 2. The Manage tab\n\nVisible only to super-admins. Located at **Profile → Manage**.\n\nIt lets you:\n\n- Review pending agents — approve or reject each.\n- Review pending properties — approve, reject or delete.\n- Drill into individual records to inspect submitted data.\n\nThe same flow is wired into Zoho CRM — when an agent registers via the public site, a CRM lead is created and surfaced here for human approval.\n\n## 3. The Requests tab\n\nSuper-admin only. Shows pending registration requests submitted via the **Individuals** and **Franchise Partners** modals on the public site. Each row links back to the originating Zoho lead.\n\n## 4. Property approval flow\n\n```\nOwner submits via /start-selling\n        │\n        ▼\nProperty created in \"Pending\" status\n        │\n        ▼\nSuper-admin reviews under Profile → Manage\n        │\n        ├── Approve  → status = \"Active\", visible in /search-property\n        └── Reject   → status = \"Rejected\", owner notified by email\n```\n\nMail templates for each transition live at:\n\n```\n/opt/tomcat/latest/webapps/<app>/WEB-INF/classes/mail_templates/idam/\n```\n\nEditing a template on the production server takes effect on the next email send (no restart needed unless you've changed packaged classes).\n\n## 5. Agent approval flow\n\nThe agent signup flow runs through the CRM. The unified approve/reject endpoint also decrypts the agent's stored name when surfacing to the admin.\n\n1. Public agent signup → CRM lead created.\n2. Super-admin opens the Manage tab → sees the lead.\n3. Approve → agent record activated, mapped URLs and contacts populated.\n4. Reject → lead closed; the public page shows a generic \"Application closed\" message.\n\n## 6. Session & lockout management\n\n- Sessions are tracked per device/location. View them under **Profile → Profile**.\n- Force-logout a session via the row's menu.\n- After 5 failed OTP attempts the account is auto-locked for 24 h. To unlock manually before that, clear the lockout flag in the user record (server-side query).\n\n## 7. Email deliverability\n\nIf users report not receiving OTP/notification emails:\n\n1. Check Tomcat `catalina.out` for SMTP errors.\n2. Verify SMTP credentials in the application config (server-side).\n3. Confirm the template is well-formed HTML — broken markup will cause some clients to silently drop the message.\n4. Check rate limiting — max 3 OTP sends per 15 minutes per user.\n\n## 8. Data hygiene\n\n- Properties marked Rejected stay in the DB but are filtered from the public search.\n- Mobile numbers in registration responses are stripped server-side before being shown to admins (privacy guard added on `0f6f77b2`).\n- Duplicate email submissions on the public registration form are blocked at the API layer.\n\n## 9. Ops cheat sheet\n\n| Action | Where |\n|---|---|\n| Restart Tomcat | `systemctl restart tomcat` (verify your unit name) |\n| Tail logs | `tail -f /opt/tomcat/latest/logs/catalina.out` |\n| Edit mail template | `/opt/tomcat/latest/webapps/<app>/WEB-INF/classes/mail_templates/idam/` |\n| Hot redeploy WAR | drop the new WAR into `/opt/tomcat/latest/webapps/` |\n"}, {"group": "Guides", "id": "features", "title": "Features", "content": "# Features\n\nMaster feature list for 91 IDAM. The detailed feature spec lives at `../../91IDAM_Project_Features.md`; this doc summarises and links to per-module guides.\n\n## 1. Authentication\n\n- Email + password login with OTP MFA\n- Remember-me 30-day sessions\n- Forgot-password with 24 h IP-bound reset link\n- Brute-force lockouts (5 failed OTPs → 24 h)\n- Multi-device session management with remote terminate\n\n→ [authentication.md](./modules/authentication.md)\n\n## 2. Property search\n\n- Hero search bar with debounced autocomplete\n- 10 filter facets, 7 sort options\n- Mobile filter overlay\n- Result cards with cover image, price, BHK, area, owner\n\n→ [search-property.md](./modules/search-property.md)\n\n## 3. Property details\n\n- Image gallery (full-screen)\n- Structured summary\n- Map embed\n- Owner / agent contact (login-gated)\n\n→ [property-details.md](./modules/property-details.md)\n\n## 4. List a property\n\n- Multi-section form: type, location, price/area, images\n- Up to 10 images, 5 MB each\n- Goes through admin approval\n\n→ [start-selling.md](./modules/start-selling.md)\n\n## 5. User dashboard\n\n- Profile editor with avatar upload\n- Password change\n- My Listings (CRUD on own properties)\n- View Responses (enquiries grouped by property, approve/reject)\n- Contacted (agents you've reached out to)\n- Manage tab for super-admins\n- Requests tab for super-admins\n\n→ [user-profile.md](./modules/user-profile.md)\n\n## 6. Agents directory\n\n- Verified agent grid\n- Per-agent detail pages\n- Filter/search by city, specialisation, rating\n\n→ [our-agents.md](./modules/our-agents.md)\n\n## 7. Partner registration\n\n- Individuals, Franchise Partners, Vendors, Enterprise dropdowns\n- Modal form goes to Zoho CRM\n- Surfaces in admin's Requests tab\n\n## 8. Admin operations\n\n- Property approval (pending → active / rejected)\n- Agent approval (CRM-driven)\n- Org/franchise management\n- Mail-template-driven notifications\n\n→ [ADMIN_GUIDE.md](./ADMIN_GUIDE.md)\n\n## 9. This documentation set\n\n- Static HTML docs portal — `../docs-portal/`\n- Markdown docs (this directory)\n- Optional Playwright-based screenshot pipeline — `../scripts/screenshots/`\n"}, {"group": "Modules", "id": "home", "title": "Home", "content": "# Module — Home\n\n**Route:** `/home` (default redirect from `/`)\n**Source:** `src/pages/Home/`\n\n## Overview\n\nThe home page is the marketing surface and primary entry point. It bundles eight sections, in order:\n\n1. **HeroSection** — headline + property search bar\n2. **PlacesSection** — featured cities/localities\n3. **SellerCategoriesSection** — Buy / Sell / Rent CTAs\n4. **ListPropertySection** — \"List your property in 5 mins\" banner\n5. **EnhancedServicesSection** — 4 service cards (Property, Franchise, Vendor, Enterprise)\n6. **ComparisonSection** — 91 IDAM vs other portals\n7. **TestimonialsSection** — customer quotes\n8. **ToolsFeaturesSection** — supporting tools strip\n\n## Key UI elements (with tour anchors)\n\n| Element | Anchor | Purpose |\n|---|---|---|\n| Logo | `header-logo` | Returns to `/home` |\n| Home link | `nav-home` | Active link in nav |\n| Properties link | `nav-properties` | Goes to `/search-property` |\n| Individuals dropdown | `nav-individuals` | Opens registration modal |\n| Franchise Partners dropdown | `nav-franchise` | Opens partner registration modal |\n| Our Agents link | `nav-agents` | Goes to `/our-agents` |\n| Login button | `header-login` | Opens login modal |\n| Hero search | `hero-search` | Live property suggestions |\n\n## Search bar behaviour\n\n- Min 2 characters before suggestions trigger\n- 300 ms debounce\n- Category toggle: All / Residential / Commercial (filters via `property_type` query param)\n- Keyboard: ↑ ↓ Enter Esc\n- On submit, navigates to `/search-property?query=…`\n- Empty result state shows \"No matches found\" with a fallback CTA\n\n## Auth gating\n\nThe page itself is public. Some CTAs (e.g. \"List your property\") prompt login if the user is not authenticated.\n\n## Related\n\n- [search-property.md](./search-property.md)\n- [authentication.md](./authentication.md)\n"}, {"group": "Modules", "id": "search-property", "title": "Search Property", "content": "# Module — Search Property\n\n**Route:** `/search-property`\n**Source:** `src/pages/SearchProperty/SearchProperty.jsx`\n\n## Overview\n\nFull-featured property browser. The page reads URL params for the initial filter state, then maintains client-side filtering and sorting for everything else.\n\n```\nURL → useSearchParams → initial filter\n                      → fetchPropertiesAPI()\n                          ↓\n                      properties[]   ← server source of truth\n                          ↓\n              filter (budget, type, area)\n                          ↓\n                  filteredProperties[]\n                          ↓\n                       sort\n                          ↓\n                       render\n```\n\n## Filters (left sidebar)\n\n| Filter | Implementation |\n|---|---|\n| Budget | Multi-select preset ranges |\n| Property type | Multi-select (Residential / Commercial) |\n| Area (sq.ft) | Multi-select range presets |\n| Posted by | Owner / Builder / Dealer (server param) |\n| Localities | Free text |\n| Approved by | DTCP / RERA / CMDA |\n| Ownership | Freehold / DTCP / CMDA / Patta / Leasehold |\n| Facing | N / S / E / W combinations |\n| Road width | Range |\n| New project | Toggle |\n\nApplied filters render as removable chips at the top of the sidebar with a **CLEAR ALL** action.\n\n## Sort options\n\nLocated above the result list:\n\n- Newest First (default)\n- Price: Low → High / High → Low\n- Area: Small → Large / Large → Small\n- Title: A → Z / Z → A\n\n## Result cards\n\nEach card shows:\n\n- Cover image (clickable → `/property-details/:id`)\n- \"FOR SALE\" tag\n- Price (highlighted, with \"Negotiable\" annotation if applicable)\n- Title\n- Location (icon + text)\n- Area, BHK, type\n- Owner avatar + name (clickable → owner page)\n- **Contact** button → opens `<ContactPopup>` (login-gated)\n\n## Tour anchors\n\n| Anchor | Element |\n|---|---|\n| `search-input` | Mobile filter toggle bar |\n| `search-filters` | Left sidebar |\n| `search-sort` | Sort dropdown wrapper |\n| `search-results` | First result card |\n| `search-card-action` | First card image (drives navigation) |\n\n## API\n\n`GET <base>/properties` — returns full list. Search query is appended as `?search=…` and category as `&property_type=1|2`. See `src/services/api/apiendpoints.js` for the endpoint constant.\n\nProperties are normalised through `formatPropertyForDisplay()` (`src/utils/propertyHelpers.js`) before render.\n\n## Edge cases\n\n- **No properties returned** — shows centered \"No properties found\" with a clear-filters CTA.\n- **Loading** — full-row spinner above the result area.\n- **API error** — red banner \"Error: …\" above the result area.\n"}, {"group": "Modules", "id": "property-details", "title": "Property Details", "content": "# Module — Property Details\n\n**Route:** `/property-details/:id`\n**Source:** `src/pages/PropertyDetails/`\n\n## Overview\n\nDetail page for a single property. Loads by ID from the URL.\n\n## Page sections\n\n| Section | What it shows |\n|---|---|\n| Image gallery | Cover + carousel + fullscreen viewer (`src/components/PropertyImageGallery/`) |\n| Summary card | Price, BHK, area, type, ownership, status, posted-by |\n| Description | Free-text from the listing |\n| Location | Address + Google Maps embed (URL stored verbatim) |\n| Owner / Agent | Avatar, name, \"Contact\" CTA |\n| Similar properties | Bottom strip — same locality / price band |\n\n## Tour anchors\n\n| Anchor | Element |\n|---|---|\n| `pd-gallery` | Image gallery |\n| `pd-summary` | Summary card |\n| `pd-contact` | Contact owner / agent button |\n| `pd-location` | Location / map block |\n\n## Contact flow\n\n1. Click **Contact** → `<ContactPopup>` opens.\n2. If unauthenticated → login modal pre-empts.\n3. After login (or if already logged in), the user message + property reference is POSTed to the enquiry endpoint.\n4. The owner sees the enquiry under **Profile → View Responses**.\n\n## Map URL handling\n\nThe Google Maps URL is stored as the raw string the seller pasted — no regex extraction or iframe `src` parsing. Keep it that way; that decision was made deliberately to allow both share URLs and embed URLs.\n\n## Notes\n\n- Status filter — only Active properties are reachable from `/search-property`. Direct deep-links to Pending/Rejected IDs are blocked at the API layer.\n- The page eagerly preloads gallery images for snappier slideshow.\n"}, {"group": "Modules", "id": "our-agents", "title": "Our Agents", "content": "# Module — Our Agents\n\n**Route:** `/our-agents`, `/our-agents/:id`\n**Source:** `src/pages/OurAgents/`, `src/pages/AgentDetail/`\n\n## Overview\n\nDirectory of verified 91 IDAM agents. Two screens:\n\n- `/our-agents` — grid of agent cards.\n- `/our-agents/:id` — single agent profile.\n\n## Grid card\n\n- Profile photo (decoded server-side; encrypted names are decrypted on read)\n- Name + city\n- Specialisation badge(s)\n- Listings count\n- Rating (avg of buyer enquiries)\n- \"View profile\" CTA → `/our-agents/:id`\n\n## Profile page\n\n- Header strip with photo, name, city\n- About / bio\n- Active listings (linked cards)\n- Contact details — gated behind login to discourage scraping\n- Rating + recent reviews\n- Contact CTA opens `<ContactPopup>` with the agent context\n\n## Tour anchors\n\n| Anchor | Element |\n|---|---|\n| `agents-grid` | Card grid container |\n| `agents-search` | Top search bar |\n| `agent-card` | First card |\n\n## Onboarding flow\n\nAgents can sign up via the public site. The flow:\n\n1. Public agent signup form → CRM lead.\n2. Super-admin reviews under **Profile → Manage** (single approve/reject endpoint, decrypts names for review).\n3. On approve, the agent record activates and shows up in this directory.\n\n## API\n\n- `GET /agents` — list (filters via query params).\n- `GET /agents/:id` — single profile.\n- `POST /agents/contact` — enquiry (login required).\n"}, {"group": "Modules", "id": "agent-detail", "title": "Agent Detail", "content": "# Module — Agent Detail\n\n**Route:** `/our-agents/:id`\n**Source:** `src/pages/AgentDetail/AgentDetail.jsx`\n\n## Overview\n\nPer-agent profile page. Loads the agent by ID from the URL.\n\n## Layout\n\n| Region | What it contains |\n|---|---|\n| Breadcrumb | Idam › Our Agent › `<location>` › `<name>` |\n| Left column | Agent photo + Contact Me button |\n| Right column | Agent header (company / name / title), tabs (About, Properties, …), tab content |\n| Tab: About | Agent bio, license info, specialisations |\n| Tab: Properties | Grid of the agent's active listings (clickable → property details) |\n\n## Tour anchors\n\n| Anchor | Element |\n|---|---|\n| `ad-photo` | Left photo + contact card |\n| `ad-header` | Right-side agent header (company / name / title) |\n| `ad-tabs` | Tab strip |\n| `ad-contact` | \"Contact Me\" CTA |\n\n## Backend\n\n- `GET /agents/:id` — agent profile\n- `GET /agents/:id/properties` — listings for that agent (lazy-loaded when the Properties tab is opened)\n- `POST /agents/contact` — enquiry payload (login required)\n\n## Decryption\n\nAgent names are stored encrypted server-side. The unified approve/reject endpoint decrypts them on read so admins (and this profile page) see the human-readable name. Don't try to read the encrypted blob client-side — always go through the API.\n"}, {"group": "Modules", "id": "user-profile", "title": "User Profile", "content": "# Module — User Profile\n\n**Route:** `/user-profile?section=…`\n**Source:** `src/pages/user-profile/`, `src/components/profile/`\n\n## Overview\n\nThe signed-in user's dashboard. Sidebar on the left switches between sections; the URL `?section=` query param is the source of truth for the active section.\n\n## Sections\n\n| Sidebar id | URL section | Heading | Component |\n|---|---|---|---|\n| `profile` | `profile` | Profile | `ProfileSection.jsx` |\n| `security` | `change-password` | Change Password | `ChangePassword.jsx` |\n| `requests` | `requests` | Requests *(super-admin)* | inline in `Fold1.jsx` |\n| `orders` | `my-listings` | My Listings | inline in `Fold1.jsx` |\n| `wishlist` | `responses` | View Responses | inline in `Fold1.jsx` |\n| `payments` | `contacted` | Contacted | inline in `Fold1.jsx` |\n| `manage` | `manage` | Manage *(super-admin)* | `Manage.jsx` |\n\nThe default section is `my-listings`.\n\n## My Listings\n\n- Lists the user's own properties (formatted with `formatPropertyForDisplay`).\n- Status badge per item (Pending / Active / Rejected).\n- Actions: edit, delete (with `<DeleteConfirmationModal>`), view enquiries.\n- \"Add new property\" CTA at the page header, links to `/start-selling`.\n\n## View Responses\n\nBuyer enquiries on your properties, grouped by property. Each group expands to show enquiries with:\n\n- Buyer name, email\n- Submitted message\n- Approve / Reject (super-admin level approval shows extra controls)\n\nPer-enquiry status updates immediately via optimistic UI.\n\n## Contacted\n\nAgents that the user has reached out to. Useful as a \"saved contacts\" view.\n\n## Manage *(super-admin only)*\n\nSuper-admin moderation surface:\n\n- Pending agents — approve / reject (single endpoint).\n- Pending properties — approve / reject / delete.\n- Decrypted names visible for review.\n\n## Requests *(super-admin only)*\n\nPending public-form submissions (Individuals, Franchise Partners, Vendor, Enterprise). Each row is a Zoho lead snapshot.\n\n## Tour anchors\n\n| Anchor | Element |\n|---|---|\n| `profile-sidebar` | Sidebar root |\n| `profile-my-listings` | Sidebar item: My Listings |\n| `profile-responses` | Sidebar item: View Responses |\n| `profile-profile` | Sidebar item: Profile |\n| `profile-change-password` | Sidebar item: Change password |\n| `profile-manage` | Sidebar item: Manage *(super-admin only)* |\n| `profile-content` | Right-hand content pane |\n\n## Mobile behaviour\n\nBelow `lg`, the sidebar collapses behind a hamburger button (top-left of the page). Tap to slide in; tap the dimmed overlay to close.\n"}, {"group": "Modules", "id": "start-selling", "title": "Start Selling", "content": "# Module — Start Selling\n\n**Route:** `/start-selling`\n**Source:** `src/pages/start-selling/StartSellingForm.jsx`\n\n## Overview\n\nThe property listing form. Login required. On submit, a Pending property is created and goes to super-admin for approval.\n\n## Form sections\n\n| Section | Fields |\n|---|---|\n| Identity | Title (required) |\n| Property Type | Residential / Commercial radio |\n| Category & BHK | Plot / Apartment / Villa / Individual House (BHK shown for non-Plot) |\n| Location | Address, locality, city, pincode (required), state, Google Maps URL |\n| Price Details | Selling price (required), area (sq.ft, required), negotiable toggle |\n| Specs | Bathrooms, parking, facing, road width, floors, age |\n| Approval & Ownership | Approved by, ownership type |\n| Upload Media | Up to 10 images (JPG/PNG, ≤5 MB each), main image flag |\n| Description | Free text |\n\nRequired fields are marked `*`. Validation runs on submit; errors are inline under each field.\n\n## Tour anchors\n\n| Anchor | Element |\n|---|---|\n| `sell-form` | Form root container |\n| `sell-type` | Property type block |\n| `sell-location` | Location Details section |\n| `sell-price` | Price Details section |\n| `sell-images` | Upload Your Media section |\n| `sell-submit` | Submit button |\n\n## Image upload pipeline\n\n1. User selects up to 10 images.\n2. Each file is POSTed to `API_ENDPOINTS.ATTACHMENTS.UPLOAD` with `org_id` = user's super-org.\n3. Server returns a file id; the form keeps a `propertyImages: [{ id, name, … }]` array.\n4. On submit, the property API is called with the image id list (not the binaries).\n5. Per-file upload state is tracked in `uploadStates` so partial failures can retry.\n\n## Map URL handling\n\nStored exactly as the seller pasted. No regex extraction; iframe `src` is not parsed out. Both `https://www.google.com/maps/...` share URLs and `https://www.google.com/maps/embed?pb=…` URLs are accepted as-is.\n\n## Submission outcome\n\n| Result | What the user sees |\n|---|---|\n| Success | Confirmation screen with \"Continue\" → returns to `/user-profile?section=my-listings` |\n| Validation error | Inline messages, scroll-to-first-error |\n| API error | Red banner with retry button |\n\nThe new listing appears in **My Listings** with status = Pending.\n"}, {"group": "Modules", "id": "authentication", "title": "Authentication", "content": "# Module — Authentication\n\n**Source:** `src/components/auth/`, `src/store/slices/authSlice.js`\n**Components:** `AuthModal`, `LoginModal`, `OtpVerificationModal`, `ForgotPasswordModal`, `PartnerRegistrationModal`\n\n## Overview\n\nAll auth interactions happen in modals layered over the current page. There is no dedicated `/login` route — calling `dispatch(toggleLoginModal(true))` from anywhere in the app opens the flow.\n\n## Flows\n\n### Login\n\n```\nLoginModal → submit\n  ↓\n[email + password]\n  ↓\nOTP triggered server-side, email sent\n  ↓\nOtpVerificationModal\n  ↓\n[6-digit code]\n  ↓\nsession cookie set, Redux authSlice updated\n```\n\n- \"Remember me\" extends the session to 30 days.\n- Real-time email format validation (green checkmark when valid).\n- Max 3 OTP sends per 15 min, 5 failed attempts → 24 h account lockout.\n\n### Forgot password\n\n```\nLoginModal → \"Forgot password\"\n  ↓\nForgotPasswordModal\n  ↓\n[email]\n  ↓\n24 h IP-bound digest link emailed\n  ↓\nUser opens link → /resetpassword\n  ↓\nResetPassword page (no header/footer)\n```\n\n### Signup\n\nThe \"Sign up\" link in `LoginModal` opens the signup variant of `AuthModal`. Same OTP confirmation flow as login.\n\n### Partner registration\n\n`PartnerRegistrationModal` is a different beast — used by the **Individuals** and **Franchise Partners** dropdowns on the public site. It captures interest leads and forwards to Zoho CRM. Not a true auth flow.\n\n## App-launch auth check\n\n`App.jsx` runs `authAPI.checkAuthAndFetchUser()` once on mount:\n\n```js\nif (authResult.isAuthenticated) {\n  dispatch(setAuthStatus(true));\n  if (authResult.user) dispatch(setUserInfo(authResult.user));\n} else {\n  dispatch(clearAuth());\n}\n```\n\nWhile this runs, a full-screen spinner blocks the UI (`selectAuthLoading`). Don't add long-running work to this code path — it's the first-paint blocker.\n\n## Redux selectors\n\n| Selector | What it returns |\n|---|---|\n| `selectIsAuthenticated` | boolean |\n| `selectUser` | full user object (or null) |\n| `selectAuthLoading` | boolean — true during initial auth check |\n\n## Roles in the user object\n\nThe user object carries role info that the UI uses to gate menus (e.g. `isSuperAdmin()` decides the Manage / Requests sidebar items in `ProfileSidebar`).\n\n## Security notes\n\n- Session is cookie-based, http-only — JS cannot read it.\n- Sessions can be enumerated and remotely terminated from **Profile → Profile → Active sessions**.\n- Email change re-triggers verification.\n- Password change requires the old password.\n"}, {"group": "Modules", "id": "about", "title": "About", "content": "# Module — About\n\n**Route:** `/about`\n**Source:** `src/pages/About/About.jsx`\n\n## Overview\n\nCompany introduction and positioning page. Public, no auth required.\n\n## Sections\n\n| Section | What it shows |\n|---|---|\n| Hero | Tagline + 4 stat tiles (Established, HQ, Industry, Business Model) |\n| Mission & Vision | Two-column statement cards |\n| Core Values | 8-tile grid (commitment, transparency, confidentiality, integrity, employee happiness, collaboration, time value, customer-centricity) |\n| What Makes Us Different | 5-card differentiator grid on a gradient backdrop |\n| Growth Roadmap | Multi-year expansion timeline |\n| Leadership | Founder & CEO callout (Mr. Pratheesh Kumar-E) |\n| Who We Serve | 6-tile target-segment grid |\n\n## Tour anchors\n\n| Anchor | Element |\n|---|---|\n| `about-hero` | Hero stat tiles block |\n| `about-mission` | Mission + vision cards |\n| `about-values` | Core values grid |\n| `about-differentiators` | \"What makes us different\" section |\n| `about-roadmap` | Growth roadmap |\n| `about-leadership` | Leadership block |\n| `about-segments` | Who we serve grid |\n\n## Notes\n\n- Pure marketing page — no data fetching, no forms.\n- Imagery is bundled via Vite imports (`fold2image1`, `fold4image1` etc.) so files are versioned with the build.\n- Brand colour for this page is `#2C5F7E` (a slightly darker variant of the primary `#175973`).\n"}, {"group": "Modules", "id": "whyidam", "title": "Why IDAM", "content": "# Module — Why Choose IDAM\n\n**Route:** `/whyidam`\n**Source:** `src/pages/Whyidam/Whyidam.jsx` + `Whyidam.css`\n\n## Overview\n\nPositioning page that explains why IDAM is different from traditional brokerages and competing portals.\n\n## Sections\n\n| Section | What it shows |\n|---|---|\n| Hero | Headline + 4 highlight chips (Legal Safety, Franchise-First, Tech-Powered, Trust) |\n| Pain Points | Common real estate problems IDAM addresses |\n| Solutions | How IDAM solves each problem (verified listings, transparency, CRM, mobile) |\n| Comparison | Traditional vs IDAM table |\n| CTA | Final call-to-action with buy/sell/partner paths |\n\n## Tour anchors\n\n| Anchor | Element |\n|---|---|\n| `why-hero` | Hero block |\n| `why-problems` | Pain points |\n| `why-solutions` | Solutions grid |\n| `why-comparison` | Comparison table |\n| `why-cta` | Bottom CTA |\n\n## Notes\n\n- This page uses its own `Howworks.css`-style scoped CSS (class names like `hero-section`, `solutions-title`, `cta-title`) instead of Tailwind utilities. Don't confuse with the global Tailwind classes used elsewhere.\n- All copy is hard-coded — no CMS hookup.\n"}, {"group": "Modules", "id": "howitworks", "title": "How It Works", "content": "# Module — How It Works\n\n**Route:** `/howitworks`\n**Source:** `src/pages/Howworks/Howworks.jsx` + `Howworks.css`\n\n## Overview\n\nTab-driven workflow explainer. The user picks a journey (Property / Franchise / Service Providers / Enterprise) and sees the step-by-step process for that path.\n\n## Workflows\n\n| Tab | Audience |\n|---|---|\n| Property Transactions | Buyers & sellers |\n| Franchise Partnership | Entrepreneurs starting a 91 IDAM franchise |\n| Service Providers | Builders, surveyors, lawyers, loan agents (vendor onboarding) |\n| Enterprise Solutions | Corporates, PGs, government, large investors |\n\nEach workflow renders:\n\n- Title + subtitle\n- CTA button (opens the matching registration modal)\n- Numbered step cards with title, description, feature list and duration\n\n## Tour anchors\n\n| Anchor | Element |\n|---|---|\n| `how-hero` | Top banner |\n| `how-journey` | \"Choose Your Journey\" section |\n| `how-tabs` | The four workflow tab buttons |\n| `how-steps` | Steps container for the active workflow |\n\n## Implementation notes\n\n- Active workflow is held in component state (`activeProcess`); switching tabs re-renders the steps.\n- All content is data-driven from a config object inside the component — adding a new workflow is just another entry.\n- The CTAs share `<PartnerRegistrationModal>` with the header dropdowns; the `modalType` prop differs per CTA.\n"}, {"group": "Modules", "id": "careers", "title": "Careers", "content": "# Module — Careers\n\n**Route:** `/careers`\n**Source:** `src/pages/Careers/`\n\n## Overview\n\nRecruitment landing page. Lists open roles and an application form. The form is wired to Zoho CRM (commit `0f6f77b2`).\n\n## Sections\n\n- Hero with company-positioning copy\n- \"Why work with us\" — culture + benefits\n- Open positions list — collapsible rows\n- Application form — name, email, mobile, resume upload, role of interest\n\n## Application flow\n\n1. User fills the form and uploads a resume (PDF/DOCX).\n2. Resume is uploaded via `API_ENDPOINTS.ATTACHMENTS.UPLOAD`.\n3. Form payload + resume file id are POSTed to the careers endpoint.\n4. The endpoint creates a Zoho lead with `source = \"Careers\"`.\n5. Recruiter is notified by email.\n\n## Validation\n\n- Name: required, ≥ 2 chars\n- Email: required, RFC-style format check\n- Mobile: required, 10-digit numeric\n- Resume: required, PDF or DOCX, ≤ 5 MB\n\nDuplicate email submissions are blocked at the API layer.\n\n## Notes\n\nThe careers page does not require login. Submissions are accessible to super-admins under **Profile → Requests** (alongside other lead types).\n"}, {"group": "Modules", "id": "contact", "title": "Contact", "content": "# Module — Contact\n\n**Route:** `/contact`\n**Source:** `src/pages/Contact/`\n\n## Overview\n\nStatic contact page with company details and a \"send us a message\" form.\n\n## Sections\n\n- Address block with map embed\n- Phone numbers and email links\n- Social media row\n- Contact form (name, email, subject, message)\n\n## Submission flow\n\n1. Form is POSTed to the contact endpoint.\n2. A thank-you toast (`<Toast>`) confirms receipt.\n3. The lead is forwarded to support via email.\n\n## Validation\n\n- All fields required.\n- Email format validation.\n- Message ≥ 10 characters.\n\n## Related\n\n- [careers.md](./careers.md) — different lead category but similar flow.\n- [USER_GUIDE.md](../USER_GUIDE.md) — for \"I'm contacting an owner\" use the property contact popup, not this page.\n"}, {"group": "Reference", "id": "faq", "title": "FAQ", "content": "# FAQ\n\n## For end users\n\n**Q: Why am I asked for an OTP every time I log in?**\nA: 91 IDAM uses MFA — email password is the first factor, OTP is the second. This is required by default; there is currently no opt-out.\n\n**Q: My OTP didn't arrive.**\nA: Check spam. If it's still missing after 60 seconds, click *Resend OTP* (max 3 sends per 15 minutes). If the third send still doesn't arrive, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md#otp-not-received).\n\n**Q: I forgot my password.**\nA: Click **Forgot password** on the login modal. A 24-hour reset link is sent to your email. The link is tied to your IP for brute-force protection — open it from the same network you requested it on.\n\n**Q: My account is locked. How do I unlock?**\nA: After 5 failed OTPs the account locks for 24 hours automatically. You'll receive a notification email. After 24 h, login resumes normally. To unlock sooner, contact support.\n\n**Q: How long until my submitted property goes live?**\nA: All listings go through super-admin approval. Typical turnaround is 24–48 hours. You'll be emailed once it's live or rejected.\n\n**Q: Can I edit a published listing?**\nA: Yes. Go to **Profile → My Listings**, click your property, edit and resubmit. Edits also need re-approval but usually clear faster.\n\n**Q: How do I withdraw a listing?**\nA: **Profile → My Listings → Delete**. The listing is removed from public search; the record stays in the DB for audit.\n\n**Q: Why are some agents/properties not showing?**\nA: The public site only shows records with status = Active. Pending and Rejected records are hidden by design.\n\n## For admins\n\n**Q: Can I bulk-approve listings?**\nA: Not in the current UI — approvals are one-at-a-time under **Profile → Manage**. If you need bulk, run a server-side update on the property table directly.\n\n**Q: How do I reset a user's password without email access?**\nA: Use the server-side admin endpoint or update the password hash directly in the user table. Inform the user out-of-band.\n\n**Q: Where do mail templates live?**\nA:\n```\n/opt/tomcat/latest/webapps/<app>/WEB-INF/classes/mail_templates/idam/\n```\nEdit in place; changes apply on the next send.\n\n**Q: How do I create a new franchise org?**\nA: Super-admin → Manage → Franchise Orgs (or via the back-office endpoint if not yet exposed in UI). Each org gets its own role setup and admin.\n\n## For developers\n\n**Q: How is auth state stored?**\nA: Server-side session cookie + Redux slice (`authSlice`). On app launch, `App.jsx` calls `authAPI.checkAuthAndFetchUser()` and rehydrates Redux. localStorage is *not* used for auth.\n\n**Q: Where are routes defined?**\nA: `src/routes/routeConfig.js`. Each entry has `path`, `element`, and `layout` (true = wrap with `Layout` which includes Header + Footer).\n\n**Q: How do I run Playwright screenshots?**\nA: Start the dev server (`npm run dev_only`) on port 3000, then `node scripts/screenshots/capture.js` from this user-guide folder. Output lands in `docs-portal/assets/screenshots/`. See `scripts/screenshots/README.md` for full setup.\n"}, {"group": "Reference", "id": "troubleshooting", "title": "Troubleshooting", "content": "# Troubleshooting\n\n## End-user issues\n\n### OTP not received\n\n1. Wait 60 seconds, then click **Resend OTP**.\n2. Check spam / promotions / \"All mail\" in Gmail.\n3. Confirm the email address is typed correctly.\n4. Ask your IT to whitelist the sender domain (`@91idam.com`).\n5. If still nothing, contact support — there may be an SMTP outage.\n\n### \"Account locked\" message\n\nAfter 5 failed OTPs you're locked for 24 h. Wait it out or contact support.\n\n### Forgot-password link expired\n\nReset links are valid for 24 h and bound to the IP that requested them. Request a new one. If you're still on a different network, switch back or contact support.\n\n### Property not showing after submission\n\nWait for super-admin approval (typically 24–48 h). You'll be emailed once it's live or rejected.\n\n### Map not loading on property details\n\nThe map uses the Google Maps URL submitted by the seller. If it's missing or malformed, no map will render. Sellers can edit the URL from **My Listings**.\n\n### Image upload fails\n\n- Max 10 images per listing.\n- Each image must be ≤5 MB.\n- Allowed formats: JPG, PNG.\n- Try one image at a time if a batch upload fails — surfaces the offending file.\n\n## Developer issues\n\n### `npm run dev_only` doesn't start\n\nMake sure Node 18+ and npm 9+ are installed. Run `node --version`. If port 3000 is busy, change it via Vite's `--port` flag.\n\n### Build outputs to the wrong directory\n\nVite has dual modes — see `vite.config.js`. Dev mode uses base path `/vrpumps/app/`, production uses `/app/`. Both write to `../src/main/webapp/app`.\n\n### Auth never resolves (infinite loading spinner)\n\n`App.jsx` blocks the app on `authAPI.checkAuthAndFetchUser()`. If it hangs, the backend's `ustat` endpoint is likely unreachable. Check:\n\n- Backend is running and reachable from the dev machine.\n- CORS is configured to allow `http://localhost:3000`.\n- No browser extension is blocking cookies (auth depends on cookies).\n\n### Lint errors after a clean install\n\nRun `npm run lint`. The config is in `eslint.config.js`. Common issue: importing default from a module that exports named only — Vite's resolve is more permissive than ESLint's checker.\n\n## Server-side issues\n\n### Tomcat won't start after a deploy\n\n```\ntail -f /opt/tomcat/latest/logs/catalina.out\n```\n\nMost failures are:\n- WAR explode failure → drop a clean WAR.\n- Port conflict → another Java process holding 8080.\n- DB connection → check the JDBC URL in the deployed `web.xml` / app config.\n\n### \"Email send failed\" in logs\n\n1. Check SMTP creds.\n2. Confirm port 587 (or 25) is open from the Tomcat host.\n3. The mail template may have unbalanced HTML — open it in a browser to verify.\n\n### Property approval emails not firing\n\n- Confirm the approve action actually committed (check the property table).\n- Confirm the template file exists at `/opt/tomcat/latest/webapps/<app>/WEB-INF/classes/mail_templates/idam/`.\n- Check rate limiting — frequent test approvals may hit the 3-per-15-min cap.\n"}];
+    window.__TOP_NAV__ = [["overview", "Overview"], ["user-guide", "User Guide"], ["admin-guide", "Admin Guide"], ["home", "Home"], ["search-property", "Search"], ["start-selling", "List Property"], ["user-profile", "Dashboard"], ["authentication", "Auth"], ["faq", "FAQ"], ["troubleshooting", "Troubleshoot"]];
+  </script>
+  <script id="docs-app">
+    (function () {
+      'use strict';
+      const DOCS = window.__DOCS__;
+      const TOP_NAV = window.__TOP_NAV__;
+
+      marked.setOptions({ gfm: true, breaks: false, headerIds: true, mangle: false });
+
+      // ---- Theme ----
+      const THEME_KEY = 'idam.docs.theme';
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.setAttribute('data-theme', 'dark');
+      const themeBtn = document.getElementById('theme-toggle');
+      function syncThemeIcon() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        themeBtn.textContent = isDark ? '☀️' : '🌙';
+      }
+      syncThemeIcon();
+      themeBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem(THEME_KEY, next);
+        syncThemeIcon();
+      });
+
+      // ---- Group docs ----
+      const groups = [];
+      const seen = {};
+      DOCS.forEach((d) => {
+        if (!seen[d.group]) {
+          seen[d.group] = { name: d.group, items: [] };
+          groups.push(seen[d.group]);
+        }
+        seen[d.group].items.push(d);
+      });
+      const docById = Object.fromEntries(DOCS.map(d => [d.id, d]));
+
+      // ---- Render sidebar ----
+      const sidebarEl = document.getElementById('docs-sidebar');
+      sidebarEl.innerHTML = groups.map(g => `
+        <div class="sidebar-group" data-open="true" data-group="${g.name}">
+          <button class="sidebar-group-head" type="button">
+            <span>${escapeHtml(g.name)}</span>
+            <span class="chev">▾</span>
+          </button>
+          <ul class="sidebar-group-items">
+            ${g.items.map(it => `<li><a href="#/${it.id}" data-id="${it.id}">${escapeHtml(it.title)}</a></li>`).join('')}
+          </ul>
+        </div>
+      `).join('');
+      sidebarEl.querySelectorAll('.sidebar-group-head').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const grp = btn.parentElement;
+          grp.dataset.open = grp.dataset.open === 'true' ? 'false' : 'true';
+        });
+      });
+
+      // ---- Render top nav strip ----
+      const navStrip = document.getElementById('docs-navstrip');
+      navStrip.innerHTML = TOP_NAV.map(([id, label]) =>
+        `<a href="#/${id}" data-id="${id}">${escapeHtml(label)}</a>`).join('');
+
+      // ---- Routing ----
+      function pathFromHash() {
+        const h = location.hash.replace(/^#\/?/, '');
+        return h || 'overview';
+      }
+      function render() {
+        const id = pathFromHash();
+        const doc = docById[id];
+        const article = document.getElementById('docs-article');
+        const breadcrumb = document.getElementById('docs-breadcrumb');
+        if (!doc) {
+          article.innerHTML = `<h1>Not found</h1><p>No doc registered for <code>#/${escapeHtml(id)}</code>.</p>`;
+          breadcrumb.innerHTML = `<a href="#/overview">Docs</a>`;
+          return;
+        }
+        // Article
+        article.innerHTML = marked.parse(doc.content || '');
+        // Breadcrumb
+        breadcrumb.innerHTML = `<a href="#/overview">Docs</a> <span class="sep">›</span> <span>${escapeHtml(doc.group)}</span> <span class="sep">›</span> <strong>${escapeHtml(doc.title)}</strong>`;
+        // Highlight in sidebar + nav strip
+        document.querySelectorAll('.sidebar-group-items a').forEach(a => a.classList.toggle('active', a.dataset.id === id));
+        document.querySelectorAll('.docs-navstrip a').forEach(a => a.classList.toggle('active', a.dataset.id === id));
+        // Auto-expand the active group
+        document.querySelectorAll('.sidebar-group').forEach(g => {
+          const has = g.querySelector(`a[data-id="${id}"]`);
+          if (has) g.dataset.open = 'true';
+        });
+        // Scroll to top of content
+        document.querySelector('.docs-main').scrollTop = 0;
+        window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+      }
+      window.addEventListener('hashchange', render);
+      if (!location.hash) location.hash = '#/overview';
+      render();
+
+      // ---- Search ----
+      const searchInput = document.getElementById('docs-search-input');
+      const searchResults = document.getElementById('docs-search-results');
+      let searchIndex = null;
+      function buildIndex() {
+        if (searchIndex) return searchIndex;
+        const idx = [];
+        DOCS.forEach((doc) => {
+          const lines = (doc.content || '').split(/\r?\n/);
+          let cur = { heading: doc.title, anchor: '', body: [] };
+          lines.forEach((line) => {
+            const m = /^(#{1,4})\s+(.+?)\s*$/.exec(line);
+            if (m) {
+              if (cur.heading || cur.body.length) idx.push({ ...cur, doc });
+              cur = { heading: m[2], anchor: slugify(m[2]), body: [] };
+            } else if (line.trim()) {
+              cur.body.push(line);
+            }
+          });
+          if (cur.heading || cur.body.length) idx.push({ ...cur, doc });
+        });
+        searchIndex = idx;
+        return idx;
+      }
+      function slugify(s) { return s.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-'); }
+      function escapeHtml(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+      function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+      function highlight(text, q) {
+        const idx = text.toLowerCase().indexOf(q.toLowerCase());
+        if (idx === -1) return escapeHtml(text.slice(0, 140));
+        const start = Math.max(0, idx - 40);
+        return escapeHtml(text.slice(start, start + 160))
+          .replace(new RegExp(escapeRegExp(q), 'ig'), m => `<mark>${escapeHtml(m)}</mark>`);
+      }
+      function showResults(html) { searchResults.innerHTML = html; searchResults.hidden = false; }
+      function hideSearch() { searchResults.hidden = true; }
+      let timer = null;
+      searchInput.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(runSearch, 100); });
+      searchInput.addEventListener('focus', () => { if (searchInput.value.trim()) runSearch(); });
+      document.addEventListener('click', (e) => {
+        if (!searchResults.contains(e.target) && e.target !== searchInput) hideSearch();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') hideSearch();
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault(); searchInput.focus(); searchInput.select();
+        }
+      });
+      function runSearch() {
+        const q = searchInput.value.trim();
+        if (q.length < 2) { hideSearch(); return; }
+        const idx = buildIndex();
+        const ql = q.toLowerCase();
+        const hits = [];
+        idx.forEach((sec) => {
+          const head = (sec.heading || '').toLowerCase();
+          const body = sec.body.join(' ');
+          let score = 0;
+          if (head.includes(ql)) score += 3;
+          if (body.toLowerCase().includes(ql)) score += 1;
+          if (score) hits.push({ sec, score, body });
+        });
+        hits.sort((a, b) => b.score - a.score);
+        if (!hits.length) { showResults('<div class="empty">No matches.</div>'); return; }
+        showResults(
+          hits.slice(0, 12).map(({ sec, body }) => `
+            <a class="result" href="#/${sec.doc.id}${sec.anchor ? '#' + sec.anchor : ''}" onclick="document.getElementById('docs-search-results').hidden=true">
+              <div class="result-title">${escapeHtml(sec.heading || sec.doc.title)}</div>
+              <div class="result-section">${escapeHtml(sec.doc.group)} / ${escapeHtml(sec.doc.title)}</div>
+              <div class="result-snippet">${highlight(body, q)}</div>
+            </a>
+          `).join('')
+        );
+      }
+
+      // ---- Mobile menu ----
+      document.getElementById('menu-toggle').addEventListener('click', () => {
+        sidebarEl.classList.toggle('open');
+      });
+    })();
+  </script>
+</body>
+</html>

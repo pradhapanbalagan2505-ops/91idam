@@ -1,0 +1,1542 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>91 IDAM — Try the App</title>
+  <link rel="stylesheet" href="./assets/docs.css" />
+  <link rel="stylesheet" href="./assets/vendor/driver.css" />
+  <link rel="stylesheet" href="./assets/tour.css" />
+</head>
+<body class="tour-body app-mode">
+
+  <header class="app-topbar">
+    <a class="brand" href="./index.html" aria-label="Back to docs">
+      <span class="brand-mark">91</span>
+      <span class="brand-name">IDAM Demo</span>
+    </a>
+    <span class="app-topbar-hint">Interactive walkthrough — click <strong>Next</strong> on each tooltip</span>
+    <div class="app-topbar-actions">
+      <a class="btn-link" href="./docs-standalone.html">📚 Documentation</a>
+      <button class="btn-link" id="steps-btn" type="button" aria-haspopup="dialog" aria-expanded="false">📋 All steps</button>
+      <button class="btn-link" id="restart-btn" type="button">↻ Restart tour</button>
+      <a class="btn-link" href="./index.html">Exit</a>
+    </div>
+  </header>
+
+  <!-- All-steps panel — opens via the topbar button, click any item to jump -->
+  <aside class="steps-panel" id="steps-panel" hidden role="dialog" aria-label="All tour steps">
+    <div class="steps-panel-head">
+      <h3>Jump to step</h3>
+      <button class="steps-panel-close" id="steps-panel-close" type="button" aria-label="Close">✕</button>
+    </div>
+    <p class="steps-panel-sub">Click any step to jump directly.</p>
+    <ol class="steps-panel-list" id="steps-panel-list"></ol>
+  </aside>
+  <div class="steps-panel-backdrop" id="steps-panel-backdrop" hidden></div>
+
+  <main class="app-stage" id="app-stage">
+
+    <!-- ===================================================================
+         SCREEN: HOME — matched to live 91idam.com layout
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="home" hidden>
+      <div class="mock-header">
+        <div class="mock-logo" data-anchor="logo">91 IDAM</div>
+        <nav class="mock-nav">
+          <a class="active" data-anchor="nav-home">Home</a>
+          <a data-anchor="nav-properties">Properties</a>
+          <a data-anchor="nav-individuals">Individuals ▾</a>
+          <a data-anchor="nav-franchise">Franchise Partners ▾</a>
+          <a data-anchor="nav-agents">Our Agents</a>
+        </nav>
+        <button class="mock-btn-primary mock-login" data-anchor="login-btn">Login</button>
+      </div>
+
+      <!-- Fold 1: Hero -->
+      <section class="mock-hero">
+        <div class="mock-hero-text">
+          <h1>1 Powerful Platform.</h1>
+          <h2 class="accent">4 Smart Solutions.</h2>
+          <div class="mock-search-card" data-anchor="hero-search">
+            <div class="mock-search-bar">
+              <input placeholder="Search Properties, locations, or requirements..." value="OMR" />
+              <button class="mock-search-btn" aria-label="Search">🔍</button>
+            </div>
+            <div class="mock-search-filter">
+              <span class="mock-search-label">Filter by Category:</span>
+              <label><input type="radio" name="cat" checked /> All</label>
+              <label><input type="radio" name="cat" /> Residential</label>
+              <label><input type="radio" name="cat" /> Commercial</label>
+            </div>
+          </div>
+        </div>
+        <div class="mock-hero-art">
+          <svg width="280" height="280" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#175973" />
+                <stop offset="100%" stop-color="#2e8eaf" />
+              </linearGradient>
+              <linearGradient id="hg2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#B59327" />
+                <stop offset="100%" stop-color="#8a6e1d" />
+              </linearGradient>
+            </defs>
+            <ellipse cx="140" cy="245" rx="110" ry="14" fill="#175973" opacity="0.08" />
+            <polygon points="50,150 140,80 230,150 230,230 50,230" fill="url(#hg1)" />
+            <polygon points="50,150 140,80 230,150 215,150 140,95 65,150" fill="url(#hg2)" />
+            <rect x="120" y="170" width="40" height="60" fill="#fff" opacity="0.95" />
+            <rect x="75" y="170" width="32" height="32" fill="#fff" opacity="0.85" />
+            <rect x="173" y="170" width="32" height="32" fill="#fff" opacity="0.85" />
+            <line x1="91" y1="170" x2="91" y2="202" stroke="#175973" stroke-width="2" />
+            <line x1="75" y1="186" x2="107" y2="186" stroke="#175973" stroke-width="2" />
+            <line x1="189" y1="170" x2="189" y2="202" stroke="#175973" stroke-width="2" />
+            <line x1="173" y1="186" x2="205" y2="186" stroke="#175973" stroke-width="2" />
+            <circle cx="155" cy="200" r="2" fill="#175973" />
+            <polygon points="200,80 200,40 215,40 215,80" fill="#B59327" />
+            <polygon points="200,40 215,40 207,28" fill="#8a6e1d" />
+          </svg>
+        </div>
+      </section>
+
+      <!-- Fold 2: Audience cards -->
+      <section class="mock-audience" data-anchor="places">
+        <h2>Real Estate is Complicated. We Make it Simple, Legal, and Profitable</h2>
+        <p class="mock-audience-sub">Whether you're buying, selling, starting your own real-estate business, executing projects, or scaling property investments — 91 IDAM gives you everything under one trusted, tech-enabled system. We serve:</p>
+        <div class="mock-audience-grid">
+          <div class="mock-aud-card">
+            <div class="mock-aud-img" style="background: linear-gradient(135deg, #DFDBCF, #b8b09c);">👨‍👩‍👧</div>
+            <h4>Property Buyers, Sellers, NRIs, and Tenants</h4>
+            <p>Click to learn how we help you</p>
+          </div>
+          <div class="mock-aud-card">
+            <div class="mock-aud-img" style="background: linear-gradient(135deg, #b8d4dc, #5a9fd4);">🏢</div>
+            <h4>Franchise Partners and Entrepreneurs</h4>
+            <p>Click to learn how we help you</p>
+          </div>
+          <div class="mock-aud-card">
+            <div class="mock-aud-img" style="background: linear-gradient(135deg, #f3e7c0, #B59327);">⚖️</div>
+            <h4>Builders, Legal Advisors, Loan Agents, Vendors</h4>
+            <p>Click to learn how we help you</p>
+          </div>
+          <div class="mock-aud-card">
+            <div class="mock-aud-img" style="background: linear-gradient(135deg, #c5d8e0, #2C5F7E);">🏛️</div>
+            <h4>Institutional Clients, PG Operators, Corporates, Government Housing</h4>
+            <p>Click to learn how we help you</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fold 3: Plots / Sellers band -->
+      <section class="mock-sellers-band" data-anchor="sellers">
+        <div class="mock-sellers-bg-text">Plots/Land Posted by</div>
+        <div class="mock-sellers-card">
+          <div class="mock-sellers-head">
+            <h2>Choose Who's Selling</h2>
+            <p>Discover Listings You'll Like</p>
+          </div>
+          <div class="mock-sellers-grid">
+            <div class="mock-seller-tile">
+              <div class="mock-seller-icon">🏷️</div>
+              <h3>Dealer</h3>
+              <p>3000+ Properties</p>
+            </div>
+            <div class="mock-seller-tile">
+              <div class="mock-seller-icon">🏠</div>
+              <h3>Owner</h3>
+              <p>3000+ Properties</p>
+            </div>
+            <div class="mock-seller-tile">
+              <div class="mock-seller-icon">🏗️</div>
+              <h3>Builder</h3>
+              <p>3000+ Properties</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fold 4: List property CTA -->
+      <section class="mock-list-cta" data-anchor="list-cta">
+        <div>
+          <h2>Got a property to sell?</h2>
+          <p>List in 5 minutes. We verify documents, photograph, and bring you serious buyers within 48 hours.</p>
+        </div>
+        <button class="mock-btn-primary big">List your property →</button>
+      </section>
+
+      <!-- Fold 5: Enhanced Services (teal gradient with frosted cards) -->
+      <section class="mock-services-band" data-anchor="services">
+        <div class="mock-services-head">
+          <h2>Beyond Property Listings</h2>
+          <p>Complete real-estate ecosystem with legal safety, business opportunities, and enterprise solutions</p>
+        </div>
+        <div class="mock-services-grid">
+          <div class="mock-svc-card">
+            <div class="mock-svc-icon">🔒</div>
+            <h3>Property. Done Right.</h3>
+            <p>Complete legal verification, digital document locker, rental agreements, and fraud protection for buyers, sellers, tenants, and NRIs.</p>
+            <div class="mock-svc-chips">
+              <span>✓ Anti-fraud</span><span>✓ Digital Locker</span><span>✓ CRM Support</span>
+            </div>
+            <a class="mock-svc-link">Book Consultation →</a>
+          </div>
+          <div class="mock-svc-card">
+            <div class="mock-svc-icon">🏢</div>
+            <h3>Your Business. Our System.</h3>
+            <p>Complete business-in-a-box for entrepreneurs, brokers, and job seekers. Proven franchise system with recurring income potential.</p>
+            <div class="mock-svc-chips">
+              <span>✓ ROI Calculator</span><span>✓ Demo Video</span><span>✓ CRM Tools</span>
+            </div>
+            <a class="mock-svc-link">Apply for Franchise →</a>
+          </div>
+          <div class="mock-svc-card">
+            <div class="mock-svc-icon">⭐</div>
+            <h3>Earn More. Get Recognized.</h3>
+            <p>Verified vendor status for builders, surveyors, lawyers, and loan agents. Regular projects with professional recognition.</p>
+            <div class="mock-svc-chips">
+              <span>✓ Verified Badge</span><span>✓ Regular Projects</span><span>✓ CRM Access</span>
+            </div>
+            <a class="mock-svc-link">Join as Vendor →</a>
+          </div>
+          <div class="mock-svc-card">
+            <div class="mock-svc-icon">🏛️</div>
+            <h3>Enterprise Real Estate Execution.</h3>
+            <p>Multi-location SLA delivery for PGs, corporates, government, and investors. Compliance dashboards with risk management.</p>
+            <div class="mock-svc-chips">
+              <span>✓ Multi-Location SLA</span><span>✓ Case Studies</span><span>✓ Proposal</span>
+            </div>
+            <a class="mock-svc-link">Book Demo →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fold 6: Comparison -->
+      <section class="mock-comparison" data-anchor="comparison">
+        <h2>Why 91 IDAM vs traditional brokers</h2>
+        <table class="mock-cmp-table">
+          <thead><tr><th></th><th>Traditional broker</th><th class="us">91 IDAM</th></tr></thead>
+          <tbody>
+            <tr><td>Property verification</td><td>❌ Often skipped</td><td class="us">✅ Legal team checks every doc</td></tr>
+            <tr><td>Hidden brokerage</td><td>❌ Yes</td><td class="us">✅ Transparent, fixed</td></tr>
+            <tr><td>Time to close</td><td>3-6 months</td><td class="us">2-6 weeks</td></tr>
+            <tr><td>Tech-enabled CRM</td><td>❌ No</td><td class="us">✅ Full digital trail</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Fold 7: Testimonials -->
+      <section class="mock-testimonials" data-anchor="testimonials">
+        <h2>What our customers say</h2>
+        <div class="mock-testi-grid">
+          <div class="mock-testi-card">
+            <p>"Closed my apartment sale in 19 days. The legal verification alone saved me ₹2 lakh in agent fees."</p>
+            <div class="mock-testi-by"><strong>Karthick S</strong> · Coimbatore</div>
+          </div>
+          <div class="mock-testi-card">
+            <p>"Bought my first home through 91 IDAM. Every document was already vetted — peace of mind."</p>
+            <div class="mock-testi-by"><strong>Priya R</strong> · Chennai</div>
+          </div>
+          <div class="mock-testi-card">
+            <p>"Their franchise model is a dream. I started my unit in 6 weeks with full training."</p>
+            <div class="mock-testi-by"><strong>Vignesh M</strong> · Salem</div>
+          </div>
+        </div>
+        <div class="mock-trust">
+          🏛️ Government Registered · ⚖️ Legal Compliance · 🔒 Data Security · 📜 ISO Certified · 🤝 Tech Partner
+        </div>
+      </section>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: SEARCH
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="search" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Properties</a><a>Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-breadcrumb">Home › Properties in Tamil Nadu</div>
+      <div class="mock-search-layout">
+        <aside class="mock-filters" data-anchor="filters">
+          <div class="filter-applied">
+            <h3>Applied Filters <a>CLEAR ALL</a></h3>
+            <div class="filter-chips">
+              <span class="chip">₹50 L – ₹1 Cr ✕</span>
+              <span class="chip">Residential ✕</span>
+              <span class="chip">Coimbatore ✕</span>
+            </div>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Budget</div>
+            <label><input type="checkbox" /> Under ₹25 L</label>
+            <label><input type="checkbox" checked /> ₹25 L – ₹50 L</label>
+            <label><input type="checkbox" checked /> ₹50 L – ₹1 Cr</label>
+            <label><input type="checkbox" /> ₹1 Cr – ₹2 Cr</label>
+            <label><input type="checkbox" /> ₹2 Cr – ₹5 Cr</label>
+            <label><input type="checkbox" /> Above ₹5 Cr</label>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Property Type</div>
+            <label><input type="checkbox" checked /> Residential</label>
+            <label><input type="checkbox" /> Commercial</label>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Posted by</div>
+            <label><input type="checkbox" /> Owner</label>
+            <label><input type="checkbox" checked /> Builder</label>
+            <label><input type="checkbox" /> Dealer</label>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Approved by</div>
+            <label><input type="checkbox" checked /> DTCP</label>
+            <label><input type="checkbox" /> RERA</label>
+            <label><input type="checkbox" /> CMDA</label>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Facing</div>
+            <label><input type="checkbox" /> North</label>
+            <label><input type="checkbox" /> East</label>
+            <label><input type="checkbox" /> South</label>
+            <label><input type="checkbox" /> West</label>
+          </div>
+        </aside>
+        <section class="mock-results" data-anchor="results-list">
+          <div class="mock-results-bar">
+            <span><strong>156</strong> properties · <strong>24</strong> shown</span>
+            <select class="mock-sort" data-anchor="sort">
+              <option>Newest first</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Area: Small to Large</option>
+            </select>
+          </div>
+          <div class="mock-prop-card" data-anchor="result-card">
+            <div class="mock-prop-img">🏘️</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>3 BHK Villa, OMR Padur</h4>
+              <div class="mock-prop-meta">Residential · 3BHK Villa · 1850 sqft · DTCP</div>
+              <p>Spacious gated-community villa, vastu-compliant, covered parking, walking distance to schools…</p>
+              <div class="mock-prop-owner">👤 Priya Subramaniam · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹85.00 L</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🏢</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>2 BHK Apartment, RS Puram</h4>
+              <div class="mock-prop-meta">Residential · 2BHK Apt · 1100 sqft · CMDA</div>
+              <p>East-facing 5th-floor apartment in heart of Coimbatore. Modular kitchen, reserved parking…</p>
+              <div class="mock-prop-owner">👤 Karthik Velu · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹62.00 L</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🏞️</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>Commercial Plot, Saravanampatti</h4>
+              <div class="mock-prop-meta">Commercial · Plot · 4800 sqft · DTCP</div>
+              <p>4800 sqft DTCP-approved plot, 40 ft road frontage. Suitable for retail / office build-out…</p>
+              <div class="mock-prop-owner">👤 Vignesh Raja · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹1.20 Cr</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🏡</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>4 BHK Bungalow, Race Course Road</h4>
+              <div class="mock-prop-meta">Residential · 4BHK Independent · 3200 sqft · CMDA</div>
+              <p>Premium bungalow with garden, swimming pool, servant quarters. Prime location in Coimbatore…</p>
+              <div class="mock-prop-owner">👤 Lakshmi Iyer · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹2.85 Cr</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🏠</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR RENT</div>
+              <h4>2 BHK Flat, Anna Nagar</h4>
+              <div class="mock-prop-meta">Residential · 2BHK Apt · 1080 sqft · CMDA</div>
+              <p>Furnished flat with AC, fridge, washing machine. Walking distance to metro and schools…</p>
+              <div class="mock-prop-owner">👤 Mohan Bhaskar · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹35,000/mo</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🌾</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>DTCP Plot, ECR Mahabalipuram</h4>
+              <div class="mock-prop-meta">Residential · Plot · 2400 sqft · DTCP</div>
+              <p>Beach-side residential plot with patta and clear title. 200 m from ECR road…</p>
+              <div class="mock-prop-owner">👤 Anitha Devi · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹52.00 L</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-pagination">
+            <button>‹ Prev</button>
+            <span class="active">1</span><span>2</span><span>3</span><span>…</span><span>26</span>
+            <button>Next ›</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: PROPERTY DETAILS
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="property-details" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Properties</a><a>Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-breadcrumb">Home › Properties › 3 BHK Villa, OMR Padur</div>
+      <div class="mock-pd">
+        <div class="mock-pd-gallery" data-anchor="gallery">
+          <div class="mock-gallery-main">🏠</div>
+          <div class="mock-gallery-thumbs">
+            <span>🏘️</span><span>🛋️</span><span>🛏️</span><span>🍽️</span><span>🚿</span><span>🚗</span><span>🌳</span><span>+3</span>
+          </div>
+        </div>
+        <div class="mock-pd-grid">
+          <div class="mock-pd-summary" data-anchor="summary">
+            <h2>3 BHK Villa, OMR Padur</h2>
+            <div class="mock-prop-meta">Residential · 3BHK Villa · 1850 sqft · DTCP-approved</div>
+            <div class="mock-pd-price">₹85.00 L <span class="mock-neg">(Negotiable)</span></div>
+            <span class="mock-status active">● Active</span>
+            <div class="mock-pd-attrs" data-anchor="attrs">
+              <div><strong>Bathrooms</strong> 3</div>
+              <div><strong>Parking</strong> 2 covered</div>
+              <div><strong>Facing</strong> East</div>
+              <div><strong>Floors</strong> G+1</div>
+              <div><strong>Age</strong> 2 years</div>
+              <div><strong>Furnishing</strong> Semi</div>
+              <div><strong>Plot Area</strong> 2400 sqft</div>
+              <div><strong>Road Width</strong> 40 ft</div>
+            </div>
+
+            <h3>About this property</h3>
+            <p>Spacious 3BHK villa in a gated community on Old Mahabalipuram Road, Padur. Vastu-compliant with East-facing entrance. Includes 24/7 security, club house, gym, and swimming pool. Walking distance to Velammal Vidyalaya, Mahindra World City, and the IT corridor (TCS, Infosys, CTS).</p>
+
+            <h3 data-anchor="facilities">Amenities & facilities</h3>
+            <div class="mock-facilities">
+              <span>🏊 Swimming Pool</span>
+              <span>🏋️ Gym</span>
+              <span>🎮 Club House</span>
+              <span>👮 24/7 Security</span>
+              <span>🌳 Garden</span>
+              <span>🏏 Play Area</span>
+              <span>⚡ Power Backup</span>
+              <span>💧 24/7 Water</span>
+            </div>
+
+            <h3 data-anchor="location">Location</h3>
+            <div class="mock-map">
+              📍 OMR, Padur, Chengalpattu District, Tamil Nadu 603103
+              <button class="mock-btn-secondary small">Open in Maps ↗</button>
+            </div>
+
+            <h3 data-anchor="similar">Similar properties nearby</h3>
+            <div class="mock-similar">
+              <div class="mock-similar-card">
+                <div>🏘️</div><strong>3 BHK Villa, Kelambakkam</strong>
+                <div>1900 sqft · ₹78 L</div>
+              </div>
+              <div class="mock-similar-card">
+                <div>🏠</div><strong>3 BHK Villa, Sholinganallur</strong>
+                <div>2050 sqft · ₹95 L</div>
+              </div>
+              <div class="mock-similar-card">
+                <div>🏡</div><strong>3 BHK House, Siruseri</strong>
+                <div>1750 sqft · ₹72 L</div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="mock-pd-side">
+            <div class="mock-contact-card" data-anchor="contact-card">
+              <div class="mock-avatar">PS</div>
+              <div class="mock-contact-name">Priya Subramaniam</div>
+              <div class="mock-contact-role">⭐ Verified Agent · 12 listings</div>
+              <button class="mock-btn-primary mock-contact-btn">Contact owner / agent</button>
+              <div class="mock-contact-phone">📞 +91 98400 12345</div>
+              <div class="mock-contact-phone">✉️ priya@91idam.com</div>
+              <div class="mock-contact-stats">
+                <div><strong>4.8</strong>★ Rating</div>
+                <div><strong>54</strong> Sales</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: LOGIN MODAL
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="login" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a class="active">Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <section class="mock-hero"><div class="mock-hero-text"><h1>1 Powerful Platform.</h1></div></section>
+      <div class="mock-modal">
+        <div class="mock-modal-card" data-anchor="login-card">
+          <div class="mock-modal-title">Sign in to 91 IDAM</div>
+          <p class="mock-modal-sub">Welcome back. Use your registered email.</p>
+          <label>Email</label>
+          <input value="ramesh@example.com" data-anchor="login-email" />
+          <label>Password</label>
+          <input type="password" value="••••••••••" />
+          <label class="mock-checkbox"><input type="checkbox" checked /> Remember me for 30 days</label>
+          <button class="mock-btn-primary mock-modal-cta" data-anchor="login-cta">Send OTP</button>
+          <div class="mock-modal-foot"><a>Forgot password?</a> · <a>Sign up</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: OTP
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="otp" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a class="active">Home</a><a>Properties</a><a>Our Agents</a></nav>
+      </div>
+      <div class="mock-modal">
+        <div class="mock-modal-card" data-anchor="otp-card">
+          <div class="mock-modal-title">Verify OTP</div>
+          <p class="mock-modal-sub">A 6-digit code was sent to <strong>ramesh@example.com</strong></p>
+          <div class="mock-otp" data-anchor="otp-input">
+            <input value="4" /><input value="2" /><input value="9" /><input value="8" /><input /><input />
+          </div>
+          <button class="mock-btn-primary mock-modal-cta">Verify & continue</button>
+          <div class="mock-modal-foot"><a>Resend OTP (2/3 left)</a> · <span>Expires in 04:23</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: OUR AGENTS
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="agents" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a class="active">Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-agents-hero" data-anchor="agents-hero">
+        <h1>Our Agents</h1>
+        <p>Connect with certified real estate professionals across Tamil Nadu.</p>
+      </div>
+      <div class="mock-agents-grid">
+        <div class="mock-agent-card" data-anchor="agent-card">
+          <div class="mock-agent-photo">PS</div>
+          <div class="mock-agent-body">
+            <h4>Priya Subramaniam</h4>
+            <div class="mock-meta-line">Senior Agent · Chennai</div>
+            <div class="mock-meta-line">DTCP/RERA certified</div>
+            <div class="mock-meta-stars">★ 4.8 · 12 listings · 54 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">KV</div>
+          <div class="mock-agent-body">
+            <h4>Karthik Velu</h4>
+            <div class="mock-meta-line">Agent · Coimbatore</div>
+            <div class="mock-meta-line">Residential specialist</div>
+            <div class="mock-meta-stars">★ 4.6 · 5 listings · 18 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">VR</div>
+          <div class="mock-agent-body">
+            <h4>Vignesh Raja</h4>
+            <div class="mock-meta-line">Senior Agent · Coimbatore</div>
+            <div class="mock-meta-line">Commercial properties</div>
+            <div class="mock-meta-stars">★ 4.9 · 9 listings · 41 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">AD</div>
+          <div class="mock-agent-body">
+            <h4>Anitha Devi</h4>
+            <div class="mock-meta-line">Agent · Madurai</div>
+            <div class="mock-meta-line">Plots & farmland</div>
+            <div class="mock-meta-stars">★ 4.7 · 8 listings · 23 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">SR</div>
+          <div class="mock-agent-body">
+            <h4>Sundar Ramaswamy</h4>
+            <div class="mock-meta-line">Senior Agent · Salem</div>
+            <div class="mock-meta-line">Industrial properties</div>
+            <div class="mock-meta-stars">★ 4.5 · 6 listings · 14 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">LI</div>
+          <div class="mock-agent-body">
+            <h4>Lakshmi Iyer</h4>
+            <div class="mock-meta-line">Agent · Chennai</div>
+            <div class="mock-meta-line">Premium villas & bungalows</div>
+            <div class="mock-meta-stars">★ 4.9 · 14 listings · 67 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: AGENT DETAIL
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="agent-detail" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a class="active">Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-breadcrumb">Home › Our Agents › Chennai › Priya Subramaniam</div>
+      <div class="mock-ad">
+        <aside class="mock-ad-side">
+          <div class="mock-agent-photo big" data-anchor="ad-photo">PS</div>
+          <button class="mock-btn-primary full" data-anchor="ad-contact">Contact Me</button>
+          <div class="mock-ad-contact">
+            <div>📞 +91 98400 12345</div>
+            <div>✉️ priya@91idam.com</div>
+          </div>
+        </aside>
+        <section class="mock-ad-main">
+          <div class="mock-ad-header" data-anchor="ad-header">
+            <div class="mock-ad-company">VKV Realty</div>
+            <h2>Priya Subramaniam</h2>
+            <div class="mock-meta-line">Senior Agent · Chennai · ⭐ 4.8 (54 reviews)</div>
+            <div class="mock-ad-badges">
+              <span>🏛️ DTCP Certified</span>
+              <span>📜 RERA Registered</span>
+              <span>🌟 Top 10 Agent 2026</span>
+            </div>
+          </div>
+          <div class="mock-ad-tabs" data-anchor="ad-tabs">
+            <a class="active">About</a><a>Properties (12)</a><a>Reviews (38)</a>
+          </div>
+          <h3>About Priya</h3>
+          <p>10+ years specialising in OMR and Padur residential markets. Trained at Anna University with a real-estate management certification. Languages: English, Tamil, Hindi.</p>
+          <h3>Specialties</h3>
+          <ul class="mock-ad-spec">
+            <li>Premium villas in OMR / ECR corridor</li>
+            <li>3BHK and 4BHK gated communities</li>
+            <li>NRI buyer assistance</li>
+            <li>Legal verification + document support</li>
+          </ul>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: ABOUT
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="about" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">About</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-about" data-anchor="about-hero">
+        <h1>91 IDAM</h1>
+        <p class="lead">Redefining Indian real estate through an integrated, transparent, tech-enabled ecosystem.</p>
+        <div class="mock-about-stats">
+          <div><strong>2025</strong><span>Established</span></div>
+          <div><strong>Coimbatore</strong><span>Headquarters</span></div>
+          <div><strong>Real Estate</strong><span>Industry</span></div>
+          <div><strong>Franchise</strong><span>Business model</span></div>
+        </div>
+      </div>
+      <div class="mock-mission" data-anchor="about-mission">
+        <div class="mock-mv-card">
+          <h3>🎯 Our Mission</h3>
+          <p>End-to-end property services through a tech-first, franchise-based model. Speed, simplicity and trust on every real estate journey.</p>
+        </div>
+        <div class="mock-mv-card">
+          <h3>🔭 Our Vision</h3>
+          <p>An integrated ecosystem empowering buyers, sellers, brokers and developers — backed by 100+ franchise locations and ₹200 Cr+ in annual revenue.</p>
+        </div>
+      </div>
+      <div class="mock-values" data-anchor="about-values">
+        <h2>Our Core Values</h2>
+        <div class="mock-values-grid">
+          <div><strong>1. Public commitment</strong><p>Serve communities with honesty.</p></div>
+          <div><strong>2. Transparency</strong><p>Clear pricing, ethical conduct.</p></div>
+          <div><strong>3. Confidentiality</strong><p>Data privacy in every deal.</p></div>
+          <div><strong>4. Integrity</strong><p>Right thing, even unwatched.</p></div>
+          <div><strong>5. Employee happiness</strong><p>Growth and respect.</p></div>
+          <div><strong>6. Collaboration</strong><p>Brokers, clients, partners — one team.</p></div>
+          <div><strong>7. Time value</strong><p>Streamlined operations.</p></div>
+          <div><strong>8. Customer-centricity</strong><p>Peace of mind on every touch.</p></div>
+        </div>
+      </div>
+      <div class="mock-leadership" data-anchor="about-leadership">
+        <h2>Leadership</h2>
+        <div class="mock-leader">
+          <div class="mock-agent-photo big">PK</div>
+          <div>
+            <h3>Mr. Pratheesh Kumar-E</h3>
+            <p class="mock-meta-line">Founder & CEO, 91 IDAM</p>
+            <p>Visionary leader transforming Indian real estate through technology and ethical practices. Building IDAM as India's most trusted real-estate platform.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mock-segments" data-anchor="about-segments">
+        <h2>Who We Serve</h2>
+        <div class="mock-seg-grid">
+          <div><strong>🏠 Home Buyers & Sellers</strong><p>Trusted property transactions, legal verification.</p></div>
+          <div><strong>🤝 Tenants & Landlords</strong><p>Transparent agreements + property management.</p></div>
+          <div><strong>🌍 NRIs</strong><p>Remote investment in Indian real estate.</p></div>
+          <div><strong>🏢 Brokers</strong><p>Tech tools and brand support to scale.</p></div>
+          <div><strong>🏗️ Developers</strong><p>Marketing and sales-channel partnerships.</p></div>
+          <div><strong>💼 Franchise Entrepreneurs</strong><p>Proven systems for new ventures.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: WHY IDAM
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="whyidam" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Why IDAM</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-why-hero" data-anchor="why-hero">
+        <h1>Why Choose IDAM?</h1>
+        <p>The only real-estate platform that combines tech-first solutions, legal verification, franchise opportunities, and 40+ years of industry wisdom.</p>
+        <div class="mock-why-highlights">
+          <span>🔒 Legal Safety First</span>
+          <span>🤝 Franchise-First Model</span>
+          <span>💻 Tech-Powered</span>
+          <span>⚖️ Trust & Transparency</span>
+        </div>
+      </div>
+      <div class="mock-why-problems" data-anchor="why-problems">
+        <h2>Real estate's biggest pain points</h2>
+        <div class="mock-pp-grid">
+          <div class="mock-pp-card">
+            <div>❌ Legal disputes</div>
+            <p>Buyers lose lakhs to fraudulent listings, missing patta, encroachment.</p>
+          </div>
+          <div class="mock-pp-card">
+            <div>❌ Hidden brokerage</div>
+            <p>Agents quote one rate, charge another. Negotiation is opaque.</p>
+          </div>
+          <div class="mock-pp-card">
+            <div>❌ Slow closings</div>
+            <p>Average deal takes 4-6 months. Buyers and sellers both lose patience.</p>
+          </div>
+          <div class="mock-pp-card">
+            <div>❌ No follow-up</div>
+            <p>After the sale, brokers vanish. No support for registration, rental, or handover.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mock-why-solutions" data-anchor="why-solutions">
+        <h2>How IDAM solves them</h2>
+        <div class="mock-pp-grid">
+          <div class="mock-pp-card good">
+            <div>✅ Verified listings</div>
+            <p>Every document checked: patta, DTCP, RERA, encumbrance certificate.</p>
+          </div>
+          <div class="mock-pp-card good">
+            <div>✅ Fixed-fee model</div>
+            <p>Transparent brokerage agreed upfront. No surprises at closing.</p>
+          </div>
+          <div class="mock-pp-card good">
+            <div>✅ 2-6 weeks closing</div>
+            <p>CRM-driven matching, prefilled paperwork, scheduled visits.</p>
+          </div>
+          <div class="mock-pp-card good">
+            <div>✅ Full lifecycle</div>
+            <p>Registration, rental management, post-sale support — all in-house.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mock-why-cta" data-anchor="why-cta">
+        <h2>Experience the IDAM difference</h2>
+        <div class="mock-cta-row">
+          <button class="mock-btn-primary big">Start buying</button>
+          <button class="mock-btn-secondary big">List your property</button>
+          <button class="mock-btn-secondary big">Become a partner</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: HOW IT WORKS
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="howitworks" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">How it works</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-how-hero" data-anchor="how-hero">
+        <h1>How IDAM Works</h1>
+        <p>Streamlined, tech-enabled processes for every real-estate journey.</p>
+      </div>
+      <div class="mock-how-tabs" data-anchor="how-tabs">
+        <a class="active">Property Transactions</a>
+        <a>Franchise Partnership</a>
+        <a>Service Providers</a>
+        <a>Enterprise Solutions</a>
+      </div>
+      <div class="mock-how-steps" data-anchor="how-steps">
+        <div class="mock-step-card">
+          <div class="mock-step-num">1</div>
+          <div>
+            <h4>Discovery & verification</h4>
+            <p>Browse 10,000+ verified properties or submit yours. Initial document check (patta, survey number, DTCP/RERA).</p>
+            <div class="mock-step-features">
+              <span>📋 Title verification</span>
+              <span>📍 Location mapping</span>
+              <span>💰 Market analysis</span>
+            </div>
+            <span class="mock-step-time">⏱️ 1-2 days</span>
+          </div>
+        </div>
+        <div class="mock-step-card">
+          <div class="mock-step-num">2</div>
+          <div>
+            <h4>Legal verification & docs</h4>
+            <p>Our legal experts conduct title verification, encumbrance check, and validate DTCP/RERA approvals.</p>
+            <div class="mock-step-features">
+              <span>⚖️ Legal opinion</span>
+              <span>🔐 Digital locker</span>
+              <span>✅ Building permissions</span>
+            </div>
+            <span class="mock-step-time">⏱️ 3-5 days</span>
+          </div>
+        </div>
+        <div class="mock-step-card">
+          <div class="mock-step-num">3</div>
+          <div>
+            <h4>Buyer-seller matching</h4>
+            <p>CRM matches verified buyers with suitable properties. Coordinate site visits with legal experts present.</p>
+            <div class="mock-step-features">
+              <span>🤝 Smart matching</span>
+              <span>🚗 Scheduled visits</span>
+              <span>💵 Negotiation support</span>
+            </div>
+            <span class="mock-step-time">⏱️ 1-2 weeks</span>
+          </div>
+        </div>
+        <div class="mock-step-card">
+          <div class="mock-step-num">4</div>
+          <div>
+            <h4>Agreement & registration</h4>
+            <p>Legal agreement drafting, registration support, and post-sale services including rental management.</p>
+            <div class="mock-step-features">
+              <span>📝 Agreement draft</span>
+              <span>🏛️ Registration</span>
+              <span>🔁 Post-sale support</span>
+            </div>
+            <span class="mock-step-time">⏱️ 1-2 weeks</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: CAREERS
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="careers" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Careers</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-careers" data-anchor="careers-hero">
+        <h2>Apply for a Position</h2>
+        <p>Fill out the form below and our HR team will get back within 48 hours.</p>
+      </div>
+      <div class="mock-careers-form-wrap">
+        <form class="mock-form" data-anchor="careers-form">
+          <div class="mock-field-row">
+            <div class="mock-field"><label>Full Name <span class="req">*</span></label><input value="Karthik Subramaniam" /></div>
+            <div class="mock-field"><label>Email <span class="req">*</span></label><input value="karthik@example.com" /></div>
+          </div>
+          <div class="mock-field-row">
+            <div class="mock-field"><label>Phone <span class="req">*</span></label><input value="+91 98400 12345" /></div>
+            <div class="mock-field"><label>Position Applied <span class="req">*</span></label><input value="Sales Executive" /></div>
+          </div>
+          <div class="mock-field"><label>Years of Experience</label>
+            <select><option>Select…</option><option>Fresher</option><option>1-3 years</option><option selected>3-5 years</option><option>5+ years</option></select>
+          </div>
+          <div class="mock-field"><label>Cover Letter / Message</label>
+            <textarea rows="4">8 years in real estate sales, specialising in residential properties across Coimbatore. Closed ₹120 Cr in deals at my last role…</textarea>
+          </div>
+          <button class="mock-btn-primary big" data-anchor="careers-submit">Submit Application</button>
+          <p class="mock-form-foot">By submitting, you agree to our privacy policy. We'll never share your data.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: CONTACT
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="contact" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Contact</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <section class="mock-contact-hero" data-anchor="contact-hero">
+        <h2>Get in touch</h2>
+        <p>We'd love to talk about how we can help you.</p>
+      </section>
+      <div class="mock-contact">
+        <div class="mock-contact-left">
+          <div class="mock-contact-map" data-anchor="contact-map">
+            🗺️ Our Location<br/><strong>Coimbatore, Tamil Nadu</strong>
+            <button class="mock-btn-secondary small">Open in Maps ↗</button>
+          </div>
+          <div class="mock-contact-info" data-anchor="contact-info">
+            <div><strong>📞 Call us:</strong><br/>+91 97510 00065</div>
+            <div><strong>✉️ Email:</strong><br/>hello@91idam.com</div>
+            <div><strong>🕒 Hours:</strong><br/>Mon-Sat 9AM-7PM</div>
+          </div>
+        </div>
+        <div class="mock-contact-right">
+          <form class="mock-form" data-anchor="contact-form">
+            <h3>Contact Form</h3>
+            <div class="mock-field-row">
+              <div class="mock-field"><label>First name</label><input value="Sneha" /></div>
+              <div class="mock-field"><label>Last name</label><input value="Raman" /></div>
+            </div>
+            <div class="mock-field"><label>Email</label><input value="sneha.r@example.com" /></div>
+            <div class="mock-field"><label>Subject</label><input value="Property in OMR" /></div>
+            <div class="mock-field"><label>Message</label>
+              <textarea rows="4">Looking for a 3BHK villa in OMR around ₹80-90L. Could someone reach out?</textarea>
+            </div>
+            <button class="mock-btn-primary big">Send message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: USER PROFILE (My Listings)
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="user-profile" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <div class="mock-avatar small" data-anchor="avatar">RA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side" data-anchor="profile-sidebar">
+          <div class="mock-profile-card">
+            <div class="mock-avatar large">RA</div>
+            <div class="mock-profile-name">Ramesh A</div>
+            <div class="mock-profile-mail">ramesh@example.com</div>
+          </div>
+          <nav class="mock-profile-nav">
+            <a class="active" data-anchor="nav-listings">My Listings</a>
+            <a data-anchor="nav-responses">View Responses</a>
+            <a>Contacted</a>
+            <a>Profile</a>
+            <a>Change password</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <div class="mock-profile-header">
+            <h2>My Listings</h2>
+            <button class="mock-btn-primary">+ Add new property</button>
+          </div>
+          <div class="mock-listing" data-anchor="my-listing">
+            <div class="mock-listing-img">🏠</div>
+            <div class="mock-listing-body">
+              <span class="mock-status active">● Active</span>
+              <h4>3 BHK Villa, OMR Padur</h4>
+              <div class="mock-prop-meta">Residential · 1850 sqft · DTCP</div>
+              <div class="mock-listing-stats">📞 12 enquiries · 👁 247 views</div>
+            </div>
+            <div class="mock-listing-side">
+              <div class="mock-price">₹85.00 L</div>
+              <button class="mock-btn-link">📝 Edit</button>
+              <button class="mock-btn-link danger">🗑 Delete</button>
+            </div>
+          </div>
+          <div class="mock-listing">
+            <div class="mock-listing-img">🏢</div>
+            <div class="mock-listing-body">
+              <span class="mock-status pending">● Pending</span>
+              <h4>2 BHK Apartment, RS Puram</h4>
+              <div class="mock-prop-meta">Residential · 1100 sqft · CMDA</div>
+              <div class="mock-listing-stats">📞 0 enquiries · 👁 31 views</div>
+            </div>
+            <div class="mock-listing-side">
+              <div class="mock-price">₹62.00 L</div>
+              <button class="mock-btn-link">📝 Edit</button>
+              <button class="mock-btn-link danger">🗑 Delete</button>
+            </div>
+          </div>
+          <div class="mock-listing">
+            <div class="mock-listing-img">🏞️</div>
+            <div class="mock-listing-body">
+              <span class="mock-status active">● Active</span>
+              <h4>Commercial Plot, Saravanampatti</h4>
+              <div class="mock-prop-meta">Commercial · 4800 sqft · DTCP</div>
+              <div class="mock-listing-stats">📞 7 enquiries · 👁 152 views</div>
+            </div>
+            <div class="mock-listing-side">
+              <div class="mock-price">₹1.20 Cr</div>
+              <button class="mock-btn-link">📝 Edit</button>
+              <button class="mock-btn-link danger">🗑 Delete</button>
+            </div>
+          </div>
+          <div class="mock-listing">
+            <div class="mock-listing-img">🌾</div>
+            <div class="mock-listing-body">
+              <span class="mock-status rejected">● Rejected</span>
+              <h4>Agricultural Land, Pollachi</h4>
+              <div class="mock-prop-meta">Land · 12,000 sqft</div>
+              <div class="mock-listing-stats">⚠️ Reason: Missing patta document</div>
+            </div>
+            <div class="mock-listing-side">
+              <div class="mock-price">₹38.00 L</div>
+              <button class="mock-btn-link">📝 Edit</button>
+              <button class="mock-btn-link danger">🗑 Delete</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: START SELLING — matched to live /start-selling layout
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="start-selling" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <div class="mock-avatar small">RA</div>
+      </div>
+
+      <div class="mock-form" data-anchor="sell-form">
+        <!-- Welcome header with illustration on the right -->
+        <header class="mock-sell-header">
+          <div>
+            <h2>Welcome Ramesh, Fill out your basic details</h2>
+            <p class="mock-sell-sub">I'm looking to Sell</p>
+          </div>
+          <div class="mock-sell-illus" aria-hidden="true">
+            <svg width="160" height="140" viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="sg1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#B59327" />
+                  <stop offset="100%" stop-color="#d6b14a" />
+                </linearGradient>
+              </defs>
+              <circle cx="100" cy="55" r="38" fill="url(#sg1)" opacity="0.9" />
+              <circle cx="100" cy="55" r="22" fill="#fff" />
+              <circle cx="100" cy="55" r="14" fill="#B59327" />
+              <rect x="135" y="50" width="20" height="6" fill="#B59327" />
+              <rect x="148" y="44" width="6" height="18" fill="#B59327" />
+              <ellipse cx="55" cy="115" rx="24" ry="6" fill="#175973" opacity="0.15" />
+              <rect x="42" y="60" width="26" height="50" fill="#7a8a3a" rx="3" />
+              <circle cx="55" cy="48" r="13" fill="#f4c194" />
+              <path d="M40,56 Q55,40 70,56 L70,46 Q55,32 40,46 Z" fill="#3b3b3b" />
+              <rect x="35" y="80" width="14" height="22" fill="#E5DDC4" rx="2" />
+              <line x1="46" y1="60" x2="44" y2="84" stroke="#3b3b3b" stroke-width="2" />
+            </svg>
+          </div>
+        </header>
+
+        <!-- Title -->
+        <div class="mock-field">
+          <label>Title <span class="req">*</span></label>
+          <input value="3 BHK Villa, OMR Padur" placeholder="Enter property title" />
+        </div>
+
+        <!-- Description -->
+        <div class="mock-field">
+          <label>Description <span class="req">*</span></label>
+          <textarea rows="4" placeholder="Enter property description...">Spacious gated-community villa in OMR, Padur. East-facing, vastu-compliant with covered parking, club house, gym and swimming pool. 5 minutes from Velammal School and the IT corridor.</textarea>
+        </div>
+
+        <!-- Property type -->
+        <div class="mock-field" data-anchor="sell-type">
+          <label>What kind of property do you have?</label>
+          <div class="mock-radios">
+            <label><input type="radio" name="proptype" checked /> Residential Plot/Land</label>
+            <label><input type="radio" name="proptype" /> Commercial Plot/Land</label>
+          </div>
+        </div>
+
+        <!-- Road Width Type -->
+        <div class="mock-field" data-anchor="sell-road-width">
+          <label>Road Width Type <span class="req">*</span></label>
+          <select>
+            <option>Select unit</option>
+            <option selected>Feet</option>
+            <option>Meters</option>
+          </select>
+        </div>
+
+        <!-- Location Details -->
+        <h3 data-anchor="sell-location">Location Details</h3>
+        <div class="mock-field-row">
+          <div class="mock-field">
+            <label>State <span class="req">*</span></label>
+            <select>
+              <option>Select state</option>
+              <option selected>Tamil Nadu</option>
+              <option>Karnataka</option>
+              <option>Kerala</option>
+              <option>Andhra Pradesh</option>
+            </select>
+          </div>
+          <div class="mock-field">
+            <label>City/District <span class="req">*</span></label>
+            <select>
+              <option>Select city</option>
+              <option selected>Chennai</option>
+              <option>Coimbatore</option>
+              <option>Madurai</option>
+              <option>Salem</option>
+            </select>
+          </div>
+        </div>
+        <div class="mock-field-row">
+          <div class="mock-field">
+            <label>Locality / Area</label>
+            <input value="OMR, Padur" placeholder="Enter locality or area" />
+          </div>
+          <div class="mock-field">
+            <label>Pincode <span class="req">*</span></label>
+            <input value="603103" placeholder="6-digit pincode" />
+          </div>
+        </div>
+        <div class="mock-field">
+          <label>Google Maps URL (optional)</label>
+          <input value="https://maps.google.com/?q=12.84,80.22" placeholder="Paste Google Maps share or embed URL" />
+        </div>
+
+        <!-- Price & Area -->
+        <h3>Price & Area Details</h3>
+        <div class="mock-field-row" data-anchor="sell-price">
+          <div class="mock-field">
+            <label>Selling Price (₹) <span class="req">*</span></label>
+            <input value="8500000" placeholder="Enter selling price" />
+          </div>
+          <div class="mock-field">
+            <label>Built-up area (sq.ft) <span class="req">*</span></label>
+            <input value="1850" placeholder="Total area in sq.ft" />
+          </div>
+        </div>
+
+        <!-- Specs -->
+        <h3>Property Specs</h3>
+        <div class="mock-field-row">
+          <div class="mock-field"><label>Bathrooms</label><input value="3" /></div>
+          <div class="mock-field"><label>Parking</label><input value="2" /></div>
+        </div>
+        <div class="mock-field-row">
+          <div class="mock-field">
+            <label>Facing</label>
+            <select>
+              <option>North</option>
+              <option selected>East</option>
+              <option>South</option>
+              <option>West</option>
+            </select>
+          </div>
+          <div class="mock-field">
+            <label>Approved by</label>
+            <select>
+              <option selected>DTCP</option>
+              <option>RERA</option>
+              <option>CMDA</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Photos -->
+        <h3>Upload Your Media</h3>
+        <div class="mock-field" data-anchor="sell-images">
+          <label>Property photos (max 10)</label>
+          <div class="mock-upload">
+            📷 <strong>Drop images here</strong> or click to browse<br/>
+            <span class="mock-upload-hint">JPG/PNG, ≤5 MB each. The first image is used as the cover.</span>
+          </div>
+          <div class="mock-uploaded">
+            <div>🖼️ exterior-front.jpg <em>2.1 MB</em></div>
+            <div>🖼️ living-room.jpg <em>1.8 MB</em></div>
+            <div>🖼️ kitchen.jpg <em>1.4 MB</em></div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button class="mock-btn-primary big" data-anchor="sell-submit">Submit Property Details</button>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: VIEW RESPONSES
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="responses" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <div class="mock-avatar small">RA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side">
+          <div class="mock-profile-card"><div class="mock-avatar large">RA</div><div class="mock-profile-name">Ramesh A</div></div>
+          <nav class="mock-profile-nav">
+            <a>My Listings</a>
+            <a class="active">View Responses</a>
+            <a>Contacted</a>
+            <a>Profile</a>
+            <a>Change password</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <h2>View Responses</h2>
+          <div class="mock-enquiry-group" data-anchor="enquiry-group">
+            <div class="mock-enquiry-head">
+              <span>🏠 3 BHK Villa, OMR Padur</span>
+              <span class="mock-tag-soft">3 enquiries</span>
+              <span class="mock-chev">▼</span>
+            </div>
+            <div class="mock-enquiry" data-anchor="enquiry-row">
+              <div class="mock-enquiry-top">
+                <strong>Arjun Krishnan</strong>
+                <span class="mock-status pending">● PENDING</span>
+                <span class="mock-enq-date">03 May 2026</span>
+              </div>
+              <div class="mock-meta">📧 arjun.k@example.com · 📞 +91 98400 12345</div>
+              <blockquote>"Interested in this villa for end-use. Could we schedule a site visit this Saturday morning?"</blockquote>
+              <button class="mock-btn-primary small" data-anchor="enquiry-action">✓ Mark Contacted</button>
+            </div>
+            <div class="mock-enquiry">
+              <div class="mock-enquiry-top">
+                <strong>Karthick Subramaniam</strong>
+                <span class="mock-status approved">● APPROVED</span>
+                <span class="mock-enq-date">02 May 2026</span>
+              </div>
+              <div class="mock-meta">📧 karthick@example.com · 📞 +91 99440 12300</div>
+              <blockquote>"Looking for a 3BHK in OMR for end-use. What is the best price you can offer?"</blockquote>
+              <button class="mock-btn-primary small">✓ Mark Contacted</button>
+            </div>
+            <div class="mock-enquiry">
+              <div class="mock-enquiry-top">
+                <strong>Meera Iyer</strong>
+                <span class="mock-status contacted">● CONTACTED</span>
+                <span class="mock-enq-date">01 May 2026</span>
+              </div>
+              <div class="mock-meta">📧 meera.iyer@example.com · 📞 +91 90030 56789</div>
+              <blockquote>"Is the price negotiable? I can close within 30 days if the paperwork is clean."</blockquote>
+            </div>
+          </div>
+          <div class="mock-enquiry-group">
+            <div class="mock-enquiry-head">
+              <span>🏞️ Commercial Plot, Saravanampatti</span>
+              <span class="mock-tag-soft">2 enquiries</span>
+              <span class="mock-chev">▼</span>
+            </div>
+            <div class="mock-enquiry">
+              <div class="mock-enquiry-top">
+                <strong>Sundar Realtors LLP</strong>
+                <span class="mock-status pending">● PENDING</span>
+                <span class="mock-enq-date">02 May 2026</span>
+              </div>
+              <div class="mock-meta">📧 office@sundarrealtors.example · 📞 +91 80560 11122</div>
+              <blockquote>"We represent a regional clinic chain. Please confirm DTCP papers and pricing for bulk negotiation."</blockquote>
+              <button class="mock-btn-primary small">✓ Mark Contacted</button>
+            </div>
+          </div>
+          <div class="mock-enquiry-group">
+            <div class="mock-enquiry-head collapsed">
+              <span>🏢 2 BHK Apartment, RS Puram</span>
+              <span class="mock-tag-soft">0 enquiries</span>
+              <span class="mock-chev">▶</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: CONTACTED
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="contacted" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <div class="mock-avatar small">RA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side">
+          <div class="mock-profile-card"><div class="mock-avatar large">RA</div><div class="mock-profile-name">Ramesh A</div></div>
+          <nav class="mock-profile-nav">
+            <a>My Listings</a>
+            <a>View Responses</a>
+            <a class="active">Contacted</a>
+            <a>Profile</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <div class="mock-profile-header">
+            <h2>Contacted</h2>
+            <p>People who reached out to you directly via the Contact-Me form.</p>
+          </div>
+          <div class="mock-contact-row" data-anchor="contact-row">
+            <div class="mock-enquiry-top">
+              <strong>Sneha Raman</strong>
+              <span class="mock-tag-soft">via Priya Subramaniam</span>
+              <span class="mock-enq-date">04 May 2026</span>
+            </div>
+            <div class="mock-meta">📧 sneha.r@example.com · 📞 +91 98410 22456</div>
+            <p>"Hi, I saw your villa listing in OMR. We're a young family relocating from Bangalore — could you share more photos and the school zoning?"</p>
+          </div>
+          <div class="mock-contact-row">
+            <div class="mock-enquiry-top">
+              <strong>Mohan Raj</strong>
+              <span class="mock-tag-soft">via Karthik Velu</span>
+              <span class="mock-enq-date">02 May 2026</span>
+            </div>
+            <div class="mock-meta">📧 mohanraj@example.com · 📞 +91 90250 33780</div>
+            <p>"Looking for a 2BHK rental in RS Puram for 18 months. Budget ₹22-26K. Please share what you have."</p>
+          </div>
+          <div class="mock-contact-row">
+            <div class="mock-enquiry-top">
+              <strong>Lakshmi Properties</strong>
+              <span class="mock-tag-soft">via Vignesh Raja</span>
+              <span class="mock-enq-date">29 Apr 2026</span>
+            </div>
+            <div class="mock-meta">📧 admin@lakshmiproperties.example · 📞 +91 80560 99001</div>
+            <p>"We have a buyer for commercial plots > 4000 sqft in Saravanampatti. Open to a 2% co-broking arrangement."</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: MANAGE — AGENTS TAB (super-admin)
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="manage" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a></nav>
+        <div class="mock-avatar small">SA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side">
+          <div class="mock-profile-card"><div class="mock-avatar large">SA</div><div class="mock-profile-name">Super Admin</div><div class="mock-profile-mail">admin@91idam.com</div></div>
+          <nav class="mock-profile-nav">
+            <a>My Listings</a>
+            <a>Requests</a>
+            <a class="active">Manage</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <div class="mock-profile-header">
+            <h2>Manage</h2>
+            <button class="mock-btn-secondary small">↻ Refresh</button>
+          </div>
+          <div class="mock-tabs" data-anchor="manage-tabs">
+            <a class="active" data-anchor="manage-tab-agents">Agents</a>
+            <a data-anchor="manage-tab-properties">Properties</a>
+          </div>
+          <table class="mock-table" data-anchor="manage-table">
+            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Status</th><th>Joined</th><th>Listings</th><th>Leads</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>1042</td><td>Priya Subramaniam</td><td>priya.s@…</td><td><span class="mock-status active">● Active</span></td><td>12 Feb 2026</td><td>12</td><td>54</td><td><button class="mock-btn-link danger" data-anchor="manage-delete">Delete</button></td></tr>
+              <tr><td>1051</td><td>Karthik Velu</td><td>karthik.v@…</td><td><span class="mock-status pending">● Pending</span></td><td>01 Apr 2026</td><td>0</td><td>0</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1023</td><td>Vignesh Raja</td><td>vignesh.r@…</td><td><span class="mock-status active">● Active</span></td><td>08 Jan 2026</td><td>9</td><td>41</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1067</td><td>Anitha Devi</td><td>anitha.d@…</td><td><span class="mock-status rejected">● Rejected</span></td><td>19 Mar 2026</td><td>0</td><td>0</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1029</td><td>Sundar Ramaswamy</td><td>sundar.r@…</td><td><span class="mock-status active">● Active</span></td><td>15 Jan 2026</td><td>6</td><td>14</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1015</td><td>Lakshmi Iyer</td><td>lakshmi.i@…</td><td><span class="mock-status active">● Active</span></td><td>03 Jan 2026</td><td>14</td><td>67</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1075</td><td>Mohan Bhaskar</td><td>mohan.b@…</td><td><span class="mock-status pending">● Pending</span></td><td>20 Apr 2026</td><td>0</td><td>0</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1031</td><td>Geetha Vasanth</td><td>geetha.v@…</td><td><span class="mock-status active">● Active</span></td><td>17 Jan 2026</td><td>4</td><td>11</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+            </tbody>
+          </table>
+          <div class="mock-pagination"><span class="active">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: MANAGE — PROPERTIES TAB (super-admin)
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="manage-properties" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a></nav>
+        <div class="mock-avatar small">SA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side">
+          <div class="mock-profile-card"><div class="mock-avatar large">SA</div><div class="mock-profile-name">Super Admin</div><div class="mock-profile-mail">admin@91idam.com</div></div>
+          <nav class="mock-profile-nav">
+            <a>My Listings</a>
+            <a>Requests</a>
+            <a class="active">Manage</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <div class="mock-profile-header">
+            <h2>Manage</h2>
+            <button class="mock-btn-secondary small">↻ Refresh</button>
+          </div>
+          <div class="mock-tabs" data-anchor="manage-tabs-p">
+            <a data-anchor="manage-tab-agents-p">Agents</a>
+            <a class="active" data-anchor="manage-tab-properties-p">Properties</a>
+          </div>
+          <table class="mock-table mock-table-properties" data-anchor="manage-prop-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Title</th><th>City</th><th>Owner</th><th>Status</th>
+                <th>Files</th><th>Enquiries</th><th>Created</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>P-2412</td>
+                <td>3 BHK Villa, OMR Padur</td>
+                <td>Chennai</td>
+                <td>Ramesh A</td>
+                <td><span class="mock-status pending">● Pending</span></td>
+                <td>8</td>
+                <td>0</td>
+                <td>04 May 2026</td>
+                <td><button class="mock-btn-link danger" data-anchor="manage-prop-delete">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2398</td>
+                <td>2 BHK Apartment, RS Puram</td>
+                <td>Coimbatore</td>
+                <td>Karthik V</td>
+                <td><span class="mock-status active">● Active</span></td>
+                <td>6</td>
+                <td>4</td>
+                <td>20 Apr 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2387</td>
+                <td>Commercial Plot, Saravanampatti</td>
+                <td>Coimbatore</td>
+                <td>Vignesh R</td>
+                <td><span class="mock-status active">● Active</span></td>
+                <td>4</td>
+                <td>7</td>
+                <td>15 Apr 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2421</td>
+                <td>Penthouse, Boat Club Road</td>
+                <td>Chennai</td>
+                <td>Lakshmi I</td>
+                <td><span class="mock-status pending">● Pending</span></td>
+                <td>10</td>
+                <td>0</td>
+                <td>06 May 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2375</td>
+                <td>DTCP Plot, ECR Mahabalipuram</td>
+                <td>Chennai</td>
+                <td>Anitha D</td>
+                <td><span class="mock-status rejected">● Rejected</span></td>
+                <td>2</td>
+                <td>0</td>
+                <td>03 Apr 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2354</td>
+                <td>4 BHK Bungalow, Race Course Rd</td>
+                <td>Coimbatore</td>
+                <td>Lakshmi I</td>
+                <td><span class="mock-status active">● Active</span></td>
+                <td>12</td>
+                <td>9</td>
+                <td>22 Mar 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2415</td>
+                <td>2 BHK Flat, Anna Nagar</td>
+                <td>Chennai</td>
+                <td>Mohan B</td>
+                <td><span class="mock-status pending">● Pending</span></td>
+                <td>5</td>
+                <td>0</td>
+                <td>05 May 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2331</td>
+                <td>Studio Apartment, T Nagar</td>
+                <td>Chennai</td>
+                <td>Sundar R</td>
+                <td><span class="mock-status active">● Active</span></td>
+                <td>5</td>
+                <td>3</td>
+                <td>17 Mar 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="mock-pagination"><span class="active">1</span><span>2</span><span>3</span><span>4</span><span>…</span><span>19</span></div>
+        </section>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="./assets/vendor/driver.js.iife.js"></script>
+  <script src="./assets/tour.js"></script>
+</body>
+</html>

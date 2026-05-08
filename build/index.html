@@ -1,0 +1,4154 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>91 IDAM — Try the App</title>
+  <style>
+/* 91 IDAM docs portal styles. Design system mirrors the app:
+   primary #175973, accent #B59327, surface #DFDBCF. */
+
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f8f7f4;
+  --surface: #ffffff;
+  --surface-alt: #f3f2ee;
+  --border: #e5e3da;
+  --text: #1e2022;
+  --text-soft: #4b5563;
+  --text-faint: #6b7280;
+  --primary: #175973;
+  --primary-hover: #144a5e;
+  --accent: #B59327;
+  --accent-soft: #f3ebd2;
+  --code-bg: #f5f3ec;
+  --code-border: #e5e3da;
+  --shadow-sm: 0 1px 2px rgba(23, 89, 115, 0.06);
+  --shadow-md: 0 4px 12px rgba(23, 89, 115, 0.08);
+  --shadow-lg: 0 12px 24px rgba(23, 89, 115, 0.12);
+  --radius: 10px;
+  --sidebar-w: 280px;
+  --topbar-h: 64px;
+  --content-max: 880px;
+}
+
+[data-theme="dark"] {
+  --bg: #0e1416;
+  --bg-soft: #131a1d;
+  --surface: #161e22;
+  --surface-alt: #1c2429;
+  --border: #2a363c;
+  --text: #e8eaed;
+  --text-soft: #b6bdc4;
+  --text-faint: #8a939c;
+  --primary: #2e8eaf;
+  --primary-hover: #4ba6c4;
+  --accent: #d6b14a;
+  --accent-soft: #2a2316;
+  --code-bg: #11181c;
+  --code-border: #243036;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.55);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.skip-link {
+  position: absolute;
+  left: -1000px;
+  top: 0;
+  padding: 6px 12px;
+  background: var(--primary);
+  color: #fff;
+  z-index: 1000;
+}
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+}
+
+/* Topbar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  height: var(--topbar-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-size: 16px;
+  white-space: nowrap;
+}
+.brand:hover {
+  text-decoration: none;
+}
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.04em;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 480px;
+  margin: 0 12px 0 8px;
+}
+.search-wrap input {
+  width: 100%;
+  height: 36px;
+  padding: 0 60px 0 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.search-wrap input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-faint);
+}
+.search-hint {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--text-faint);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: inherit;
+}
+.search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 6px;
+}
+.search-results .result {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+}
+.search-results .result:hover,
+.search-results .result.active {
+  background: var(--surface-alt);
+  text-decoration: none;
+}
+.search-results .result-title {
+  font-weight: 600;
+  color: var(--text);
+}
+.search-results .result-section {
+  color: var(--text-faint);
+  font-size: 12px;
+  margin-top: 2px;
+}
+.search-results .result-snippet mark {
+  background: var(--accent-soft);
+  color: var(--text);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+.search-results .empty {
+  padding: 14px;
+  color: var(--text-faint);
+  font-size: 14px;
+  text-align: center;
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  background: var(--surface-alt);
+}
+.theme-toggle .icon-moon { display: none; }
+.theme-toggle .icon-sun  { display: inline-block; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: inline-block; }
+[data-theme="dark"] .theme-toggle .icon-sun  { display: none; }
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: calc(100vh - var(--topbar-h));
+}
+
+.sidebar {
+  position: sticky;
+  top: var(--topbar-h);
+  align-self: start;
+  height: calc(100vh - var(--topbar-h));
+  overflow-y: auto;
+  background: var(--bg-soft);
+  border-right: 1px solid var(--border);
+  padding: 20px 12px;
+}
+
+.nav-group + .nav-group { margin-top: 16px; }
+
+.nav-heading {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  padding: 6px 12px;
+}
+
+.nav-link {
+  display: block;
+  padding: 7px 12px;
+  margin: 1px 0;
+  border-radius: 6px;
+  color: var(--text-soft);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.nav-link:hover {
+  background: var(--surface-alt);
+  color: var(--text);
+  text-decoration: none;
+}
+.nav-link.active {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+}
+.nav-link.active:hover {
+  background: var(--primary-hover);
+  color: #fff;
+}
+.nav-link.nav-link-cta {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 4px;
+  box-shadow: 0 4px 8px -2px rgba(23, 89, 115, 0.25);
+}
+.nav-link.nav-link-cta:hover {
+  background: linear-gradient(135deg, var(--primary-hover), var(--accent));
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+/* Content */
+.content {
+  padding: 28px 40px 64px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.breadcrumb {
+  font-size: 13px;
+  color: var(--text-faint);
+  margin-bottom: 18px;
+}
+
+.article {
+  max-width: var(--content-max);
+}
+
+.article h1, .article h2, .article h3, .article h4 {
+  letter-spacing: -0.015em;
+  color: var(--text);
+  scroll-margin-top: calc(var(--topbar-h) + 8px);
+}
+.article h1 { font-size: 30px; margin: 0 0 16px; }
+.article h2 { font-size: 22px; margin: 36px 0 12px; padding-top: 6px; border-top: 1px solid var(--border); }
+.article h2:first-child { border-top: 0; padding-top: 0; }
+.article h3 { font-size: 17px; margin: 24px 0 8px; }
+.article h4 { font-size: 15px; margin: 20px 0 6px; color: var(--text-soft); }
+
+.article p { margin: 0 0 14px; }
+.article ul, .article ol { padding-left: 22px; margin: 0 0 14px; }
+.article li { margin: 4px 0; }
+.article hr { border: 0; border-top: 1px solid var(--border); margin: 32px 0; }
+
+.article blockquote {
+  margin: 14px 0;
+  padding: 10px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 8px 8px 0;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.article code {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.88em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.article pre {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 14px 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.article pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+}
+
+.article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.article th, .article td {
+  padding: 9px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.article th {
+  background: var(--surface-alt);
+  font-weight: 600;
+  color: var(--text);
+}
+.article tr:last-child td { border-bottom: 0; }
+
+.article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  display: block;
+  margin: 14px 0;
+  cursor: zoom-in;
+  transition: transform 0.15s ease;
+}
+.article img:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.article kbd {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.loading-stub {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.page-footer {
+  max-width: var(--content-max);
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+/* Image preview modal */
+.img-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.img-modal[hidden] { display: none; }
+.img-modal img {
+  max-width: 95vw;
+  max-height: 95vh;
+  border-radius: 8px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+.img-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+.img-modal-close:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  :root { --sidebar-w: 240px; }
+  .content { padding: 24px 24px 56px; }
+  .search-hint { display: none; }
+}
+@media (max-width: 720px) {
+  .layout { grid-template-columns: 1fr; }
+  .menu-toggle { display: inline-flex; }
+  .sidebar {
+    position: fixed;
+    top: var(--topbar-h);
+    left: -100%;
+    width: 280px;
+    z-index: 25;
+    transition: left 0.22s ease;
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebar.open { left: 0; }
+  .content { padding: 20px 16px 48px; }
+  .article h1 { font-size: 26px; }
+}
+
+</style>
+  <style>
+.driver-active .driver-overlay,.driver-active *{pointer-events:none}.driver-active .driver-active-element,.driver-active .driver-active-element *,.driver-popover,.driver-popover *{pointer-events:auto}@keyframes animate-fade-in{0%{opacity:0}to{opacity:1}}.driver-fade .driver-overlay{animation:animate-fade-in .2s ease-in-out}.driver-fade .driver-popover{animation:animate-fade-in .2s}.driver-popover{all:unset;box-sizing:border-box;color:#2d2d2d;margin:0;padding:15px;border-radius:5px;min-width:250px;max-width:300px;box-shadow:0 1px 10px #0006;z-index:1000000000;position:fixed;top:0;right:0;background-color:#fff}.driver-popover *{font-family:Helvetica Neue,Inter,ui-sans-serif,"Apple Color Emoji",Helvetica,Arial,sans-serif}.driver-popover-title{font:19px/normal sans-serif;font-weight:700;display:block;position:relative;line-height:1.5;zoom:1;margin:0}.driver-popover-close-btn{all:unset;position:absolute;top:0;right:0;width:32px;height:28px;cursor:pointer;font-size:18px;font-weight:500;color:#d2d2d2;z-index:1;text-align:center;transition:color;transition-duration:.2s}.driver-popover-close-btn:hover,.driver-popover-close-btn:focus{color:#2d2d2d}.driver-popover-title[style*=block]+.driver-popover-description{margin-top:5px}.driver-popover-description{margin-bottom:0;font:14px/normal sans-serif;line-height:1.5;font-weight:400;zoom:1}.driver-popover-footer{margin-top:15px;text-align:right;zoom:1;display:flex;align-items:center;justify-content:space-between}.driver-popover-progress-text{font-size:13px;font-weight:400;color:#727272;zoom:1}.driver-popover-footer button{all:unset;display:inline-block;box-sizing:border-box;padding:3px 7px;text-decoration:none;text-shadow:1px 1px 0 #fff;background-color:#fff;color:#2d2d2d;font:12px/normal sans-serif;cursor:pointer;outline:0;zoom:1;line-height:1.3;border:1px solid #ccc;border-radius:3px}.driver-popover-footer .driver-popover-btn-disabled{opacity:.5;pointer-events:none}:not(body):has(>.driver-active-element){overflow:hidden!important}.driver-no-interaction,.driver-no-interaction *{pointer-events:none!important}.driver-popover-footer button:hover,.driver-popover-footer button:focus{background-color:#f7f7f7}.driver-popover-navigation-btns{display:flex;flex-grow:1;justify-content:flex-end}.driver-popover-navigation-btns button+button{margin-left:4px}.driver-popover-arrow{content:"";position:absolute;border:5px solid #fff}.driver-popover-arrow-side-over{display:none}.driver-popover-arrow-side-left{left:100%;border-right-color:transparent;border-bottom-color:transparent;border-top-color:transparent}.driver-popover-arrow-side-right{right:100%;border-left-color:transparent;border-bottom-color:transparent;border-top-color:transparent}.driver-popover-arrow-side-top{top:100%;border-right-color:transparent;border-bottom-color:transparent;border-left-color:transparent}.driver-popover-arrow-side-bottom{bottom:100%;border-left-color:transparent;border-top-color:transparent;border-right-color:transparent}.driver-popover-arrow-side-center{display:none}.driver-popover-arrow-side-left.driver-popover-arrow-align-start,.driver-popover-arrow-side-right.driver-popover-arrow-align-start{top:15px}.driver-popover-arrow-side-top.driver-popover-arrow-align-start,.driver-popover-arrow-side-bottom.driver-popover-arrow-align-start{left:15px}.driver-popover-arrow-align-end.driver-popover-arrow-side-left,.driver-popover-arrow-align-end.driver-popover-arrow-side-right{bottom:15px}.driver-popover-arrow-side-top.driver-popover-arrow-align-end,.driver-popover-arrow-side-bottom.driver-popover-arrow-align-end{right:15px}.driver-popover-arrow-side-left.driver-popover-arrow-align-center,.driver-popover-arrow-side-right.driver-popover-arrow-align-center{top:50%;margin-top:-5px}.driver-popover-arrow-side-top.driver-popover-arrow-align-center,.driver-popover-arrow-side-bottom.driver-popover-arrow-align-center{left:50%;margin-left:-5px}.driver-popover-arrow-none{display:none}
+
+</style>
+  <style>
+/* 91 IDAM interactive product tour styles.
+   Renders a fullscreen mockup of the live app and overlays driver.js
+   tooltips. Mockup styles use the live brand palette so screens feel
+   real (#175973 primary, #B59327 accent, #DFDBCF surface). */
+
+.tour-body.app-mode {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f2ee;
+}
+
+/* ---------- Top bar ---------- */
+.app-topbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 22px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e3da;
+  box-shadow: 0 1px 2px rgba(23, 89, 115, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.app-topbar .brand {
+  display: flex; align-items: center; gap: 9px;
+  font-weight: 700; font-size: 15px;
+  color: #1e2022;
+  text-decoration: none;
+}
+.app-topbar .brand-mark {
+  width: 28px; height: 28px;
+  background: #175973;
+  color: #fff;
+  border-radius: 7px;
+  font-weight: 800; font-size: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.app-topbar-hint {
+  flex: 1;
+  font-size: 13px;
+  color: #6b7280;
+  text-align: center;
+}
+.app-topbar-hint strong { color: #175973; }
+.app-topbar-actions {
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-link {
+  background: none;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn-link:hover {
+  background: #f3f2ee;
+  color: #175973;
+  text-decoration: none;
+}
+@media (max-width: 720px) {
+  .app-topbar-hint { display: none; }
+}
+
+/* ============================================================
+   "All steps" panel — slide-in from the right, jump anywhere
+   ============================================================ */
+.steps-panel-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 9998;
+  animation: stepsFadeIn 0.18s ease;
+}
+@keyframes stepsFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.steps-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(440px, 96vw);
+  background: #ffffff;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -20px 0 40px -12px rgba(0, 0, 0, 0.25);
+  animation: stepsSlideIn 0.22s ease;
+  overflow: hidden;
+}
+@keyframes stepsSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.steps-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #175973, #2e8eaf);
+  color: #fff;
+}
+.steps-panel-head h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.steps-panel-close {
+  background: rgba(255, 255, 255, 0.15);
+  border: 0;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.steps-panel-close:hover { background: rgba(255, 255, 255, 0.25); }
+
+.steps-panel-sub {
+  margin: 0;
+  padding: 12px 20px;
+  font-size: 12px;
+  color: #6b7280;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.steps-panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+}
+
+.steps-group {
+  margin-bottom: 4px;
+}
+.steps-group-head {
+  position: sticky;
+  top: 0;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 8px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  z-index: 1;
+}
+
+.steps-group-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.steps-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.12s ease;
+  outline: none;
+  align-items: start;
+}
+.steps-item:hover {
+  background: #f9fafb;
+}
+.steps-item:focus-visible {
+  background: #eff6ff;
+  box-shadow: inset 3px 0 0 #175973;
+}
+.steps-item.current {
+  background: #1759730d;
+  box-shadow: inset 3px 0 0 #B59327;
+}
+.steps-item.current:hover {
+  background: #17597314;
+}
+
+.steps-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.steps-item.current .steps-num {
+  background: #175973;
+  color: #fff;
+}
+
+.steps-item-body {
+  min-width: 0;
+}
+.steps-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 2px;
+  line-height: 1.35;
+}
+.steps-item-desc {
+  font-size: 11.5px;
+  color: #6b7280;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.steps-item.current .steps-item-title {
+  color: #175973;
+}
+
+/* ---------- App stage (the mockup container) ---------- */
+.app-stage {
+  flex: 1;
+  background: #fff;
+  max-width: 1280px;
+  margin: 18px auto;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px -10px rgba(23, 89, 115, 0.18);
+  overflow: hidden;
+  border: 1px solid #e5e3da;
+}
+@media (max-width: 720px) {
+  .app-stage { margin: 0; border-radius: 0; border: 0; }
+}
+
+/* Only the active screen shows */
+.app-screen[hidden] { display: none !important; }
+
+/* =============================================================
+   Brand-style overrides on top of driver.js defaults.
+   ============================================================= */
+.idam-tour-popover.driver-popover {
+  background: #ffffff;
+  color: #1e2022;
+  border-radius: 12px;
+  box-shadow:
+    0 24px 48px -8px rgba(23, 89, 115, 0.25),
+    0 12px 24px -8px rgba(23, 89, 115, 0.12),
+    0 0 0 1px rgba(23, 89, 115, 0.06);
+  padding: 18px 20px;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  max-width: 360px;
+}
+
+.idam-tour-popover .driver-popover-title {
+  color: #175973;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  letter-spacing: -0.015em;
+}
+.idam-tour-popover .driver-popover-description {
+  color: #4b5563;
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+.idam-tour-popover .driver-popover-description strong { color: #1e2022; font-weight: 700; }
+.idam-tour-popover .driver-popover-description kbd {
+  background: #f3f2ee;
+  border: 1px solid #e5e3da;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-family: inherit;
+}
+.idam-tour-popover .driver-popover-progress-text {
+  color: #B59327;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.idam-tour-popover .driver-popover-footer button {
+  font-weight: 600;
+  border-radius: 6px;
+  font-size: 13px;
+  padding: 7px 16px;
+  transition: all 0.15s ease;
+  text-shadow: none;
+  cursor: pointer;
+}
+.idam-tour-popover .driver-popover-next-btn {
+  background: #175973;
+  color: #ffffff;
+  border: 1px solid #175973;
+}
+.idam-tour-popover .driver-popover-next-btn:hover {
+  background: #144a5e;
+  border-color: #144a5e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px -2px rgba(23, 89, 115, 0.4);
+}
+.idam-tour-popover .driver-popover-prev-btn {
+  background: #ffffff;
+  color: #175973;
+  border: 1px solid #DFDBCF;
+}
+.idam-tour-popover .driver-popover-prev-btn:hover {
+  background: #DFDBCF;
+}
+.idam-tour-popover .driver-popover-close-btn {
+  color: #9ca3af;
+  font-size: 22px;
+  width: 26px; height: 26px;
+  border-radius: 6px;
+}
+.idam-tour-popover .driver-popover-close-btn:hover {
+  color: #175973;
+  background: #f3f2ee;
+}
+
+.idam-tour-popover .driver-popover-arrow-side-bottom { border-bottom-color: #ffffff; }
+.idam-tour-popover .driver-popover-arrow-side-top { border-top-color: #ffffff; }
+.idam-tour-popover .driver-popover-arrow-side-left { border-left-color: #ffffff; }
+.idam-tour-popover .driver-popover-arrow-side-right { border-right-color: #ffffff; }
+
+/* Highlight ring styling */
+.driver-active .driver-overlay {
+  background: #1e2022;
+  opacity: 0.65;
+}
+
+/* =============================================================
+   MOCKUP SCREEN STYLES — render mini versions of the real app.
+   ============================================================= */
+.mock-app {
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: #fff;
+  color: #1e2022;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.mock-app * { box-sizing: border-box; }
+.mock-app a { color: #1e2022; text-decoration: none; cursor: pointer; }
+
+.mock-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 32px;
+  background: #DFDBCF;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.mock-header.tight { padding: 12px 28px; }
+.mock-logo {
+  font-weight: 800;
+  font-size: 18px;
+  color: #175973;
+  letter-spacing: -0.02em;
+}
+.mock-nav {
+  display: flex;
+  gap: 22px;
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+}
+.mock-nav a { padding: 4px 0; }
+.mock-nav a.active { color: #175973; font-weight: 700; border-bottom: 2px solid #175973; }
+.mock-btn-primary {
+  background: #175973;
+  color: #fff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mock-btn-primary:hover { background: #144a5e; }
+.mock-btn-primary.big { padding: 12px 26px; font-size: 14px; }
+.mock-btn-primary.full { width: 100%; }
+.mock-btn-primary.small { padding: 6px 12px; font-size: 12px; }
+.mock-btn-secondary {
+  background: #fff;
+  color: #175973;
+  border: 1px solid #175973;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+.mock-btn-link { background: none; border: none; color: #6b7280; cursor: pointer; font-size: 12px; }
+.mock-btn-link.danger { color: #b91c1c; }
+.mock-login { padding: 8px 22px; }
+
+/* Hero — matched to live 91idam.com */
+.mock-hero {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 36px;
+  padding: 64px 48px 56px;
+  background: #1759730d;
+  align-items: center;
+}
+.mock-hero h1, .mock-hero h2 {
+  margin: 0;
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: #1E2022;
+}
+.mock-hero h2.accent {
+  color: #B59327;
+  margin-top: 6px;
+  margin-bottom: 28px;
+}
+.mock-search-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 12px 24px -8px rgba(23, 89, 115, 0.18);
+  max-width: 560px;
+}
+.mock-search-bar {
+  display: flex;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.mock-search-bar input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  padding: 13px 16px;
+  font-size: 14px;
+  background: #fff;
+  color: #374151;
+}
+.mock-search-bar input::placeholder { color: #9ca3af; }
+.mock-search-btn {
+  background: #175973;
+  color: #fff;
+  border: 0;
+  width: 50px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.mock-search-btn:hover { background: #144a5e; }
+.mock-search-filter {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 0 4px;
+  font-size: 13px;
+  color: #4b5563;
+}
+.mock-search-label { font-weight: 600; color: #374151; }
+.mock-search-filter label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.mock-search-filter input[type="radio"] { accent-color: #175973; }
+
+.mock-hero-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 16px 32px rgba(23, 89, 115, 0.18));
+}
+.mock-hero-art svg { max-width: 100%; height: auto; }
+
+/* Search page */
+.mock-breadcrumb {
+  padding: 12px 28px;
+  font-size: 12px;
+  color: #6b7280;
+  background: #fff;
+  border-bottom: 1px solid #EBECF0;
+}
+.mock-search-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 22px;
+  padding: 22px 28px;
+  background: #fff;
+}
+.mock-filters { background: #fff; border: 1px solid #EBECF0; border-radius: 10px; padding: 18px; }
+.mock-filters h3 { margin: 0 0 12px; font-size: 14px; }
+.filter-group { margin-bottom: 18px; }
+.filter-title { font-size: 11px; font-weight: 700; color: #1f2937; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+.filter-group label { display: block; font-size: 12px; color: #4b5563; margin: 5px 0; cursor: pointer; }
+.filter-group input { margin-right: 6px; }
+.mock-results-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; font-size: 12px; color: #4b5563;
+}
+.mock-sort { font-size: 12px; padding: 5px 10px; border: 1px solid #d1d5db; border-radius: 4px; background: #fff; }
+.mock-prop-card {
+  display: grid;
+  grid-template-columns: 130px 1fr 130px;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid #EBECF0;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  background: #fff;
+}
+.mock-prop-img {
+  background: linear-gradient(135deg, #f3f2ee, #DFDBCF);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+  height: 110px;
+}
+.mock-prop-body h4 { margin: 6px 0 4px; font-size: 16px; color: #175973; }
+.mock-prop-body p { margin: 6px 0 0; font-size: 12px; color: #6b7280; }
+.mock-prop-meta { font-size: 12px; color: #6b7280; }
+.mock-tag {
+  display: inline-block;
+  background: #fff;
+  color: #6b7280;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+}
+.mock-tag-soft {
+  display: inline-block;
+  background: rgba(20, 184, 166, 0.1);
+  color: #0f766e;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  margin-left: auto;
+}
+.mock-prop-side { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 8px; }
+.mock-price { color: #f97316; font-weight: 800; font-size: 18px; }
+
+/* Property details */
+.mock-pd { padding: 22px 28px; background: #fff; }
+.mock-pd-gallery { margin-bottom: 18px; }
+.mock-gallery-main {
+  background: linear-gradient(135deg, #f3f2ee, #DFDBCF);
+  border-radius: 12px;
+  height: 260px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 100px;
+}
+.mock-gallery-thumbs { display: flex; gap: 8px; margin-top: 8px; }
+.mock-gallery-thumbs span {
+  width: 70px; height: 60px;
+  background: #f3f2ee;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+}
+.mock-pd-grid { display: grid; grid-template-columns: 1fr 280px; gap: 22px; }
+.mock-pd-summary h2 { margin: 0 0 8px; font-size: 22px; }
+.mock-pd-price { color: #f97316; font-weight: 800; font-size: 24px; margin: 10px 0 14px; }
+.mock-neg { color: #6b7280; font-size: 12px; font-weight: 500; margin-left: 6px; }
+.mock-pd-attrs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+.mock-pd-attrs > div { background: #f8f7f4; padding: 10px; border-radius: 8px; font-size: 12px; }
+.mock-pd-attrs strong { display: block; color: #6b7280; font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; font-weight: 600; }
+.mock-pd-summary h3 { font-size: 14px; margin: 14px 0 6px; }
+.mock-pd-side .mock-contact-card {
+  background: #fff;
+  border: 1px solid #EBECF0;
+  border-radius: 12px;
+  padding: 22px 18px;
+  text-align: center;
+}
+.mock-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #175973, #2e8eaf);
+  color: #fff;
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+.mock-avatar.large { width: 64px; height: 64px; font-size: 20px; display: flex; margin: 0 auto 10px; }
+.mock-avatar.small { width: 36px; height: 36px; font-size: 12px; }
+.mock-contact-name { font-weight: 700; margin-top: 10px; font-size: 14px; }
+.mock-contact-role { font-size: 12px; color: #6b7280; margin-bottom: 14px; }
+.mock-contact-btn { width: 100%; }
+.mock-contact-phone { font-size: 12px; color: #4b5563; margin-top: 12px; }
+
+/* Modals */
+.mock-modal {
+  position: relative;
+  min-height: 360px;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 20px;
+}
+.mock-modal-card {
+  background: #fff;
+  width: 360px;
+  border-radius: 14px;
+  padding: 28px 24px;
+  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+}
+.mock-modal-title { font-size: 17px; font-weight: 700; margin-bottom: 14px; color: #175973; text-align: center; }
+.mock-modal-sub { font-size: 12px; color: #6b7280; margin: 0 0 16px; text-align: center; }
+.mock-modal-card label { display: block; font-size: 12px; color: #4b5563; margin: 10px 0 4px; font-weight: 600; }
+.mock-modal-card input { width: 100%; padding: 9px 11px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; }
+.mock-checkbox { display: flex !important; align-items: center; gap: 8px; font-weight: 500 !important; margin: 14px 0 !important; }
+.mock-checkbox input { width: auto !important; }
+.mock-modal-cta { width: 100%; margin-top: 14px; padding: 11px; }
+.mock-modal-foot { font-size: 12px; color: #6b7280; text-align: center; margin-top: 14px; display: flex; gap: 10px; justify-content: center; }
+.mock-modal-foot a { color: #175973; font-weight: 600; }
+
+.mock-otp { display: flex; gap: 8px; justify-content: center; margin: 8px 0; }
+.mock-otp input {
+  width: 44px !important; height: 50px;
+  text-align: center; font-size: 20px; font-weight: 700;
+  border-radius: 8px;
+}
+
+/* Agents */
+.mock-agents-hero { padding: 32px 28px; text-align: center; }
+.mock-agents-hero h1 { margin: 0 0 8px; font-size: 28px; color: #1f2937; }
+.mock-agents-hero p { margin: 0; font-size: 14px; color: #6b7280; }
+.mock-agents-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 0 28px 36px; }
+.mock-agent-card {
+  background: #fff;
+  border: 1px solid #EBECF0;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex; gap: 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.mock-agent-card h4 { margin: 0 0 2px; font-size: 14px; color: #175973; }
+.mock-agent-card .mock-meta { color: #6b7280; font-size: 12px; margin: 4px 0 10px; }
+.mock-agent-photo {
+  width: 70px; height: 70px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #DFDBCF, #B59327);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* Profile */
+.mock-profile { display: grid; grid-template-columns: 240px 1fr; gap: 28px; padding: 24px 28px; }
+.mock-profile-card { background: #fff; border: 1px solid #EBECF0; border-radius: 12px; padding: 22px; text-align: center; margin-bottom: 14px; }
+.mock-profile-name { font-weight: 700; margin-top: 8px; font-size: 14px; }
+.mock-profile-mail { color: #6b7280; font-size: 12px; }
+.mock-profile-nav { display: flex; flex-direction: column; gap: 4px; }
+.mock-profile-nav a {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+  border-radius: 6px;
+}
+.mock-profile-nav a:hover { background: #f8f7f4; }
+.mock-profile-nav a.active { background: #175973; color: #fff; font-weight: 600; }
+.mock-profile-content h2 { margin: 0 0 18px; font-size: 22px; }
+.mock-listing {
+  display: grid;
+  grid-template-columns: 110px 1fr 130px;
+  gap: 16px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #EBECF0;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.mock-listing-img {
+  background: linear-gradient(135deg, #f3f2ee, #DFDBCF);
+  border-radius: 8px;
+  height: 86px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+}
+.mock-listing-body h4 { margin: 6px 0 2px; font-size: 14px; }
+.mock-listing-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.mock-status {
+  display: inline-block;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 10px; border-radius: 99px;
+}
+.mock-status.active { background: #dcfce7; color: #15803d; }
+.mock-status.pending { background: #fef9c3; color: #a16207; }
+.mock-status.contacted { background: #dbeafe; color: #1d4ed8; }
+
+/* Form */
+.mock-form { background: #fff; padding: 28px; max-width: 720px; margin: 0 auto; }
+.mock-form h2 { margin: 0 0 6px; font-size: 22px; }
+.mock-form > p { color: #6b7280; font-size: 13px; margin-bottom: 20px; }
+.mock-sell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding-bottom: 4px;
+}
+.mock-sell-header h2 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #1f2937;
+  letter-spacing: -0.015em;
+}
+.mock-sell-sub {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+.mock-sell-illus {
+  flex-shrink: 0;
+  filter: drop-shadow(0 8px 16px rgba(181, 147, 39, 0.18));
+}
+@media (max-width: 700px) {
+  .mock-sell-illus { display: none; }
+}
+.mock-field { margin-bottom: 16px; }
+.mock-field label { display: block; font-size: 12px; font-weight: 600; color: #4b5563; margin-bottom: 5px; }
+.mock-field input { width: 100%; padding: 9px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; }
+.req { color: #dc2626; }
+.mock-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.mock-field-row .mock-field { margin: 0 0 16px; }
+.mock-radios { display: flex; gap: 22px; font-size: 13px; }
+.mock-radios label { display: inline-flex; align-items: center; gap: 6px; }
+.mock-upload {
+  border: 2px dashed #d1d5db;
+  border-radius: 10px;
+  padding: 32px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+  background: #f9fafb;
+}
+
+/* Enquiries / Manage */
+.mock-enquiry-group { background: #fff; border: 1px solid #EBECF0; border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+.mock-enquiry-head { display: flex; align-items: center; gap: 8px; padding: 14px 18px; background: #f8f7f4; font-weight: 600; font-size: 13px; }
+.mock-enquiry { padding: 16px 18px; border-top: 1px solid #f3f2ee; }
+.mock-enquiry .mock-meta { color: #6b7280; font-size: 12px; margin: 4px 0; }
+.mock-enquiry blockquote { margin: 10px 0; padding: 10px 14px; background: #f8f7f4; border-left: 3px solid #14b8a6; font-style: italic; font-size: 13px; color: #1f2937; border-radius: 0 6px 6px 0; }
+.mock-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.mock-tabs a { padding: 7px 14px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; }
+.mock-tabs a.active { background: #175973; color: #fff; border-color: #175973; }
+.mock-table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; border: 1px solid #EBECF0; border-radius: 10px; overflow: hidden; }
+.mock-table th, .mock-table td { padding: 11px 14px; text-align: left; border-bottom: 1px solid #f3f2ee; }
+.mock-table th { background: #f8f7f4; font-weight: 700; color: #374151; text-transform: uppercase; font-size: 9px; letter-spacing: 0.06em; }
+.mock-table tr:last-child td { border-bottom: 0; }
+.mock-table-properties { font-size: 11.5px; }
+.mock-table-properties td:nth-child(2) { font-weight: 600; color: #175973; }
+
+/* =============================================================
+   ADDED SCREENS — Home subsections, About, Why IDAM, How it
+   Works, Careers, Contact, Contacted. Plus densified bits.
+   ============================================================= */
+
+/* Home shared headings */
+.mock-comparison h2, .mock-testimonials h2,
+.mock-mission ~ * h2, .mock-values h2, .mock-leadership h2, .mock-segments h2,
+.mock-about-stats ~ * h2, .mock-why-problems h2, .mock-why-solutions h2,
+.mock-why-cta h2 {
+  margin: 0 0 18px; font-size: 20px; color: #1f2937; letter-spacing: -0.01em;
+}
+
+/* Audience cards (replaces old places) */
+.mock-audience {
+  padding: 70px 48px;
+  background: #fff;
+  text-align: center;
+}
+.mock-audience h2 {
+  margin: 0 0 14px;
+  font-size: 26px;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.01em;
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.mock-audience-sub {
+  margin: 0 auto 36px;
+  max-width: 760px;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.7;
+}
+.mock-audience-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.mock-aud-card {
+  background: #fff;
+  border: 1px solid rgba(140, 152, 164, 0.18);
+  border-radius: 10px;
+  padding: 12px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+.mock-aud-card:hover {
+  border-color: #175973;
+  box-shadow: 0 12px 28px -8px rgba(23, 89, 115, 0.2);
+  transform: translateY(-2px);
+}
+.mock-aud-img {
+  width: 100%;
+  height: 130px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+}
+.mock-aud-card h4 {
+  margin: 18px 8px 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.4;
+}
+.mock-aud-card:hover h4 { color: #175973; }
+.mock-aud-card p {
+  margin: 0 8px 14px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Sellers band — yellow / gold backdrop */
+.mock-sellers-band {
+  position: relative;
+  padding: 70px 48px;
+}
+.mock-sellers-band::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 280px;
+  background: #B59327;
+  z-index: 0;
+}
+.mock-sellers-bg-text {
+  position: relative;
+  z-index: 1;
+  font-size: 38px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+.mock-sellers-card {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 4px;
+  padding: 32px 28px;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.18);
+}
+.mock-sellers-head { margin-bottom: 26px; }
+.mock-sellers-head h2 { margin: 0 0 6px; font-size: 26px; color: #111827; font-weight: 700; }
+.mock-sellers-head p { margin: 0; color: #6b7280; font-size: 14px; }
+.mock-sellers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.mock-seller-tile {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 32px 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.mock-seller-tile:hover { background: #f3f4f6; border-color: #d1d5db; transform: translateY(-2px); }
+.mock-seller-icon { font-size: 48px; margin-bottom: 14px; }
+.mock-seller-tile h3 { margin: 0 0 6px; font-size: 22px; color: #111827; font-weight: 600; }
+.mock-seller-tile p { margin: 0; color: #6b7280; font-size: 14px; }
+
+/* Enhanced services — teal gradient with frosted cards */
+.mock-services-band {
+  padding: 64px 48px;
+  background: linear-gradient(135deg, #2C5F7E 0%, #5A9FD4 100%);
+  color: #fff;
+}
+.mock-services-head { text-align: center; margin-bottom: 48px; }
+.mock-services-head h2 {
+  margin: 0 0 12px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.015em;
+}
+.mock-services-head p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.mock-services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.mock-svc-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 26px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+.mock-svc-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+}
+.mock-svc-icon {
+  font-size: 36px;
+  margin-bottom: 18px;
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+}
+.mock-svc-card h3 {
+  margin: 0 0 12px;
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+}
+.mock-svc-card p {
+  margin: 0 0 18px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85);
+  flex: 1;
+}
+.mock-svc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.mock-svc-chips span {
+  background: rgba(255, 255, 255, 0.18);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+}
+.mock-svc-link {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: auto;
+}
+.mock-svc-link:hover { color: #fff; }
+
+.mock-list-cta {
+  background: linear-gradient(135deg, #B59327, #d6b14a);
+  color: #fff;
+  padding: 32px 36px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+.mock-list-cta h2 { color: #fff; margin: 0 0 6px; font-size: 22px; }
+.mock-list-cta p { margin: 0; opacity: 0.9; font-size: 13px; }
+.mock-list-cta .mock-btn-primary { background: #fff; color: #B59327; }
+
+.mock-comparison { padding: 32px 36px; background: #f8f7f4; }
+.mock-cmp-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.mock-cmp-table th, .mock-cmp-table td { padding: 12px 16px; text-align: left; font-size: 13px; border-bottom: 1px solid #f3f2ee; }
+.mock-cmp-table th { background: #DFDBCF; color: #175973; font-weight: 700; }
+.mock-cmp-table th.us { background: #175973; color: #fff; }
+.mock-cmp-table td.us { background: #f0fdf4; color: #15803d; font-weight: 600; }
+.mock-cmp-table tr:last-child td { border-bottom: 0; }
+
+.mock-testimonials { padding: 32px 36px; background: #fff; }
+.mock-testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.mock-testi-card {
+  background: #f8f7f4;
+  border: 1px solid #e5e3da;
+  border-radius: 12px;
+  padding: 18px;
+}
+.mock-testi-card p { margin: 0 0 10px; font-style: italic; font-size: 13px; line-height: 1.55; color: #1f2937; }
+.mock-testi-by { color: #6b7280; font-size: 12px; }
+.mock-testi-by strong { color: #175973; }
+.mock-trust {
+  text-align: center;
+  padding: 16px;
+  background: #f8f7f4;
+  border-radius: 10px;
+  font-size: 12px;
+  color: #4b5563;
+  border: 1px dashed #d1d5db;
+}
+
+/* Search — enhancements */
+.filter-applied { margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid #f3f2ee; }
+.filter-applied h3 { display: flex; justify-content: space-between; align-items: center; }
+.filter-applied a { color: #175973; font-size: 11px; font-weight: 700; cursor: pointer; }
+.filter-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { background: #DFDBCF; color: #1f2937; padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 500; }
+.mock-prop-owner { font-size: 11px; color: #4b5563; margin-top: 6px; }
+.mock-pagination {
+  display: flex; gap: 6px; justify-content: center; margin-top: 20px;
+  font-size: 12px;
+}
+.mock-pagination span, .mock-pagination button {
+  padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px;
+  background: #fff; cursor: pointer; color: #4b5563;
+}
+.mock-pagination span.active { background: #175973; color: #fff; border-color: #175973; font-weight: 600; }
+.mock-btn-secondary.small { padding: 5px 10px; font-size: 11px; }
+
+/* Property details — enhancements */
+.mock-facilities { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.mock-facilities span {
+  background: #DFDBCF; color: #175973;
+  padding: 5px 12px; border-radius: 99px;
+  font-size: 12px; font-weight: 500;
+}
+.mock-similar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.mock-similar-card {
+  background: #f8f7f4; border-radius: 10px; padding: 12px;
+  font-size: 12px; color: #4b5563; text-align: center;
+}
+.mock-similar-card div { font-size: 32px; margin-bottom: 6px; }
+.mock-similar-card strong { display: block; color: #175973; font-size: 13px; margin-bottom: 4px; }
+.mock-contact-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-top: 14px; font-size: 12px;
+}
+.mock-contact-stats div { background: #f8f7f4; padding: 8px; border-radius: 6px; }
+.mock-contact-stats strong { font-size: 16px; color: #175973; }
+.mock-pd-summary h3 { font-size: 15px; margin: 18px 0 10px; }
+.mock-map {
+  background: linear-gradient(135deg, #f8f7f4, #DFDBCF);
+  padding: 28px;
+  text-align: center;
+  border-radius: 10px;
+  color: #4b5563;
+  font-size: 13px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+
+/* Agent detail — enhancements */
+.mock-agent-card.mock-agent-card { /* keep specificity */ }
+.mock-agent-body h4 { margin: 0 0 4px; }
+.mock-meta-line { font-size: 12px; color: #6b7280; }
+.mock-meta-stars { font-size: 12px; color: #B59327; font-weight: 600; margin: 6px 0 8px; }
+.mock-agent-photo.big {
+  width: 180px; height: 220px; font-size: 44px;
+  border-radius: 14px; margin: 0 auto 14px;
+}
+.mock-ad { display: grid; grid-template-columns: 220px 1fr; gap: 28px; padding: 22px 28px 28px; }
+.mock-ad-side { text-align: center; }
+.mock-ad-contact { margin-top: 14px; font-size: 12px; color: #4b5563; }
+.mock-ad-contact div { padding: 4px 0; }
+.mock-ad-company { color: #175973; font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.mock-ad-header h2 { margin: 4px 0; font-size: 24px; }
+.mock-ad-badges { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+.mock-ad-badges span {
+  background: #DFDBCF; color: #175973;
+  padding: 4px 10px; border-radius: 99px;
+  font-size: 11px; font-weight: 600;
+}
+.mock-ad-tabs { display: flex; gap: 22px; border-bottom: 1px solid #EBECF0; margin: 16px 0; }
+.mock-ad-tabs a { padding: 9px 0; font-size: 13px; font-weight: 600; color: #6b7280; }
+.mock-ad-tabs a.active { color: #175973; border-bottom: 2px solid #175973; }
+.mock-ad-spec { padding-left: 20px; font-size: 13px; color: #4b5563; }
+.mock-ad-spec li { margin: 4px 0; }
+
+/* About */
+.mock-about { padding: 56px 36px; background: linear-gradient(135deg, #1759730d, #B5932708); text-align: center; }
+.mock-about h1 { margin: 0 0 12px; font-size: 48px; color: #175973; letter-spacing: -0.02em; }
+.mock-about .lead { font-size: 16px; color: #4b5563; max-width: 640px; margin: 0 auto 28px; }
+.mock-about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 720px; margin: 0 auto; }
+.mock-about-stats div { background: #fff; padding: 16px; border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.mock-about-stats strong { display: block; color: #175973; font-size: 18px; margin-bottom: 4px; }
+.mock-about-stats span { color: #6b7280; font-size: 11px; }
+
+.mock-mission { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 32px 36px; background: #fff; }
+.mock-mv-card { background: #f8f7f4; padding: 24px; border-radius: 12px; border: 1px solid #e5e3da; }
+.mock-mv-card h3 { margin: 0 0 10px; font-size: 18px; color: #175973; }
+.mock-mv-card p { margin: 0; font-size: 13px; color: #4b5563; line-height: 1.55; }
+
+.mock-values { padding: 32px 36px; background: #f8f7f4; }
+.mock-values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.mock-values-grid > div {
+  background: #fff; padding: 14px; border-radius: 10px;
+  border-left: 3px solid #175973;
+}
+.mock-values-grid strong { display: block; color: #175973; font-size: 13px; margin-bottom: 4px; }
+.mock-values-grid p { margin: 0; font-size: 11px; color: #6b7280; line-height: 1.4; }
+
+.mock-leadership { padding: 32px 36px; background: linear-gradient(135deg, #175973, #2e8eaf); color: #fff; }
+.mock-leadership h2 { color: #fff !important; text-align: center; }
+.mock-leader { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: center; max-width: 720px; margin: 0 auto; }
+.mock-leader h3 { margin: 0 0 6px; color: #fff; font-size: 22px; }
+.mock-leader .mock-meta-line { color: rgba(255,255,255,0.85); font-size: 14px; margin-bottom: 10px; }
+.mock-leader p { margin: 0; color: rgba(255,255,255,0.9); font-size: 13px; line-height: 1.6; }
+
+.mock-segments { padding: 32px 36px; background: #fff; }
+.mock-seg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.mock-seg-grid > div { background: #f8f7f4; padding: 18px; border-radius: 10px; }
+.mock-seg-grid strong { display: block; color: #175973; font-size: 14px; margin-bottom: 6px; }
+.mock-seg-grid p { margin: 0; font-size: 12px; color: #6b7280; line-height: 1.5; }
+
+/* Why IDAM */
+.mock-why-hero { padding: 48px 36px; background: linear-gradient(135deg, #1759730d, #B5932708); text-align: center; }
+.mock-why-hero h1 { margin: 0 0 14px; font-size: 36px; color: #175973; letter-spacing: -0.02em; }
+.mock-why-hero p { font-size: 14px; color: #4b5563; max-width: 720px; margin: 0 auto 24px; line-height: 1.6; }
+.mock-why-highlights { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.mock-why-highlights span {
+  background: #fff; color: #175973;
+  padding: 8px 16px; border-radius: 99px;
+  font-size: 12px; font-weight: 600;
+  border: 1px solid #e5e3da;
+}
+
+.mock-why-problems, .mock-why-solutions { padding: 32px 36px; background: #fff; }
+.mock-why-solutions { background: #f8f7f4; }
+.mock-pp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.mock-pp-card { background: #fff; border: 1px solid #e5e3da; border-left: 4px solid #dc2626; padding: 16px; border-radius: 10px; }
+.mock-pp-card.good { border-left-color: #15803d; }
+.mock-pp-card > div:first-child { font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 6px; }
+.mock-pp-card p { margin: 0; font-size: 13px; color: #4b5563; line-height: 1.5; }
+.mock-why-cta { padding: 36px; background: linear-gradient(135deg, #175973, #2e8eaf); text-align: center; color: #fff; }
+.mock-why-cta h2 { color: #fff !important; margin: 0 0 18px; font-size: 24px; }
+.mock-cta-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.mock-why-cta .mock-btn-secondary { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.4); }
+
+/* How it works */
+.mock-how-hero { padding: 36px; background: #f8f7f4; text-align: center; }
+.mock-how-hero h1 { margin: 0 0 8px; font-size: 28px; color: #175973; }
+.mock-how-hero p { margin: 0; color: #6b7280; font-size: 14px; }
+.mock-how-tabs { padding: 18px 36px; background: #fff; display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid #e5e3da; }
+.mock-how-tabs a {
+  padding: 10px 18px; border: 1px solid #d1d5db; border-radius: 6px;
+  font-size: 13px; font-weight: 500; color: #4b5563; cursor: pointer;
+}
+.mock-how-tabs a.active { background: #175973; color: #fff; border-color: #175973; font-weight: 600; }
+.mock-how-steps { padding: 28px 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.mock-step-card {
+  background: #fff; border: 1px solid #e5e3da; border-radius: 12px;
+  padding: 18px; display: grid; grid-template-columns: 50px 1fr; gap: 14px;
+}
+.mock-step-num {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #175973; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 18px;
+}
+.mock-step-card h4 { margin: 0 0 6px; font-size: 14px; color: #175973; }
+.mock-step-card p { margin: 0 0 10px; font-size: 12px; color: #4b5563; line-height: 1.55; }
+.mock-step-features { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.mock-step-features span {
+  background: #DFDBCF; color: #175973;
+  padding: 3px 9px; border-radius: 99px;
+  font-size: 11px; font-weight: 500;
+}
+.mock-step-time { font-size: 11px; color: #B59327; font-weight: 700; }
+
+/* Careers */
+.mock-careers { padding: 36px 36px 18px; text-align: center; }
+.mock-careers h2 { margin: 0 0 6px; font-size: 24px; color: #1f2937; }
+.mock-careers p { margin: 0; color: #6b7280; font-size: 14px; }
+.mock-careers-form-wrap { padding: 0 36px 36px; background: #f8f7f4; min-height: 400px; }
+.mock-careers-form-wrap .mock-form { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.mock-form textarea {
+  width: 100%; padding: 9px 12px;
+  border: 1px solid #d1d5db; border-radius: 6px;
+  font-size: 13px; font-family: inherit; resize: vertical;
+}
+.mock-form select {
+  width: 100%; padding: 9px 12px;
+  border: 1px solid #d1d5db; border-radius: 6px;
+  font-size: 13px; background: #fff;
+}
+.mock-form-foot { font-size: 11px; color: #9ca3af; text-align: center; margin-top: 10px; }
+.mock-form h3 { margin: 18px 0 8px; font-size: 14px; color: #175973; }
+
+/* Contact */
+.mock-contact-hero {
+  padding: 48px 36px 70px;
+  background: #175973;
+  color: #fff;
+}
+.mock-contact-hero h2 { margin: 0 0 6px; color: #fff; font-size: 28px; }
+.mock-contact-hero p { margin: 0; color: rgba(255,255,255,0.85); font-size: 14px; }
+.mock-contact { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 0 36px 36px; margin-top: -40px; position: relative; }
+.mock-contact-left, .mock-contact-right { display: flex; flex-direction: column; gap: 18px; }
+.mock-contact-map {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  font-size: 14px;
+  color: #4b5563;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.mock-contact-info {
+  background: #fff;
+  border-radius: 12px;
+  padding: 22px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  font-size: 13px;
+}
+.mock-contact-info strong { color: #175973; }
+
+/* User Profile — extras */
+.mock-profile-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.mock-profile-header h2 { margin: 0; }
+.mock-profile-header p { color: #6b7280; font-size: 12px; margin: 0; }
+.mock-listing-stats { font-size: 11px; color: #6b7280; margin-top: 6px; }
+.mock-status.rejected { background: #fee2e2; color: #b91c1c; }
+.mock-status.approved { background: #dbeafe; color: #1d4ed8; }
+
+/* Responses */
+.mock-enquiry-top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 4px; }
+.mock-enq-date { color: #6b7280; font-size: 11px; margin-left: auto; }
+.mock-chev { margin-left: auto; color: #6b7280; }
+.mock-enquiry-head.collapsed { padding: 14px 18px; }
+
+/* Contacted */
+.mock-contact-row {
+  background: #fff; border: 1px solid #EBECF0;
+  border-radius: 10px; padding: 16px 18px; margin-bottom: 12px;
+}
+.mock-contact-row p {
+  margin: 8px 0 0; font-size: 13px; color: #1f2937;
+  line-height: 1.5;
+}
+
+/* Start selling — extras */
+.mock-upload-hint { display: block; font-size: 11px; color: #9ca3af; margin-top: 6px; }
+.mock-uploaded { margin-top: 10px; font-size: 12px; }
+.mock-uploaded > div {
+  display: flex; justify-content: space-between;
+  background: #f8f7f4; padding: 8px 12px; border-radius: 6px;
+  margin-bottom: 4px; color: #4b5563;
+}
+.mock-uploaded em { font-style: normal; color: #6b7280; font-size: 11px; }
+
+</style>
+</head>
+<body class="tour-body app-mode">
+
+  <header class="app-topbar">
+    <a class="brand" href="./docs.html" aria-label="Back to docs">
+      <span class="brand-mark">91</span>
+      <span class="brand-name">IDAM Demo</span>
+    </a>
+    <span class="app-topbar-hint">Interactive walkthrough — click <strong>Next</strong> on each tooltip</span>
+    <div class="app-topbar-actions">
+      <a class="btn-link" href="./docs.html">📚 Documentation</a>
+      <button class="btn-link" id="steps-btn" type="button" aria-haspopup="dialog" aria-expanded="false">📋 All steps</button>
+      <button class="btn-link" id="restart-btn" type="button">↻ Restart tour</button>
+      <a class="btn-link" href="./docs.html">Exit</a>
+    </div>
+  </header>
+
+  <!-- All-steps panel — opens via the topbar button, click any item to jump -->
+  <aside class="steps-panel" id="steps-panel" hidden role="dialog" aria-label="All tour steps">
+    <div class="steps-panel-head">
+      <h3>Jump to step</h3>
+      <button class="steps-panel-close" id="steps-panel-close" type="button" aria-label="Close">✕</button>
+    </div>
+    <p class="steps-panel-sub">Click any step to jump directly.</p>
+    <ol class="steps-panel-list" id="steps-panel-list"></ol>
+  </aside>
+  <div class="steps-panel-backdrop" id="steps-panel-backdrop" hidden></div>
+
+  <main class="app-stage" id="app-stage">
+
+    <!-- ===================================================================
+         SCREEN: HOME — matched to live 91idam.com layout
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="home" hidden>
+      <div class="mock-header">
+        <div class="mock-logo" data-anchor="logo">91 IDAM</div>
+        <nav class="mock-nav">
+          <a class="active" data-anchor="nav-home">Home</a>
+          <a data-anchor="nav-properties">Properties</a>
+          <a data-anchor="nav-individuals">Individuals ▾</a>
+          <a data-anchor="nav-franchise">Franchise Partners ▾</a>
+          <a data-anchor="nav-agents">Our Agents</a>
+        </nav>
+        <button class="mock-btn-primary mock-login" data-anchor="login-btn">Login</button>
+      </div>
+
+      <!-- Fold 1: Hero -->
+      <section class="mock-hero">
+        <div class="mock-hero-text">
+          <h1>1 Powerful Platform.</h1>
+          <h2 class="accent">4 Smart Solutions.</h2>
+          <div class="mock-search-card" data-anchor="hero-search">
+            <div class="mock-search-bar">
+              <input placeholder="Search Properties, locations, or requirements..." value="OMR" />
+              <button class="mock-search-btn" aria-label="Search">🔍</button>
+            </div>
+            <div class="mock-search-filter">
+              <span class="mock-search-label">Filter by Category:</span>
+              <label><input type="radio" name="cat" checked /> All</label>
+              <label><input type="radio" name="cat" /> Residential</label>
+              <label><input type="radio" name="cat" /> Commercial</label>
+            </div>
+          </div>
+        </div>
+        <div class="mock-hero-art">
+          <svg width="280" height="280" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#175973" />
+                <stop offset="100%" stop-color="#2e8eaf" />
+              </linearGradient>
+              <linearGradient id="hg2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#B59327" />
+                <stop offset="100%" stop-color="#8a6e1d" />
+              </linearGradient>
+            </defs>
+            <ellipse cx="140" cy="245" rx="110" ry="14" fill="#175973" opacity="0.08" />
+            <polygon points="50,150 140,80 230,150 230,230 50,230" fill="url(#hg1)" />
+            <polygon points="50,150 140,80 230,150 215,150 140,95 65,150" fill="url(#hg2)" />
+            <rect x="120" y="170" width="40" height="60" fill="#fff" opacity="0.95" />
+            <rect x="75" y="170" width="32" height="32" fill="#fff" opacity="0.85" />
+            <rect x="173" y="170" width="32" height="32" fill="#fff" opacity="0.85" />
+            <line x1="91" y1="170" x2="91" y2="202" stroke="#175973" stroke-width="2" />
+            <line x1="75" y1="186" x2="107" y2="186" stroke="#175973" stroke-width="2" />
+            <line x1="189" y1="170" x2="189" y2="202" stroke="#175973" stroke-width="2" />
+            <line x1="173" y1="186" x2="205" y2="186" stroke="#175973" stroke-width="2" />
+            <circle cx="155" cy="200" r="2" fill="#175973" />
+            <polygon points="200,80 200,40 215,40 215,80" fill="#B59327" />
+            <polygon points="200,40 215,40 207,28" fill="#8a6e1d" />
+          </svg>
+        </div>
+      </section>
+
+      <!-- Fold 2: Audience cards -->
+      <section class="mock-audience" data-anchor="places">
+        <h2>Real Estate is Complicated. We Make it Simple, Legal, and Profitable</h2>
+        <p class="mock-audience-sub">Whether you're buying, selling, starting your own real-estate business, executing projects, or scaling property investments — 91 IDAM gives you everything under one trusted, tech-enabled system. We serve:</p>
+        <div class="mock-audience-grid">
+          <div class="mock-aud-card">
+            <div class="mock-aud-img" style="background: linear-gradient(135deg, #DFDBCF, #b8b09c);">👨‍👩‍👧</div>
+            <h4>Property Buyers, Sellers, NRIs, and Tenants</h4>
+            <p>Click to learn how we help you</p>
+          </div>
+          <div class="mock-aud-card">
+            <div class="mock-aud-img" style="background: linear-gradient(135deg, #b8d4dc, #5a9fd4);">🏢</div>
+            <h4>Franchise Partners and Entrepreneurs</h4>
+            <p>Click to learn how we help you</p>
+          </div>
+          <div class="mock-aud-card">
+            <div class="mock-aud-img" style="background: linear-gradient(135deg, #f3e7c0, #B59327);">⚖️</div>
+            <h4>Builders, Legal Advisors, Loan Agents, Vendors</h4>
+            <p>Click to learn how we help you</p>
+          </div>
+          <div class="mock-aud-card">
+            <div class="mock-aud-img" style="background: linear-gradient(135deg, #c5d8e0, #2C5F7E);">🏛️</div>
+            <h4>Institutional Clients, PG Operators, Corporates, Government Housing</h4>
+            <p>Click to learn how we help you</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fold 3: Plots / Sellers band -->
+      <section class="mock-sellers-band" data-anchor="sellers">
+        <div class="mock-sellers-bg-text">Plots/Land Posted by</div>
+        <div class="mock-sellers-card">
+          <div class="mock-sellers-head">
+            <h2>Choose Who's Selling</h2>
+            <p>Discover Listings You'll Like</p>
+          </div>
+          <div class="mock-sellers-grid">
+            <div class="mock-seller-tile">
+              <div class="mock-seller-icon">🏷️</div>
+              <h3>Dealer</h3>
+              <p>3000+ Properties</p>
+            </div>
+            <div class="mock-seller-tile">
+              <div class="mock-seller-icon">🏠</div>
+              <h3>Owner</h3>
+              <p>3000+ Properties</p>
+            </div>
+            <div class="mock-seller-tile">
+              <div class="mock-seller-icon">🏗️</div>
+              <h3>Builder</h3>
+              <p>3000+ Properties</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fold 4: List property CTA -->
+      <section class="mock-list-cta" data-anchor="list-cta">
+        <div>
+          <h2>Got a property to sell?</h2>
+          <p>List in 5 minutes. We verify documents, photograph, and bring you serious buyers within 48 hours.</p>
+        </div>
+        <button class="mock-btn-primary big">List your property →</button>
+      </section>
+
+      <!-- Fold 5: Enhanced Services (teal gradient with frosted cards) -->
+      <section class="mock-services-band" data-anchor="services">
+        <div class="mock-services-head">
+          <h2>Beyond Property Listings</h2>
+          <p>Complete real-estate ecosystem with legal safety, business opportunities, and enterprise solutions</p>
+        </div>
+        <div class="mock-services-grid">
+          <div class="mock-svc-card">
+            <div class="mock-svc-icon">🔒</div>
+            <h3>Property. Done Right.</h3>
+            <p>Complete legal verification, digital document locker, rental agreements, and fraud protection for buyers, sellers, tenants, and NRIs.</p>
+            <div class="mock-svc-chips">
+              <span>✓ Anti-fraud</span><span>✓ Digital Locker</span><span>✓ CRM Support</span>
+            </div>
+            <a class="mock-svc-link">Book Consultation →</a>
+          </div>
+          <div class="mock-svc-card">
+            <div class="mock-svc-icon">🏢</div>
+            <h3>Your Business. Our System.</h3>
+            <p>Complete business-in-a-box for entrepreneurs, brokers, and job seekers. Proven franchise system with recurring income potential.</p>
+            <div class="mock-svc-chips">
+              <span>✓ ROI Calculator</span><span>✓ Demo Video</span><span>✓ CRM Tools</span>
+            </div>
+            <a class="mock-svc-link">Apply for Franchise →</a>
+          </div>
+          <div class="mock-svc-card">
+            <div class="mock-svc-icon">⭐</div>
+            <h3>Earn More. Get Recognized.</h3>
+            <p>Verified vendor status for builders, surveyors, lawyers, and loan agents. Regular projects with professional recognition.</p>
+            <div class="mock-svc-chips">
+              <span>✓ Verified Badge</span><span>✓ Regular Projects</span><span>✓ CRM Access</span>
+            </div>
+            <a class="mock-svc-link">Join as Vendor →</a>
+          </div>
+          <div class="mock-svc-card">
+            <div class="mock-svc-icon">🏛️</div>
+            <h3>Enterprise Real Estate Execution.</h3>
+            <p>Multi-location SLA delivery for PGs, corporates, government, and investors. Compliance dashboards with risk management.</p>
+            <div class="mock-svc-chips">
+              <span>✓ Multi-Location SLA</span><span>✓ Case Studies</span><span>✓ Proposal</span>
+            </div>
+            <a class="mock-svc-link">Book Demo →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fold 6: Comparison -->
+      <section class="mock-comparison" data-anchor="comparison">
+        <h2>Why 91 IDAM vs traditional brokers</h2>
+        <table class="mock-cmp-table">
+          <thead><tr><th></th><th>Traditional broker</th><th class="us">91 IDAM</th></tr></thead>
+          <tbody>
+            <tr><td>Property verification</td><td>❌ Often skipped</td><td class="us">✅ Legal team checks every doc</td></tr>
+            <tr><td>Hidden brokerage</td><td>❌ Yes</td><td class="us">✅ Transparent, fixed</td></tr>
+            <tr><td>Time to close</td><td>3-6 months</td><td class="us">2-6 weeks</td></tr>
+            <tr><td>Tech-enabled CRM</td><td>❌ No</td><td class="us">✅ Full digital trail</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Fold 7: Testimonials -->
+      <section class="mock-testimonials" data-anchor="testimonials">
+        <h2>What our customers say</h2>
+        <div class="mock-testi-grid">
+          <div class="mock-testi-card">
+            <p>"Closed my apartment sale in 19 days. The legal verification alone saved me ₹2 lakh in agent fees."</p>
+            <div class="mock-testi-by"><strong>Karthick S</strong> · Coimbatore</div>
+          </div>
+          <div class="mock-testi-card">
+            <p>"Bought my first home through 91 IDAM. Every document was already vetted — peace of mind."</p>
+            <div class="mock-testi-by"><strong>Priya R</strong> · Chennai</div>
+          </div>
+          <div class="mock-testi-card">
+            <p>"Their franchise model is a dream. I started my unit in 6 weeks with full training."</p>
+            <div class="mock-testi-by"><strong>Vignesh M</strong> · Salem</div>
+          </div>
+        </div>
+        <div class="mock-trust">
+          🏛️ Government Registered · ⚖️ Legal Compliance · 🔒 Data Security · 📜 ISO Certified · 🤝 Tech Partner
+        </div>
+      </section>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: SEARCH
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="search" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Properties</a><a>Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-breadcrumb">Home › Properties in Tamil Nadu</div>
+      <div class="mock-search-layout">
+        <aside class="mock-filters" data-anchor="filters">
+          <div class="filter-applied">
+            <h3>Applied Filters <a>CLEAR ALL</a></h3>
+            <div class="filter-chips">
+              <span class="chip">₹50 L – ₹1 Cr ✕</span>
+              <span class="chip">Residential ✕</span>
+              <span class="chip">Coimbatore ✕</span>
+            </div>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Budget</div>
+            <label><input type="checkbox" /> Under ₹25 L</label>
+            <label><input type="checkbox" checked /> ₹25 L – ₹50 L</label>
+            <label><input type="checkbox" checked /> ₹50 L – ₹1 Cr</label>
+            <label><input type="checkbox" /> ₹1 Cr – ₹2 Cr</label>
+            <label><input type="checkbox" /> ₹2 Cr – ₹5 Cr</label>
+            <label><input type="checkbox" /> Above ₹5 Cr</label>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Property Type</div>
+            <label><input type="checkbox" checked /> Residential</label>
+            <label><input type="checkbox" /> Commercial</label>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Posted by</div>
+            <label><input type="checkbox" /> Owner</label>
+            <label><input type="checkbox" checked /> Builder</label>
+            <label><input type="checkbox" /> Dealer</label>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Approved by</div>
+            <label><input type="checkbox" checked /> DTCP</label>
+            <label><input type="checkbox" /> RERA</label>
+            <label><input type="checkbox" /> CMDA</label>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Facing</div>
+            <label><input type="checkbox" /> North</label>
+            <label><input type="checkbox" /> East</label>
+            <label><input type="checkbox" /> South</label>
+            <label><input type="checkbox" /> West</label>
+          </div>
+        </aside>
+        <section class="mock-results" data-anchor="results-list">
+          <div class="mock-results-bar">
+            <span><strong>156</strong> properties · <strong>24</strong> shown</span>
+            <select class="mock-sort" data-anchor="sort">
+              <option>Newest first</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Area: Small to Large</option>
+            </select>
+          </div>
+          <div class="mock-prop-card" data-anchor="result-card">
+            <div class="mock-prop-img">🏘️</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>3 BHK Villa, OMR Padur</h4>
+              <div class="mock-prop-meta">Residential · 3BHK Villa · 1850 sqft · DTCP</div>
+              <p>Spacious gated-community villa, vastu-compliant, covered parking, walking distance to schools…</p>
+              <div class="mock-prop-owner">👤 Priya Subramaniam · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹85.00 L</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🏢</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>2 BHK Apartment, RS Puram</h4>
+              <div class="mock-prop-meta">Residential · 2BHK Apt · 1100 sqft · CMDA</div>
+              <p>East-facing 5th-floor apartment in heart of Coimbatore. Modular kitchen, reserved parking…</p>
+              <div class="mock-prop-owner">👤 Karthik Velu · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹62.00 L</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🏞️</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>Commercial Plot, Saravanampatti</h4>
+              <div class="mock-prop-meta">Commercial · Plot · 4800 sqft · DTCP</div>
+              <p>4800 sqft DTCP-approved plot, 40 ft road frontage. Suitable for retail / office build-out…</p>
+              <div class="mock-prop-owner">👤 Vignesh Raja · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹1.20 Cr</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🏡</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>4 BHK Bungalow, Race Course Road</h4>
+              <div class="mock-prop-meta">Residential · 4BHK Independent · 3200 sqft · CMDA</div>
+              <p>Premium bungalow with garden, swimming pool, servant quarters. Prime location in Coimbatore…</p>
+              <div class="mock-prop-owner">👤 Lakshmi Iyer · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹2.85 Cr</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🏠</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR RENT</div>
+              <h4>2 BHK Flat, Anna Nagar</h4>
+              <div class="mock-prop-meta">Residential · 2BHK Apt · 1080 sqft · CMDA</div>
+              <p>Furnished flat with AC, fridge, washing machine. Walking distance to metro and schools…</p>
+              <div class="mock-prop-owner">👤 Mohan Bhaskar · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹35,000/mo</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-prop-card">
+            <div class="mock-prop-img">🌾</div>
+            <div class="mock-prop-body">
+              <div class="mock-tag">FOR SALE</div>
+              <h4>DTCP Plot, ECR Mahabalipuram</h4>
+              <div class="mock-prop-meta">Residential · Plot · 2400 sqft · DTCP</div>
+              <p>Beach-side residential plot with patta and clear title. 200 m from ECR road…</p>
+              <div class="mock-prop-owner">👤 Anitha Devi · Verified Agent</div>
+            </div>
+            <div class="mock-prop-side">
+              <div class="mock-price">₹52.00 L</div>
+              <button class="mock-btn-primary">View Details</button>
+              <button class="mock-btn-secondary small">📞 Contact</button>
+            </div>
+          </div>
+          <div class="mock-pagination">
+            <button>‹ Prev</button>
+            <span class="active">1</span><span>2</span><span>3</span><span>…</span><span>26</span>
+            <button>Next ›</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: PROPERTY DETAILS
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="property-details" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Properties</a><a>Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-breadcrumb">Home › Properties › 3 BHK Villa, OMR Padur</div>
+      <div class="mock-pd">
+        <div class="mock-pd-gallery" data-anchor="gallery">
+          <div class="mock-gallery-main">🏠</div>
+          <div class="mock-gallery-thumbs">
+            <span>🏘️</span><span>🛋️</span><span>🛏️</span><span>🍽️</span><span>🚿</span><span>🚗</span><span>🌳</span><span>+3</span>
+          </div>
+        </div>
+        <div class="mock-pd-grid">
+          <div class="mock-pd-summary" data-anchor="summary">
+            <h2>3 BHK Villa, OMR Padur</h2>
+            <div class="mock-prop-meta">Residential · 3BHK Villa · 1850 sqft · DTCP-approved</div>
+            <div class="mock-pd-price">₹85.00 L <span class="mock-neg">(Negotiable)</span></div>
+            <span class="mock-status active">● Active</span>
+            <div class="mock-pd-attrs" data-anchor="attrs">
+              <div><strong>Bathrooms</strong> 3</div>
+              <div><strong>Parking</strong> 2 covered</div>
+              <div><strong>Facing</strong> East</div>
+              <div><strong>Floors</strong> G+1</div>
+              <div><strong>Age</strong> 2 years</div>
+              <div><strong>Furnishing</strong> Semi</div>
+              <div><strong>Plot Area</strong> 2400 sqft</div>
+              <div><strong>Road Width</strong> 40 ft</div>
+            </div>
+
+            <h3>About this property</h3>
+            <p>Spacious 3BHK villa in a gated community on Old Mahabalipuram Road, Padur. Vastu-compliant with East-facing entrance. Includes 24/7 security, club house, gym, and swimming pool. Walking distance to Velammal Vidyalaya, Mahindra World City, and the IT corridor (TCS, Infosys, CTS).</p>
+
+            <h3 data-anchor="facilities">Amenities & facilities</h3>
+            <div class="mock-facilities">
+              <span>🏊 Swimming Pool</span>
+              <span>🏋️ Gym</span>
+              <span>🎮 Club House</span>
+              <span>👮 24/7 Security</span>
+              <span>🌳 Garden</span>
+              <span>🏏 Play Area</span>
+              <span>⚡ Power Backup</span>
+              <span>💧 24/7 Water</span>
+            </div>
+
+            <h3 data-anchor="location">Location</h3>
+            <div class="mock-map">
+              📍 OMR, Padur, Chengalpattu District, Tamil Nadu 603103
+              <button class="mock-btn-secondary small">Open in Maps ↗</button>
+            </div>
+
+            <h3 data-anchor="similar">Similar properties nearby</h3>
+            <div class="mock-similar">
+              <div class="mock-similar-card">
+                <div>🏘️</div><strong>3 BHK Villa, Kelambakkam</strong>
+                <div>1900 sqft · ₹78 L</div>
+              </div>
+              <div class="mock-similar-card">
+                <div>🏠</div><strong>3 BHK Villa, Sholinganallur</strong>
+                <div>2050 sqft · ₹95 L</div>
+              </div>
+              <div class="mock-similar-card">
+                <div>🏡</div><strong>3 BHK House, Siruseri</strong>
+                <div>1750 sqft · ₹72 L</div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="mock-pd-side">
+            <div class="mock-contact-card" data-anchor="contact-card">
+              <div class="mock-avatar">PS</div>
+              <div class="mock-contact-name">Priya Subramaniam</div>
+              <div class="mock-contact-role">⭐ Verified Agent · 12 listings</div>
+              <button class="mock-btn-primary mock-contact-btn">Contact owner / agent</button>
+              <div class="mock-contact-phone">📞 +91 98400 12345</div>
+              <div class="mock-contact-phone">✉️ priya@91idam.com</div>
+              <div class="mock-contact-stats">
+                <div><strong>4.8</strong>★ Rating</div>
+                <div><strong>54</strong> Sales</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: LOGIN MODAL
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="login" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a class="active">Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <section class="mock-hero"><div class="mock-hero-text"><h1>1 Powerful Platform.</h1></div></section>
+      <div class="mock-modal">
+        <div class="mock-modal-card" data-anchor="login-card">
+          <div class="mock-modal-title">Sign in to 91 IDAM</div>
+          <p class="mock-modal-sub">Welcome back. Use your registered email.</p>
+          <label>Email</label>
+          <input value="ramesh@example.com" data-anchor="login-email" />
+          <label>Password</label>
+          <input type="password" value="••••••••••" />
+          <label class="mock-checkbox"><input type="checkbox" checked /> Remember me for 30 days</label>
+          <button class="mock-btn-primary mock-modal-cta" data-anchor="login-cta">Send OTP</button>
+          <div class="mock-modal-foot"><a>Forgot password?</a> · <a>Sign up</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: OTP
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="otp" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a class="active">Home</a><a>Properties</a><a>Our Agents</a></nav>
+      </div>
+      <div class="mock-modal">
+        <div class="mock-modal-card" data-anchor="otp-card">
+          <div class="mock-modal-title">Verify OTP</div>
+          <p class="mock-modal-sub">A 6-digit code was sent to <strong>ramesh@example.com</strong></p>
+          <div class="mock-otp" data-anchor="otp-input">
+            <input value="4" /><input value="2" /><input value="9" /><input value="8" /><input /><input />
+          </div>
+          <button class="mock-btn-primary mock-modal-cta">Verify & continue</button>
+          <div class="mock-modal-foot"><a>Resend OTP (2/3 left)</a> · <span>Expires in 04:23</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: OUR AGENTS
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="agents" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a class="active">Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-agents-hero" data-anchor="agents-hero">
+        <h1>Our Agents</h1>
+        <p>Connect with certified real estate professionals across Tamil Nadu.</p>
+      </div>
+      <div class="mock-agents-grid">
+        <div class="mock-agent-card" data-anchor="agent-card">
+          <div class="mock-agent-photo">PS</div>
+          <div class="mock-agent-body">
+            <h4>Priya Subramaniam</h4>
+            <div class="mock-meta-line">Senior Agent · Chennai</div>
+            <div class="mock-meta-line">DTCP/RERA certified</div>
+            <div class="mock-meta-stars">★ 4.8 · 12 listings · 54 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">KV</div>
+          <div class="mock-agent-body">
+            <h4>Karthik Velu</h4>
+            <div class="mock-meta-line">Agent · Coimbatore</div>
+            <div class="mock-meta-line">Residential specialist</div>
+            <div class="mock-meta-stars">★ 4.6 · 5 listings · 18 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">VR</div>
+          <div class="mock-agent-body">
+            <h4>Vignesh Raja</h4>
+            <div class="mock-meta-line">Senior Agent · Coimbatore</div>
+            <div class="mock-meta-line">Commercial properties</div>
+            <div class="mock-meta-stars">★ 4.9 · 9 listings · 41 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">AD</div>
+          <div class="mock-agent-body">
+            <h4>Anitha Devi</h4>
+            <div class="mock-meta-line">Agent · Madurai</div>
+            <div class="mock-meta-line">Plots & farmland</div>
+            <div class="mock-meta-stars">★ 4.7 · 8 listings · 23 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">SR</div>
+          <div class="mock-agent-body">
+            <h4>Sundar Ramaswamy</h4>
+            <div class="mock-meta-line">Senior Agent · Salem</div>
+            <div class="mock-meta-line">Industrial properties</div>
+            <div class="mock-meta-stars">★ 4.5 · 6 listings · 14 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+        <div class="mock-agent-card">
+          <div class="mock-agent-photo">LI</div>
+          <div class="mock-agent-body">
+            <h4>Lakshmi Iyer</h4>
+            <div class="mock-meta-line">Agent · Chennai</div>
+            <div class="mock-meta-line">Premium villas & bungalows</div>
+            <div class="mock-meta-stars">★ 4.9 · 14 listings · 67 sales</div>
+            <button class="mock-btn-secondary small">DETAILS</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: AGENT DETAIL
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="agent-detail" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a class="active">Our Agents</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-breadcrumb">Home › Our Agents › Chennai › Priya Subramaniam</div>
+      <div class="mock-ad">
+        <aside class="mock-ad-side">
+          <div class="mock-agent-photo big" data-anchor="ad-photo">PS</div>
+          <button class="mock-btn-primary full" data-anchor="ad-contact">Contact Me</button>
+          <div class="mock-ad-contact">
+            <div>📞 +91 98400 12345</div>
+            <div>✉️ priya@91idam.com</div>
+          </div>
+        </aside>
+        <section class="mock-ad-main">
+          <div class="mock-ad-header" data-anchor="ad-header">
+            <div class="mock-ad-company">VKV Realty</div>
+            <h2>Priya Subramaniam</h2>
+            <div class="mock-meta-line">Senior Agent · Chennai · ⭐ 4.8 (54 reviews)</div>
+            <div class="mock-ad-badges">
+              <span>🏛️ DTCP Certified</span>
+              <span>📜 RERA Registered</span>
+              <span>🌟 Top 10 Agent 2026</span>
+            </div>
+          </div>
+          <div class="mock-ad-tabs" data-anchor="ad-tabs">
+            <a class="active">About</a><a>Properties (12)</a><a>Reviews (38)</a>
+          </div>
+          <h3>About Priya</h3>
+          <p>10+ years specialising in OMR and Padur residential markets. Trained at Anna University with a real-estate management certification. Languages: English, Tamil, Hindi.</p>
+          <h3>Specialties</h3>
+          <ul class="mock-ad-spec">
+            <li>Premium villas in OMR / ECR corridor</li>
+            <li>3BHK and 4BHK gated communities</li>
+            <li>NRI buyer assistance</li>
+            <li>Legal verification + document support</li>
+          </ul>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: ABOUT
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="about" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">About</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-about" data-anchor="about-hero">
+        <h1>91 IDAM</h1>
+        <p class="lead">Redefining Indian real estate through an integrated, transparent, tech-enabled ecosystem.</p>
+        <div class="mock-about-stats">
+          <div><strong>2025</strong><span>Established</span></div>
+          <div><strong>Coimbatore</strong><span>Headquarters</span></div>
+          <div><strong>Real Estate</strong><span>Industry</span></div>
+          <div><strong>Franchise</strong><span>Business model</span></div>
+        </div>
+      </div>
+      <div class="mock-mission" data-anchor="about-mission">
+        <div class="mock-mv-card">
+          <h3>🎯 Our Mission</h3>
+          <p>End-to-end property services through a tech-first, franchise-based model. Speed, simplicity and trust on every real estate journey.</p>
+        </div>
+        <div class="mock-mv-card">
+          <h3>🔭 Our Vision</h3>
+          <p>An integrated ecosystem empowering buyers, sellers, brokers and developers — backed by 100+ franchise locations and ₹200 Cr+ in annual revenue.</p>
+        </div>
+      </div>
+      <div class="mock-values" data-anchor="about-values">
+        <h2>Our Core Values</h2>
+        <div class="mock-values-grid">
+          <div><strong>1. Public commitment</strong><p>Serve communities with honesty.</p></div>
+          <div><strong>2. Transparency</strong><p>Clear pricing, ethical conduct.</p></div>
+          <div><strong>3. Confidentiality</strong><p>Data privacy in every deal.</p></div>
+          <div><strong>4. Integrity</strong><p>Right thing, even unwatched.</p></div>
+          <div><strong>5. Employee happiness</strong><p>Growth and respect.</p></div>
+          <div><strong>6. Collaboration</strong><p>Brokers, clients, partners — one team.</p></div>
+          <div><strong>7. Time value</strong><p>Streamlined operations.</p></div>
+          <div><strong>8. Customer-centricity</strong><p>Peace of mind on every touch.</p></div>
+        </div>
+      </div>
+      <div class="mock-leadership" data-anchor="about-leadership">
+        <h2>Leadership</h2>
+        <div class="mock-leader">
+          <div class="mock-agent-photo big">PK</div>
+          <div>
+            <h3>Mr. Pratheesh Kumar-E</h3>
+            <p class="mock-meta-line">Founder & CEO, 91 IDAM</p>
+            <p>Visionary leader transforming Indian real estate through technology and ethical practices. Building IDAM as India's most trusted real-estate platform.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mock-segments" data-anchor="about-segments">
+        <h2>Who We Serve</h2>
+        <div class="mock-seg-grid">
+          <div><strong>🏠 Home Buyers & Sellers</strong><p>Trusted property transactions, legal verification.</p></div>
+          <div><strong>🤝 Tenants & Landlords</strong><p>Transparent agreements + property management.</p></div>
+          <div><strong>🌍 NRIs</strong><p>Remote investment in Indian real estate.</p></div>
+          <div><strong>🏢 Brokers</strong><p>Tech tools and brand support to scale.</p></div>
+          <div><strong>🏗️ Developers</strong><p>Marketing and sales-channel partnerships.</p></div>
+          <div><strong>💼 Franchise Entrepreneurs</strong><p>Proven systems for new ventures.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: WHY IDAM
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="whyidam" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Why IDAM</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-why-hero" data-anchor="why-hero">
+        <h1>Why Choose IDAM?</h1>
+        <p>The only real-estate platform that combines tech-first solutions, legal verification, franchise opportunities, and 40+ years of industry wisdom.</p>
+        <div class="mock-why-highlights">
+          <span>🔒 Legal Safety First</span>
+          <span>🤝 Franchise-First Model</span>
+          <span>💻 Tech-Powered</span>
+          <span>⚖️ Trust & Transparency</span>
+        </div>
+      </div>
+      <div class="mock-why-problems" data-anchor="why-problems">
+        <h2>Real estate's biggest pain points</h2>
+        <div class="mock-pp-grid">
+          <div class="mock-pp-card">
+            <div>❌ Legal disputes</div>
+            <p>Buyers lose lakhs to fraudulent listings, missing patta, encroachment.</p>
+          </div>
+          <div class="mock-pp-card">
+            <div>❌ Hidden brokerage</div>
+            <p>Agents quote one rate, charge another. Negotiation is opaque.</p>
+          </div>
+          <div class="mock-pp-card">
+            <div>❌ Slow closings</div>
+            <p>Average deal takes 4-6 months. Buyers and sellers both lose patience.</p>
+          </div>
+          <div class="mock-pp-card">
+            <div>❌ No follow-up</div>
+            <p>After the sale, brokers vanish. No support for registration, rental, or handover.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mock-why-solutions" data-anchor="why-solutions">
+        <h2>How IDAM solves them</h2>
+        <div class="mock-pp-grid">
+          <div class="mock-pp-card good">
+            <div>✅ Verified listings</div>
+            <p>Every document checked: patta, DTCP, RERA, encumbrance certificate.</p>
+          </div>
+          <div class="mock-pp-card good">
+            <div>✅ Fixed-fee model</div>
+            <p>Transparent brokerage agreed upfront. No surprises at closing.</p>
+          </div>
+          <div class="mock-pp-card good">
+            <div>✅ 2-6 weeks closing</div>
+            <p>CRM-driven matching, prefilled paperwork, scheduled visits.</p>
+          </div>
+          <div class="mock-pp-card good">
+            <div>✅ Full lifecycle</div>
+            <p>Registration, rental management, post-sale support — all in-house.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mock-why-cta" data-anchor="why-cta">
+        <h2>Experience the IDAM difference</h2>
+        <div class="mock-cta-row">
+          <button class="mock-btn-primary big">Start buying</button>
+          <button class="mock-btn-secondary big">List your property</button>
+          <button class="mock-btn-secondary big">Become a partner</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: HOW IT WORKS
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="howitworks" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">How it works</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-how-hero" data-anchor="how-hero">
+        <h1>How IDAM Works</h1>
+        <p>Streamlined, tech-enabled processes for every real-estate journey.</p>
+      </div>
+      <div class="mock-how-tabs" data-anchor="how-tabs">
+        <a class="active">Property Transactions</a>
+        <a>Franchise Partnership</a>
+        <a>Service Providers</a>
+        <a>Enterprise Solutions</a>
+      </div>
+      <div class="mock-how-steps" data-anchor="how-steps">
+        <div class="mock-step-card">
+          <div class="mock-step-num">1</div>
+          <div>
+            <h4>Discovery & verification</h4>
+            <p>Browse 10,000+ verified properties or submit yours. Initial document check (patta, survey number, DTCP/RERA).</p>
+            <div class="mock-step-features">
+              <span>📋 Title verification</span>
+              <span>📍 Location mapping</span>
+              <span>💰 Market analysis</span>
+            </div>
+            <span class="mock-step-time">⏱️ 1-2 days</span>
+          </div>
+        </div>
+        <div class="mock-step-card">
+          <div class="mock-step-num">2</div>
+          <div>
+            <h4>Legal verification & docs</h4>
+            <p>Our legal experts conduct title verification, encumbrance check, and validate DTCP/RERA approvals.</p>
+            <div class="mock-step-features">
+              <span>⚖️ Legal opinion</span>
+              <span>🔐 Digital locker</span>
+              <span>✅ Building permissions</span>
+            </div>
+            <span class="mock-step-time">⏱️ 3-5 days</span>
+          </div>
+        </div>
+        <div class="mock-step-card">
+          <div class="mock-step-num">3</div>
+          <div>
+            <h4>Buyer-seller matching</h4>
+            <p>CRM matches verified buyers with suitable properties. Coordinate site visits with legal experts present.</p>
+            <div class="mock-step-features">
+              <span>🤝 Smart matching</span>
+              <span>🚗 Scheduled visits</span>
+              <span>💵 Negotiation support</span>
+            </div>
+            <span class="mock-step-time">⏱️ 1-2 weeks</span>
+          </div>
+        </div>
+        <div class="mock-step-card">
+          <div class="mock-step-num">4</div>
+          <div>
+            <h4>Agreement & registration</h4>
+            <p>Legal agreement drafting, registration support, and post-sale services including rental management.</p>
+            <div class="mock-step-features">
+              <span>📝 Agreement draft</span>
+              <span>🏛️ Registration</span>
+              <span>🔁 Post-sale support</span>
+            </div>
+            <span class="mock-step-time">⏱️ 1-2 weeks</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: CAREERS
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="careers" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Careers</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <div class="mock-careers" data-anchor="careers-hero">
+        <h2>Apply for a Position</h2>
+        <p>Fill out the form below and our HR team will get back within 48 hours.</p>
+      </div>
+      <div class="mock-careers-form-wrap">
+        <form class="mock-form" data-anchor="careers-form">
+          <div class="mock-field-row">
+            <div class="mock-field"><label>Full Name <span class="req">*</span></label><input value="Karthik Subramaniam" /></div>
+            <div class="mock-field"><label>Email <span class="req">*</span></label><input value="karthik@example.com" /></div>
+          </div>
+          <div class="mock-field-row">
+            <div class="mock-field"><label>Phone <span class="req">*</span></label><input value="+91 98400 12345" /></div>
+            <div class="mock-field"><label>Position Applied <span class="req">*</span></label><input value="Sales Executive" /></div>
+          </div>
+          <div class="mock-field"><label>Years of Experience</label>
+            <select><option>Select…</option><option>Fresher</option><option>1-3 years</option><option selected>3-5 years</option><option>5+ years</option></select>
+          </div>
+          <div class="mock-field"><label>Cover Letter / Message</label>
+            <textarea rows="4">8 years in real estate sales, specialising in residential properties across Coimbatore. Closed ₹120 Cr in deals at my last role…</textarea>
+          </div>
+          <button class="mock-btn-primary big" data-anchor="careers-submit">Submit Application</button>
+          <p class="mock-form-foot">By submitting, you agree to our privacy policy. We'll never share your data.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: CONTACT
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="contact" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a class="active">Contact</a><a>Properties</a></nav>
+        <button class="mock-btn-primary mock-login">Login</button>
+      </div>
+      <section class="mock-contact-hero" data-anchor="contact-hero">
+        <h2>Get in touch</h2>
+        <p>We'd love to talk about how we can help you.</p>
+      </section>
+      <div class="mock-contact">
+        <div class="mock-contact-left">
+          <div class="mock-contact-map" data-anchor="contact-map">
+            🗺️ Our Location<br/><strong>Coimbatore, Tamil Nadu</strong>
+            <button class="mock-btn-secondary small">Open in Maps ↗</button>
+          </div>
+          <div class="mock-contact-info" data-anchor="contact-info">
+            <div><strong>📞 Call us:</strong><br/>+91 97510 00065</div>
+            <div><strong>✉️ Email:</strong><br/>hello@91idam.com</div>
+            <div><strong>🕒 Hours:</strong><br/>Mon-Sat 9AM-7PM</div>
+          </div>
+        </div>
+        <div class="mock-contact-right">
+          <form class="mock-form" data-anchor="contact-form">
+            <h3>Contact Form</h3>
+            <div class="mock-field-row">
+              <div class="mock-field"><label>First name</label><input value="Sneha" /></div>
+              <div class="mock-field"><label>Last name</label><input value="Raman" /></div>
+            </div>
+            <div class="mock-field"><label>Email</label><input value="sneha.r@example.com" /></div>
+            <div class="mock-field"><label>Subject</label><input value="Property in OMR" /></div>
+            <div class="mock-field"><label>Message</label>
+              <textarea rows="4">Looking for a 3BHK villa in OMR around ₹80-90L. Could someone reach out?</textarea>
+            </div>
+            <button class="mock-btn-primary big">Send message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: USER PROFILE (My Listings)
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="user-profile" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <div class="mock-avatar small" data-anchor="avatar">RA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side" data-anchor="profile-sidebar">
+          <div class="mock-profile-card">
+            <div class="mock-avatar large">RA</div>
+            <div class="mock-profile-name">Ramesh A</div>
+            <div class="mock-profile-mail">ramesh@example.com</div>
+          </div>
+          <nav class="mock-profile-nav">
+            <a class="active" data-anchor="nav-listings">My Listings</a>
+            <a data-anchor="nav-responses">View Responses</a>
+            <a>Contacted</a>
+            <a>Profile</a>
+            <a>Change password</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <div class="mock-profile-header">
+            <h2>My Listings</h2>
+            <button class="mock-btn-primary">+ Add new property</button>
+          </div>
+          <div class="mock-listing" data-anchor="my-listing">
+            <div class="mock-listing-img">🏠</div>
+            <div class="mock-listing-body">
+              <span class="mock-status active">● Active</span>
+              <h4>3 BHK Villa, OMR Padur</h4>
+              <div class="mock-prop-meta">Residential · 1850 sqft · DTCP</div>
+              <div class="mock-listing-stats">📞 12 enquiries · 👁 247 views</div>
+            </div>
+            <div class="mock-listing-side">
+              <div class="mock-price">₹85.00 L</div>
+              <button class="mock-btn-link">📝 Edit</button>
+              <button class="mock-btn-link danger">🗑 Delete</button>
+            </div>
+          </div>
+          <div class="mock-listing">
+            <div class="mock-listing-img">🏢</div>
+            <div class="mock-listing-body">
+              <span class="mock-status pending">● Pending</span>
+              <h4>2 BHK Apartment, RS Puram</h4>
+              <div class="mock-prop-meta">Residential · 1100 sqft · CMDA</div>
+              <div class="mock-listing-stats">📞 0 enquiries · 👁 31 views</div>
+            </div>
+            <div class="mock-listing-side">
+              <div class="mock-price">₹62.00 L</div>
+              <button class="mock-btn-link">📝 Edit</button>
+              <button class="mock-btn-link danger">🗑 Delete</button>
+            </div>
+          </div>
+          <div class="mock-listing">
+            <div class="mock-listing-img">🏞️</div>
+            <div class="mock-listing-body">
+              <span class="mock-status active">● Active</span>
+              <h4>Commercial Plot, Saravanampatti</h4>
+              <div class="mock-prop-meta">Commercial · 4800 sqft · DTCP</div>
+              <div class="mock-listing-stats">📞 7 enquiries · 👁 152 views</div>
+            </div>
+            <div class="mock-listing-side">
+              <div class="mock-price">₹1.20 Cr</div>
+              <button class="mock-btn-link">📝 Edit</button>
+              <button class="mock-btn-link danger">🗑 Delete</button>
+            </div>
+          </div>
+          <div class="mock-listing">
+            <div class="mock-listing-img">🌾</div>
+            <div class="mock-listing-body">
+              <span class="mock-status rejected">● Rejected</span>
+              <h4>Agricultural Land, Pollachi</h4>
+              <div class="mock-prop-meta">Land · 12,000 sqft</div>
+              <div class="mock-listing-stats">⚠️ Reason: Missing patta document</div>
+            </div>
+            <div class="mock-listing-side">
+              <div class="mock-price">₹38.00 L</div>
+              <button class="mock-btn-link">📝 Edit</button>
+              <button class="mock-btn-link danger">🗑 Delete</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: START SELLING — matched to live /start-selling layout
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="start-selling" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <div class="mock-avatar small">RA</div>
+      </div>
+
+      <div class="mock-form" data-anchor="sell-form">
+        <!-- Welcome header with illustration on the right -->
+        <header class="mock-sell-header">
+          <div>
+            <h2>Welcome Ramesh, Fill out your basic details</h2>
+            <p class="mock-sell-sub">I'm looking to Sell</p>
+          </div>
+          <div class="mock-sell-illus" aria-hidden="true">
+            <svg width="160" height="140" viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="sg1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#B59327" />
+                  <stop offset="100%" stop-color="#d6b14a" />
+                </linearGradient>
+              </defs>
+              <circle cx="100" cy="55" r="38" fill="url(#sg1)" opacity="0.9" />
+              <circle cx="100" cy="55" r="22" fill="#fff" />
+              <circle cx="100" cy="55" r="14" fill="#B59327" />
+              <rect x="135" y="50" width="20" height="6" fill="#B59327" />
+              <rect x="148" y="44" width="6" height="18" fill="#B59327" />
+              <ellipse cx="55" cy="115" rx="24" ry="6" fill="#175973" opacity="0.15" />
+              <rect x="42" y="60" width="26" height="50" fill="#7a8a3a" rx="3" />
+              <circle cx="55" cy="48" r="13" fill="#f4c194" />
+              <path d="M40,56 Q55,40 70,56 L70,46 Q55,32 40,46 Z" fill="#3b3b3b" />
+              <rect x="35" y="80" width="14" height="22" fill="#E5DDC4" rx="2" />
+              <line x1="46" y1="60" x2="44" y2="84" stroke="#3b3b3b" stroke-width="2" />
+            </svg>
+          </div>
+        </header>
+
+        <!-- Title -->
+        <div class="mock-field">
+          <label>Title <span class="req">*</span></label>
+          <input value="3 BHK Villa, OMR Padur" placeholder="Enter property title" />
+        </div>
+
+        <!-- Description -->
+        <div class="mock-field">
+          <label>Description <span class="req">*</span></label>
+          <textarea rows="4" placeholder="Enter property description...">Spacious gated-community villa in OMR, Padur. East-facing, vastu-compliant with covered parking, club house, gym and swimming pool. 5 minutes from Velammal School and the IT corridor.</textarea>
+        </div>
+
+        <!-- Property type -->
+        <div class="mock-field" data-anchor="sell-type">
+          <label>What kind of property do you have?</label>
+          <div class="mock-radios">
+            <label><input type="radio" name="proptype" checked /> Residential Plot/Land</label>
+            <label><input type="radio" name="proptype" /> Commercial Plot/Land</label>
+          </div>
+        </div>
+
+        <!-- Road Width Type -->
+        <div class="mock-field" data-anchor="sell-road-width">
+          <label>Road Width Type <span class="req">*</span></label>
+          <select>
+            <option>Select unit</option>
+            <option selected>Feet</option>
+            <option>Meters</option>
+          </select>
+        </div>
+
+        <!-- Location Details -->
+        <h3 data-anchor="sell-location">Location Details</h3>
+        <div class="mock-field-row">
+          <div class="mock-field">
+            <label>State <span class="req">*</span></label>
+            <select>
+              <option>Select state</option>
+              <option selected>Tamil Nadu</option>
+              <option>Karnataka</option>
+              <option>Kerala</option>
+              <option>Andhra Pradesh</option>
+            </select>
+          </div>
+          <div class="mock-field">
+            <label>City/District <span class="req">*</span></label>
+            <select>
+              <option>Select city</option>
+              <option selected>Chennai</option>
+              <option>Coimbatore</option>
+              <option>Madurai</option>
+              <option>Salem</option>
+            </select>
+          </div>
+        </div>
+        <div class="mock-field-row">
+          <div class="mock-field">
+            <label>Locality / Area</label>
+            <input value="OMR, Padur" placeholder="Enter locality or area" />
+          </div>
+          <div class="mock-field">
+            <label>Pincode <span class="req">*</span></label>
+            <input value="603103" placeholder="6-digit pincode" />
+          </div>
+        </div>
+        <div class="mock-field">
+          <label>Google Maps URL (optional)</label>
+          <input value="https://maps.google.com/?q=12.84,80.22" placeholder="Paste Google Maps share or embed URL" />
+        </div>
+
+        <!-- Price & Area -->
+        <h3>Price & Area Details</h3>
+        <div class="mock-field-row" data-anchor="sell-price">
+          <div class="mock-field">
+            <label>Selling Price (₹) <span class="req">*</span></label>
+            <input value="8500000" placeholder="Enter selling price" />
+          </div>
+          <div class="mock-field">
+            <label>Built-up area (sq.ft) <span class="req">*</span></label>
+            <input value="1850" placeholder="Total area in sq.ft" />
+          </div>
+        </div>
+
+        <!-- Specs -->
+        <h3>Property Specs</h3>
+        <div class="mock-field-row">
+          <div class="mock-field"><label>Bathrooms</label><input value="3" /></div>
+          <div class="mock-field"><label>Parking</label><input value="2" /></div>
+        </div>
+        <div class="mock-field-row">
+          <div class="mock-field">
+            <label>Facing</label>
+            <select>
+              <option>North</option>
+              <option selected>East</option>
+              <option>South</option>
+              <option>West</option>
+            </select>
+          </div>
+          <div class="mock-field">
+            <label>Approved by</label>
+            <select>
+              <option selected>DTCP</option>
+              <option>RERA</option>
+              <option>CMDA</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Photos -->
+        <h3>Upload Your Media</h3>
+        <div class="mock-field" data-anchor="sell-images">
+          <label>Property photos (max 10)</label>
+          <div class="mock-upload">
+            📷 <strong>Drop images here</strong> or click to browse<br/>
+            <span class="mock-upload-hint">JPG/PNG, ≤5 MB each. The first image is used as the cover.</span>
+          </div>
+          <div class="mock-uploaded">
+            <div>🖼️ exterior-front.jpg <em>2.1 MB</em></div>
+            <div>🖼️ living-room.jpg <em>1.8 MB</em></div>
+            <div>🖼️ kitchen.jpg <em>1.4 MB</em></div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button class="mock-btn-primary big" data-anchor="sell-submit">Submit Property Details</button>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: VIEW RESPONSES
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="responses" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <div class="mock-avatar small">RA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side">
+          <div class="mock-profile-card"><div class="mock-avatar large">RA</div><div class="mock-profile-name">Ramesh A</div></div>
+          <nav class="mock-profile-nav">
+            <a>My Listings</a>
+            <a class="active">View Responses</a>
+            <a>Contacted</a>
+            <a>Profile</a>
+            <a>Change password</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <h2>View Responses</h2>
+          <div class="mock-enquiry-group" data-anchor="enquiry-group">
+            <div class="mock-enquiry-head">
+              <span>🏠 3 BHK Villa, OMR Padur</span>
+              <span class="mock-tag-soft">3 enquiries</span>
+              <span class="mock-chev">▼</span>
+            </div>
+            <div class="mock-enquiry" data-anchor="enquiry-row">
+              <div class="mock-enquiry-top">
+                <strong>Arjun Krishnan</strong>
+                <span class="mock-status pending">● PENDING</span>
+                <span class="mock-enq-date">03 May 2026</span>
+              </div>
+              <div class="mock-meta">📧 arjun.k@example.com · 📞 +91 98400 12345</div>
+              <blockquote>"Interested in this villa for end-use. Could we schedule a site visit this Saturday morning?"</blockquote>
+              <button class="mock-btn-primary small" data-anchor="enquiry-action">✓ Mark Contacted</button>
+            </div>
+            <div class="mock-enquiry">
+              <div class="mock-enquiry-top">
+                <strong>Karthick Subramaniam</strong>
+                <span class="mock-status approved">● APPROVED</span>
+                <span class="mock-enq-date">02 May 2026</span>
+              </div>
+              <div class="mock-meta">📧 karthick@example.com · 📞 +91 99440 12300</div>
+              <blockquote>"Looking for a 3BHK in OMR for end-use. What is the best price you can offer?"</blockquote>
+              <button class="mock-btn-primary small">✓ Mark Contacted</button>
+            </div>
+            <div class="mock-enquiry">
+              <div class="mock-enquiry-top">
+                <strong>Meera Iyer</strong>
+                <span class="mock-status contacted">● CONTACTED</span>
+                <span class="mock-enq-date">01 May 2026</span>
+              </div>
+              <div class="mock-meta">📧 meera.iyer@example.com · 📞 +91 90030 56789</div>
+              <blockquote>"Is the price negotiable? I can close within 30 days if the paperwork is clean."</blockquote>
+            </div>
+          </div>
+          <div class="mock-enquiry-group">
+            <div class="mock-enquiry-head">
+              <span>🏞️ Commercial Plot, Saravanampatti</span>
+              <span class="mock-tag-soft">2 enquiries</span>
+              <span class="mock-chev">▼</span>
+            </div>
+            <div class="mock-enquiry">
+              <div class="mock-enquiry-top">
+                <strong>Sundar Realtors LLP</strong>
+                <span class="mock-status pending">● PENDING</span>
+                <span class="mock-enq-date">02 May 2026</span>
+              </div>
+              <div class="mock-meta">📧 office@sundarrealtors.example · 📞 +91 80560 11122</div>
+              <blockquote>"We represent a regional clinic chain. Please confirm DTCP papers and pricing for bulk negotiation."</blockquote>
+              <button class="mock-btn-primary small">✓ Mark Contacted</button>
+            </div>
+          </div>
+          <div class="mock-enquiry-group">
+            <div class="mock-enquiry-head collapsed">
+              <span>🏢 2 BHK Apartment, RS Puram</span>
+              <span class="mock-tag-soft">0 enquiries</span>
+              <span class="mock-chev">▶</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: CONTACTED
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="contacted" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a><a>Our Agents</a></nav>
+        <div class="mock-avatar small">RA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side">
+          <div class="mock-profile-card"><div class="mock-avatar large">RA</div><div class="mock-profile-name">Ramesh A</div></div>
+          <nav class="mock-profile-nav">
+            <a>My Listings</a>
+            <a>View Responses</a>
+            <a class="active">Contacted</a>
+            <a>Profile</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <div class="mock-profile-header">
+            <h2>Contacted</h2>
+            <p>People who reached out to you directly via the Contact-Me form.</p>
+          </div>
+          <div class="mock-contact-row" data-anchor="contact-row">
+            <div class="mock-enquiry-top">
+              <strong>Sneha Raman</strong>
+              <span class="mock-tag-soft">via Priya Subramaniam</span>
+              <span class="mock-enq-date">04 May 2026</span>
+            </div>
+            <div class="mock-meta">📧 sneha.r@example.com · 📞 +91 98410 22456</div>
+            <p>"Hi, I saw your villa listing in OMR. We're a young family relocating from Bangalore — could you share more photos and the school zoning?"</p>
+          </div>
+          <div class="mock-contact-row">
+            <div class="mock-enquiry-top">
+              <strong>Mohan Raj</strong>
+              <span class="mock-tag-soft">via Karthik Velu</span>
+              <span class="mock-enq-date">02 May 2026</span>
+            </div>
+            <div class="mock-meta">📧 mohanraj@example.com · 📞 +91 90250 33780</div>
+            <p>"Looking for a 2BHK rental in RS Puram for 18 months. Budget ₹22-26K. Please share what you have."</p>
+          </div>
+          <div class="mock-contact-row">
+            <div class="mock-enquiry-top">
+              <strong>Lakshmi Properties</strong>
+              <span class="mock-tag-soft">via Vignesh Raja</span>
+              <span class="mock-enq-date">29 Apr 2026</span>
+            </div>
+            <div class="mock-meta">📧 admin@lakshmiproperties.example · 📞 +91 80560 99001</div>
+            <p>"We have a buyer for commercial plots > 4000 sqft in Saravanampatti. Open to a 2% co-broking arrangement."</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: MANAGE — AGENTS TAB (super-admin)
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="manage" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a></nav>
+        <div class="mock-avatar small">SA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side">
+          <div class="mock-profile-card"><div class="mock-avatar large">SA</div><div class="mock-profile-name">Super Admin</div><div class="mock-profile-mail">admin@91idam.com</div></div>
+          <nav class="mock-profile-nav">
+            <a>My Listings</a>
+            <a>Requests</a>
+            <a class="active">Manage</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <div class="mock-profile-header">
+            <h2>Manage</h2>
+            <button class="mock-btn-secondary small">↻ Refresh</button>
+          </div>
+          <div class="mock-tabs" data-anchor="manage-tabs">
+            <a class="active" data-anchor="manage-tab-agents">Agents</a>
+            <a data-anchor="manage-tab-properties">Properties</a>
+          </div>
+          <table class="mock-table" data-anchor="manage-table">
+            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Status</th><th>Joined</th><th>Listings</th><th>Leads</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>1042</td><td>Priya Subramaniam</td><td>priya.s@…</td><td><span class="mock-status active">● Active</span></td><td>12 Feb 2026</td><td>12</td><td>54</td><td><button class="mock-btn-link danger" data-anchor="manage-delete">Delete</button></td></tr>
+              <tr><td>1051</td><td>Karthik Velu</td><td>karthik.v@…</td><td><span class="mock-status pending">● Pending</span></td><td>01 Apr 2026</td><td>0</td><td>0</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1023</td><td>Vignesh Raja</td><td>vignesh.r@…</td><td><span class="mock-status active">● Active</span></td><td>08 Jan 2026</td><td>9</td><td>41</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1067</td><td>Anitha Devi</td><td>anitha.d@…</td><td><span class="mock-status rejected">● Rejected</span></td><td>19 Mar 2026</td><td>0</td><td>0</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1029</td><td>Sundar Ramaswamy</td><td>sundar.r@…</td><td><span class="mock-status active">● Active</span></td><td>15 Jan 2026</td><td>6</td><td>14</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1015</td><td>Lakshmi Iyer</td><td>lakshmi.i@…</td><td><span class="mock-status active">● Active</span></td><td>03 Jan 2026</td><td>14</td><td>67</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1075</td><td>Mohan Bhaskar</td><td>mohan.b@…</td><td><span class="mock-status pending">● Pending</span></td><td>20 Apr 2026</td><td>0</td><td>0</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+              <tr><td>1031</td><td>Geetha Vasanth</td><td>geetha.v@…</td><td><span class="mock-status active">● Active</span></td><td>17 Jan 2026</td><td>4</td><td>11</td><td><button class="mock-btn-link danger">Delete</button></td></tr>
+            </tbody>
+          </table>
+          <div class="mock-pagination"><span class="active">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN: MANAGE — PROPERTIES TAB (super-admin)
+         =================================================================== -->
+    <section class="app-screen mock-app" data-screen="manage-properties" hidden>
+      <div class="mock-header tight">
+        <div class="mock-logo">91 IDAM</div>
+        <nav class="mock-nav"><a>Home</a><a>Properties</a></nav>
+        <div class="mock-avatar small">SA</div>
+      </div>
+      <div class="mock-profile">
+        <aside class="mock-profile-side">
+          <div class="mock-profile-card"><div class="mock-avatar large">SA</div><div class="mock-profile-name">Super Admin</div><div class="mock-profile-mail">admin@91idam.com</div></div>
+          <nav class="mock-profile-nav">
+            <a>My Listings</a>
+            <a>Requests</a>
+            <a class="active">Manage</a>
+          </nav>
+        </aside>
+        <section class="mock-profile-content">
+          <div class="mock-profile-header">
+            <h2>Manage</h2>
+            <button class="mock-btn-secondary small">↻ Refresh</button>
+          </div>
+          <div class="mock-tabs" data-anchor="manage-tabs-p">
+            <a data-anchor="manage-tab-agents-p">Agents</a>
+            <a class="active" data-anchor="manage-tab-properties-p">Properties</a>
+          </div>
+          <table class="mock-table mock-table-properties" data-anchor="manage-prop-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Title</th><th>City</th><th>Owner</th><th>Status</th>
+                <th>Files</th><th>Enquiries</th><th>Created</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>P-2412</td>
+                <td>3 BHK Villa, OMR Padur</td>
+                <td>Chennai</td>
+                <td>Ramesh A</td>
+                <td><span class="mock-status pending">● Pending</span></td>
+                <td>8</td>
+                <td>0</td>
+                <td>04 May 2026</td>
+                <td><button class="mock-btn-link danger" data-anchor="manage-prop-delete">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2398</td>
+                <td>2 BHK Apartment, RS Puram</td>
+                <td>Coimbatore</td>
+                <td>Karthik V</td>
+                <td><span class="mock-status active">● Active</span></td>
+                <td>6</td>
+                <td>4</td>
+                <td>20 Apr 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2387</td>
+                <td>Commercial Plot, Saravanampatti</td>
+                <td>Coimbatore</td>
+                <td>Vignesh R</td>
+                <td><span class="mock-status active">● Active</span></td>
+                <td>4</td>
+                <td>7</td>
+                <td>15 Apr 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2421</td>
+                <td>Penthouse, Boat Club Road</td>
+                <td>Chennai</td>
+                <td>Lakshmi I</td>
+                <td><span class="mock-status pending">● Pending</span></td>
+                <td>10</td>
+                <td>0</td>
+                <td>06 May 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2375</td>
+                <td>DTCP Plot, ECR Mahabalipuram</td>
+                <td>Chennai</td>
+                <td>Anitha D</td>
+                <td><span class="mock-status rejected">● Rejected</span></td>
+                <td>2</td>
+                <td>0</td>
+                <td>03 Apr 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2354</td>
+                <td>4 BHK Bungalow, Race Course Rd</td>
+                <td>Coimbatore</td>
+                <td>Lakshmi I</td>
+                <td><span class="mock-status active">● Active</span></td>
+                <td>12</td>
+                <td>9</td>
+                <td>22 Mar 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2415</td>
+                <td>2 BHK Flat, Anna Nagar</td>
+                <td>Chennai</td>
+                <td>Mohan B</td>
+                <td><span class="mock-status pending">● Pending</span></td>
+                <td>5</td>
+                <td>0</td>
+                <td>05 May 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+              <tr>
+                <td>P-2331</td>
+                <td>Studio Apartment, T Nagar</td>
+                <td>Chennai</td>
+                <td>Sundar R</td>
+                <td><span class="mock-status active">● Active</span></td>
+                <td>5</td>
+                <td>3</td>
+                <td>17 Mar 2026</td>
+                <td><button class="mock-btn-link danger">Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="mock-pagination"><span class="active">1</span><span>2</span><span>3</span><span>4</span><span>…</span><span>19</span></div>
+        </section>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+this.driver=this.driver||{};this.driver.js=function(D){"use strict";let F={};function z(e={}){F={animate:!0,allowClose:!0,overlayOpacity:.7,smoothScroll:!1,disableActiveInteraction:!1,showProgress:!1,stagePadding:10,stageRadius:5,popoverOffset:10,showButtons:["next","previous","close"],disableButtons:[],overlayColor:"#000",...e}}function a(e){return e?F[e]:F}function W(e,o,t,i){return(e/=i/2)<1?t/2*e*e+o:-t/2*(--e*(e-2)-1)+o}function q(e){const o='a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])';return e.flatMap(t=>{const i=t.matches(o),p=Array.from(t.querySelectorAll(o));return[...i?[t]:[],...p]}).filter(t=>getComputedStyle(t).pointerEvents!=="none"&&ae(t))}function V(e){if(!e||se(e))return;const o=a("smoothScroll");e.scrollIntoView({behavior:!o||re(e)?"auto":"smooth",inline:"center",block:"center"})}function re(e){if(!e||!e.parentElement)return;const o=e.parentElement;return o.scrollHeight>o.clientHeight}function se(e){const o=e.getBoundingClientRect();return o.top>=0&&o.left>=0&&o.bottom<=(window.innerHeight||document.documentElement.clientHeight)&&o.right<=(window.innerWidth||document.documentElement.clientWidth)}function ae(e){return!!(e.offsetWidth||e.offsetHeight||e.getClientRects().length)}let N={};function b(e,o){N[e]=o}function l(e){return e?N[e]:N}function K(){N={}}let E={};function O(e,o){E[e]=o}function _(e){var o;(o=E[e])==null||o.call(E)}function ce(){E={}}function le(e,o,t,i){let p=l("__activeStagePosition");const n=p||t.getBoundingClientRect(),f=i.getBoundingClientRect(),w=W(e,n.x,f.x-n.x,o),r=W(e,n.y,f.y-n.y,o),v=W(e,n.width,f.width-n.width,o),s=W(e,n.height,f.height-n.height,o);p={x:w,y:r,width:v,height:s},Y(p),b("__activeStagePosition",p)}function X(e){if(!e)return;const o=e.getBoundingClientRect(),t={x:o.x,y:o.y,width:o.width,height:o.height};b("__activeStagePosition",t),Y(t)}function de(){const e=l("__activeStagePosition"),o=l("__overlaySvg");if(!e)return;if(!o){console.warn("No stage svg found.");return}const t=window.innerWidth,i=window.innerHeight;o.setAttribute("viewBox",`0 0 ${t} ${i}`)}function pe(e){const o=ue(e);document.body.appendChild(o),G(o,t=>{t.target.tagName==="path"&&_("overlayClick")}),b("__overlaySvg",o)}function Y(e){const o=l("__overlaySvg");if(!o){pe(e);return}const t=o.firstElementChild;if((t==null?void 0:t.tagName)!=="path")throw new Error("no path element found in stage svg");t.setAttribute("d",j(e))}function ue(e){const o=window.innerWidth,t=window.innerHeight,i=document.createElementNS("http://www.w3.org/2000/svg","svg");i.classList.add("driver-overlay","driver-overlay-animated"),i.setAttribute("viewBox",`0 0 ${o} ${t}`),i.setAttribute("xmlSpace","preserve"),i.setAttribute("xmlnsXlink","http://www.w3.org/1999/xlink"),i.setAttribute("version","1.1"),i.setAttribute("preserveAspectRatio","xMinYMin slice"),i.style.fillRule="evenodd",i.style.clipRule="evenodd",i.style.strokeLinejoin="round",i.style.strokeMiterlimit="2",i.style.zIndex="10000",i.style.position="fixed",i.style.top="0",i.style.left="0",i.style.width="100%",i.style.height="100%";const p=document.createElementNS("http://www.w3.org/2000/svg","path");return p.setAttribute("d",j(e)),p.style.fill=a("overlayColor")||"rgb(0,0,0)",p.style.opacity=`${a("overlayOpacity")}`,p.style.pointerEvents="auto",p.style.cursor="auto",i.appendChild(p),i}function j(e){const o=window.innerWidth,t=window.innerHeight,i=a("stagePadding")||0,p=a("stageRadius")||0,n=e.width+i*2,f=e.height+i*2,w=Math.min(p,n/2,f/2),r=Math.floor(Math.max(w,0)),v=e.x-i+r,s=e.y-i,c=n-r*2,d=f-r*2;return`M${o},0L0,0L0,${t}L${o},${t}L${o},0Z
+    M${v},${s} h${c} a${r},${r} 0 0 1 ${r},${r} v${d} a${r},${r} 0 0 1 -${r},${r} h-${c} a${r},${r} 0 0 1 -${r},-${r} v-${d} a${r},${r} 0 0 1 ${r},-${r} z`}function ve(){const e=l("__overlaySvg");e&&e.remove()}function fe(){const e=document.getElementById("driver-dummy-element");if(e)return e;let o=document.createElement("div");return o.id="driver-dummy-element",o.style.width="0",o.style.height="0",o.style.pointerEvents="none",o.style.opacity="0",o.style.position="fixed",o.style.top="50%",o.style.left="50%",document.body.appendChild(o),o}function Q(e){const{element:o}=e;let t=typeof o=="string"?document.querySelector(o):o;t||(t=fe()),ge(t,e)}function he(){const e=l("__activeElement"),o=l("__activeStep");e&&(X(e),de(),oe(e,o))}function ge(e,o){const i=Date.now(),p=l("__activeStep"),n=l("__activeElement")||e,f=!n||n===e,w=e.id==="driver-dummy-element",r=n.id==="driver-dummy-element",v=a("animate"),s=o.onHighlightStarted||a("onHighlightStarted"),c=(o==null?void 0:o.onHighlighted)||a("onHighlighted"),d=(p==null?void 0:p.onDeselected)||a("onDeselected"),m=a(),g=l();!f&&d&&d(r?void 0:n,p,{config:m,state:g}),s&&s(w?void 0:e,o,{config:m,state:g});const u=!f&&v;let h=!1;xe(),b("previousStep",p),b("previousElement",n),b("activeStep",o),b("activeElement",e);const P=()=>{if(l("__transitionCallback")!==P)return;const x=Date.now()-i,y=400-x<=400/2;o.popover&&y&&!h&&u&&(J(e,o),h=!0),a("animate")&&x<400?le(x,400,n,e):(X(e),c&&c(w?void 0:e,o,{config:a(),state:l()}),b("__transitionCallback",void 0),b("__previousStep",p),b("__previousElement",n),b("__activeStep",o),b("__activeElement",e)),window.requestAnimationFrame(P)};b("__transitionCallback",P),window.requestAnimationFrame(P),V(e),!u&&o.popover&&J(e,o),n.classList.remove("driver-active-element","driver-no-interaction"),n.removeAttribute("aria-haspopup"),n.removeAttribute("aria-expanded"),n.removeAttribute("aria-controls"),a("disableActiveInteraction")&&e.classList.add("driver-no-interaction"),e.classList.add("driver-active-element"),e.setAttribute("aria-haspopup","dialog"),e.setAttribute("aria-expanded","true"),e.setAttribute("aria-controls","driver-popover-content")}function we(){var e;(e=document.getElementById("driver-dummy-element"))==null||e.remove(),document.querySelectorAll(".driver-active-element").forEach(o=>{o.classList.remove("driver-active-element","driver-no-interaction"),o.removeAttribute("aria-haspopup"),o.removeAttribute("aria-expanded"),o.removeAttribute("aria-controls")})}function A(){const e=l("__resizeTimeout");e&&window.cancelAnimationFrame(e),b("__resizeTimeout",window.requestAnimationFrame(he))}function me(e){var r;if(!l("isInitialized")||!(e.key==="Tab"||e.keyCode===9))return;const i=l("__activeElement"),p=(r=l("popover"))==null?void 0:r.wrapper,n=q([...p?[p]:[],...i?[i]:[]]),f=n[0],w=n[n.length-1];if(e.preventDefault(),e.shiftKey){const v=n[n.indexOf(document.activeElement)-1]||w;v==null||v.focus()}else{const v=n[n.indexOf(document.activeElement)+1]||f;v==null||v.focus()}}function Z(e){var t;((t=a("allowKeyboardControl"))==null||t)&&(e.key==="Escape"?_("escapePress"):e.key==="ArrowRight"?_("arrowRightPress"):e.key==="ArrowLeft"&&_("arrowLeftPress"))}function G(e,o,t){const i=(n,f)=>{const w=n.target;e.contains(w)&&((!t||t(w))&&(n.preventDefault(),n.stopPropagation(),n.stopImmediatePropagation()),f==null||f(n))};document.addEventListener("pointerdown",i,!0),document.addEventListener("mousedown",i,!0),document.addEventListener("pointerup",i,!0),document.addEventListener("mouseup",i,!0),document.addEventListener("click",n=>{i(n,o)},!0)}function ye(){window.addEventListener("keyup",Z,!1),window.addEventListener("keydown",me,!1),window.addEventListener("resize",A),window.addEventListener("scroll",A)}function be(){window.removeEventListener("keyup",Z),window.removeEventListener("resize",A),window.removeEventListener("scroll",A)}function xe(){const e=l("popover");e&&(e.wrapper.style.display="none")}function J(e,o){var C,y;let t=l("popover");t&&document.body.removeChild(t.wrapper),t=Pe(),document.body.appendChild(t.wrapper);const{title:i,description:p,showButtons:n,disableButtons:f,showProgress:w,nextBtnText:r=a("nextBtnText")||"Next &rarr;",prevBtnText:v=a("prevBtnText")||"&larr; Previous",progressText:s=a("progressText")||"{current} of {total}"}=o.popover||{};t.nextButton.innerHTML=r,t.previousButton.innerHTML=v,t.progress.innerHTML=s,i?(t.title.innerHTML=i,t.title.style.display="block"):t.title.style.display="none",p?(t.description.innerHTML=p,t.description.style.display="block"):t.description.style.display="none";const c=n||a("showButtons"),d=w||a("showProgress")||!1,m=(c==null?void 0:c.includes("next"))||(c==null?void 0:c.includes("previous"))||d;t.closeButton.style.display=c.includes("close")?"block":"none",m?(t.footer.style.display="flex",t.progress.style.display=d?"block":"none",t.nextButton.style.display=c.includes("next")?"block":"none",t.previousButton.style.display=c.includes("previous")?"block":"none"):t.footer.style.display="none";const g=f||a("disableButtons")||[];g!=null&&g.includes("next")&&(t.nextButton.disabled=!0,t.nextButton.classList.add("driver-popover-btn-disabled")),g!=null&&g.includes("previous")&&(t.previousButton.disabled=!0,t.previousButton.classList.add("driver-popover-btn-disabled")),g!=null&&g.includes("close")&&(t.closeButton.disabled=!0,t.closeButton.classList.add("driver-popover-btn-disabled"));const u=t.wrapper;u.style.display="block",u.style.left="",u.style.top="",u.style.bottom="",u.style.right="",u.id="driver-popover-content",u.setAttribute("role","dialog"),u.setAttribute("aria-labelledby","driver-popover-title"),u.setAttribute("aria-describedby","driver-popover-description");const h=t.arrow;h.className="driver-popover-arrow";const P=((C=o.popover)==null?void 0:C.popoverClass)||a("popoverClass")||"";u.className=`driver-popover ${P}`.trim(),G(t.wrapper,k=>{var M,R,I;const T=k.target,H=((M=o.popover)==null?void 0:M.onNextClick)||a("onNextClick"),$=((R=o.popover)==null?void 0:R.onPrevClick)||a("onPrevClick"),B=((I=o.popover)==null?void 0:I.onCloseClick)||a("onCloseClick");if(T.classList.contains("driver-popover-next-btn"))return H?H(e,o,{config:a(),state:l()}):_("nextClick");if(T.classList.contains("driver-popover-prev-btn"))return $?$(e,o,{config:a(),state:l()}):_("prevClick");if(T.classList.contains("driver-popover-close-btn"))return B?B(e,o,{config:a(),state:l()}):_("closeClick")},k=>!(t!=null&&t.description.contains(k))&&!(t!=null&&t.title.contains(k))&&typeof k.className=="string"&&k.className.includes("driver-popover")),b("popover",t);const S=((y=o.popover)==null?void 0:y.onPopoverRender)||a("onPopoverRender");S&&S(t,{config:a(),state:l()}),oe(e,o),V(u);const L=e.classList.contains("driver-dummy-element"),x=q([u,...L?[]:[e]]);x.length>0&&x[0].focus()}function U(){const e=l("popover");if(!(e!=null&&e.wrapper))return;const o=e.wrapper.getBoundingClientRect(),t=a("stagePadding")||0,i=a("popoverOffset")||0;return{width:o.width+t+i,height:o.height+t+i,realWidth:o.width,realHeight:o.height}}function ee(e,o){const{elementDimensions:t,popoverDimensions:i,popoverPadding:p,popoverArrowDimensions:n}=o;return e==="start"?Math.max(Math.min(t.top-p,window.innerHeight-i.realHeight-n.width),n.width):e==="end"?Math.max(Math.min(t.top-(i==null?void 0:i.realHeight)+t.height+p,window.innerHeight-(i==null?void 0:i.realHeight)-n.width),n.width):e==="center"?Math.max(Math.min(t.top+t.height/2-(i==null?void 0:i.realHeight)/2,window.innerHeight-(i==null?void 0:i.realHeight)-n.width),n.width):0}function te(e,o){const{elementDimensions:t,popoverDimensions:i,popoverPadding:p,popoverArrowDimensions:n}=o;return e==="start"?Math.max(Math.min(t.left-p,window.innerWidth-i.realWidth-n.width),n.width):e==="end"?Math.max(Math.min(t.left-(i==null?void 0:i.realWidth)+t.width+p,window.innerWidth-(i==null?void 0:i.realWidth)-n.width),n.width):e==="center"?Math.max(Math.min(t.left+t.width/2-(i==null?void 0:i.realWidth)/2,window.innerWidth-(i==null?void 0:i.realWidth)-n.width),n.width):0}function oe(e,o){const t=l("popover");if(!t)return;const{align:i="start",side:p="left"}=(o==null?void 0:o.popover)||{},n=i,f=e.id==="driver-dummy-element"?"over":p,w=a("stagePadding")||0,r=U(),v=t.arrow.getBoundingClientRect(),s=e.getBoundingClientRect(),c=s.top-r.height;let d=c>=0;const m=window.innerHeight-(s.bottom+r.height);let g=m>=0;const u=s.left-r.width;let h=u>=0;const P=window.innerWidth-(s.right+r.width);let S=P>=0;const L=!d&&!g&&!h&&!S;let x=f;if(f==="top"&&d?S=h=g=!1:f==="bottom"&&g?S=h=d=!1:f==="left"&&h?S=d=g=!1:f==="right"&&S&&(h=d=g=!1),f==="over"){const C=window.innerWidth/2-r.realWidth/2,y=window.innerHeight/2-r.realHeight/2;t.wrapper.style.left=`${C}px`,t.wrapper.style.right="auto",t.wrapper.style.top=`${y}px`,t.wrapper.style.bottom="auto"}else if(L){const C=window.innerWidth/2-(r==null?void 0:r.realWidth)/2,y=10;t.wrapper.style.left=`${C}px`,t.wrapper.style.right="auto",t.wrapper.style.bottom=`${y}px`,t.wrapper.style.top="auto"}else if(h){const C=Math.min(u,window.innerWidth-(r==null?void 0:r.realWidth)-v.width),y=ee(n,{elementDimensions:s,popoverDimensions:r,popoverPadding:w,popoverArrowDimensions:v});t.wrapper.style.left=`${C}px`,t.wrapper.style.top=`${y}px`,t.wrapper.style.bottom="auto",t.wrapper.style.right="auto",x="left"}else if(S){const C=Math.min(P,window.innerWidth-(r==null?void 0:r.realWidth)-v.width),y=ee(n,{elementDimensions:s,popoverDimensions:r,popoverPadding:w,popoverArrowDimensions:v});t.wrapper.style.right=`${C}px`,t.wrapper.style.top=`${y}px`,t.wrapper.style.bottom="auto",t.wrapper.style.left="auto",x="right"}else if(d){const C=Math.min(c,window.innerHeight-r.realHeight-v.width);let y=te(n,{elementDimensions:s,popoverDimensions:r,popoverPadding:w,popoverArrowDimensions:v});t.wrapper.style.top=`${C}px`,t.wrapper.style.left=`${y}px`,t.wrapper.style.bottom="auto",t.wrapper.style.right="auto",x="top"}else if(g){const C=Math.min(m,window.innerHeight-(r==null?void 0:r.realHeight)-v.width);let y=te(n,{elementDimensions:s,popoverDimensions:r,popoverPadding:w,popoverArrowDimensions:v});t.wrapper.style.left=`${y}px`,t.wrapper.style.bottom=`${C}px`,t.wrapper.style.top="auto",t.wrapper.style.right="auto",x="bottom"}L?t.arrow.classList.add("driver-popover-arrow-none"):Ce(n,x,e)}function Ce(e,o,t){const i=l("popover");if(!i)return;const p=t.getBoundingClientRect(),n=U(),f=i.arrow,w=n.width,r=window.innerWidth,v=p.width,s=p.left,c=n.height,d=window.innerHeight,m=p.top,g=p.height;f.className="driver-popover-arrow";let u=o,h=e;o==="top"?(s+v<=0?(u="right",h="end"):s+v-w<=0&&(u="top",h="start"),s>=r?(u="left",h="end"):s+w>=r&&(u="top",h="end")):o==="bottom"?(s+v<=0?(u="right",h="start"):s+v-w<=0&&(u="bottom",h="start"),s>=r?(u="left",h="start"):s+w>=r&&(u="bottom",h="end")):o==="left"?(m+g<=0?(u="bottom",h="end"):m+g-c<=0&&(u="left",h="start"),m>=d?(u="top",h="end"):m+c>=d&&(u="left",h="end")):o==="right"&&(m+g<=0?(u="bottom",h="start"):m+g-c<=0&&(u="right",h="start"),m>=d?(u="top",h="start"):m+c>=d&&(u="right",h="end")),u?(f.classList.add(`driver-popover-arrow-side-${u}`),f.classList.add(`driver-popover-arrow-align-${h}`)):f.classList.add("driver-popover-arrow-none")}function Pe(){const e=document.createElement("div");e.classList.add("driver-popover");const o=document.createElement("div");o.classList.add("driver-popover-arrow");const t=document.createElement("header");t.id="driver-popover-title",t.classList.add("driver-popover-title"),t.style.display="none",t.innerText="Popover Title";const i=document.createElement("div");i.id="driver-popover-description",i.classList.add("driver-popover-description"),i.style.display="none",i.innerText="Popover description is here";const p=document.createElement("button");p.type="button",p.classList.add("driver-popover-close-btn"),p.setAttribute("aria-label","Close"),p.innerHTML="&times;";const n=document.createElement("footer");n.classList.add("driver-popover-footer");const f=document.createElement("span");f.classList.add("driver-popover-progress-text"),f.innerText="";const w=document.createElement("span");w.classList.add("driver-popover-navigation-btns");const r=document.createElement("button");r.type="button",r.classList.add("driver-popover-prev-btn"),r.innerHTML="&larr; Previous";const v=document.createElement("button");return v.type="button",v.classList.add("driver-popover-next-btn"),v.innerHTML="Next &rarr;",w.appendChild(r),w.appendChild(v),n.appendChild(f),n.appendChild(w),e.appendChild(p),e.appendChild(o),e.appendChild(t),e.appendChild(i),e.appendChild(n),{wrapper:e,arrow:o,title:t,description:i,footer:n,previousButton:r,nextButton:v,closeButton:p,footerButtons:w,progress:f}}function Se(){var o;const e=l("popover");e&&((o=e.wrapper.parentElement)==null||o.removeChild(e.wrapper))}const Le="";function ke(e={}){z(e);function o(){a("allowClose")&&v()}function t(){const s=l("activeIndex"),c=a("steps")||[];if(typeof s=="undefined")return;const d=s+1;c[d]?r(d):v()}function i(){const s=l("activeIndex"),c=a("steps")||[];if(typeof s=="undefined")return;const d=s-1;c[d]?r(d):v()}function p(s){(a("steps")||[])[s]?r(s):v()}function n(){var h;if(l("__transitionCallback"))return;const c=l("activeIndex"),d=l("__activeStep"),m=l("__activeElement");if(typeof c=="undefined"||typeof d=="undefined"||typeof l("activeIndex")=="undefined")return;const u=((h=d.popover)==null?void 0:h.onPrevClick)||a("onPrevClick");if(u)return u(m,d,{config:a(),state:l()});i()}function f(){var u;if(l("__transitionCallback"))return;const c=l("activeIndex"),d=l("__activeStep"),m=l("__activeElement");if(typeof c=="undefined"||typeof d=="undefined")return;const g=((u=d.popover)==null?void 0:u.onNextClick)||a("onNextClick");if(g)return g(m,d,{config:a(),state:l()});t()}function w(){l("isInitialized")||(b("isInitialized",!0),document.body.classList.add("driver-active",a("animate")?"driver-fade":"driver-simple"),ye(),O("overlayClick",o),O("escapePress",o),O("arrowLeftPress",n),O("arrowRightPress",f))}function r(s=0){var H,$,B,M,R,I,ie,ne;const c=a("steps");if(!c){console.error("No steps to drive through"),v();return}if(!c[s]){v();return}b("__activeOnDestroyed",document.activeElement),b("activeIndex",s);const d=c[s],m=c[s+1],g=c[s-1],u=((H=d.popover)==null?void 0:H.doneBtnText)||a("doneBtnText")||"Done",h=a("allowClose"),P=typeof(($=d.popover)==null?void 0:$.showProgress)!="undefined"?(B=d.popover)==null?void 0:B.showProgress:a("showProgress"),L=(((M=d.popover)==null?void 0:M.progressText)||a("progressText")||"{{current}} of {{total}}").replace("{{current}}",`${s+1}`).replace("{{total}}",`${c.length}`),x=((R=d.popover)==null?void 0:R.showButtons)||a("showButtons"),C=["next","previous",...h?["close"]:[]].filter(_e=>!(x!=null&&x.length)||x.includes(_e)),y=((I=d.popover)==null?void 0:I.onNextClick)||a("onNextClick"),k=((ie=d.popover)==null?void 0:ie.onPrevClick)||a("onPrevClick"),T=((ne=d.popover)==null?void 0:ne.onCloseClick)||a("onCloseClick");Q({...d,popover:{showButtons:C,nextBtnText:m?void 0:u,disableButtons:[...g?[]:["previous"]],showProgress:P,progressText:L,onNextClick:y||(()=>{m?r(s+1):v()}),onPrevClick:k||(()=>{r(s-1)}),onCloseClick:T||(()=>{v()}),...(d==null?void 0:d.popover)||{}}})}function v(s=!0){const c=l("__activeElement"),d=l("__activeStep"),m=l("__activeOnDestroyed"),g=a("onDestroyStarted");if(s&&g){const P=!c||(c==null?void 0:c.id)==="driver-dummy-element";g(P?void 0:c,d,{config:a(),state:l()});return}const u=(d==null?void 0:d.onDeselected)||a("onDeselected"),h=a("onDestroyed");if(document.body.classList.remove("driver-active","driver-fade","driver-simple"),be(),Se(),we(),ve(),ce(),K(),c&&d){const P=c.id==="driver-dummy-element";u&&u(P?void 0:c,d,{config:a(),state:l()}),h&&h(P?void 0:c,d,{config:a(),state:l()})}m&&m.focus()}return{isActive:()=>l("isInitialized")||!1,refresh:A,drive:(s=0)=>{w(),r(s)},setConfig:z,setSteps:s=>{K(),z({...a(),steps:s})},getConfig:a,getState:l,getActiveIndex:()=>l("activeIndex"),isFirstStep:()=>l("activeIndex")===0,isLastStep:()=>{const s=a("steps")||[],c=l("activeIndex");return c!==void 0&&c===s.length-1},getActiveStep:()=>l("activeStep"),getActiveElement:()=>l("activeElement"),getPreviousElement:()=>l("previousElement"),getPreviousStep:()=>l("previousStep"),moveNext:t,movePrevious:i,moveTo:p,hasNextStep:()=>{const s=a("steps")||[],c=l("activeIndex");return c!==void 0&&s[c+1]},hasPreviousStep:()=>{const s=a("steps")||[],c=l("activeIndex");return c!==void 0&&s[c-1]},highlight:s=>{w(),Q({...s,popover:s.popover?{showButtons:[],showProgress:!1,progressText:"",...s.popover}:void 0})},destroy:()=>{v(!1)}}}return D.driver=ke,Object.defineProperty(D,Symbol.toStringTag,{value:"Module"}),D}({});
+
+</script>
+  <script>
+/* 91 IDAM interactive product tour controller.
+ * driver.js drives one tooltip at a time over a fullscreen mockup app.
+ * Each step references one screen + one anchor inside it; the controller
+ * swaps the visible screen before driver.js highlights the anchor.
+ */
+
+(function () {
+  'use strict';
+
+  if (!window.driver || !window.driver.js) {
+    console.error('driver.js failed to load');
+    return;
+  }
+  const { driver } = window.driver.js;
+
+  /* ============================================================
+     TOUR STEPS — comprehensive walk through every tab.
+     ============================================================ */
+  const STEPS = [
+    // ============= HOME =============
+    {
+      screen: 'home',
+      anchor: '[data-anchor="logo"]',
+      title: '👋 Welcome to 91 IDAM',
+      desc: 'A tech-enabled real-estate platform — search verified properties, list your own, talk to agents, manage everything from one dashboard. The logo always returns you home.',
+      side: 'bottom',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="nav-properties"]',
+      title: 'Browse Properties',
+      desc: 'Click <strong>Properties</strong> for the full search page with filters, sorting and 10,000+ listings.',
+      side: 'bottom',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="nav-individuals"]',
+      title: 'Individual registration',
+      desc: 'Buyer, seller, or renter? Register here to access verified properties and agents in your area.',
+      side: 'bottom',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="nav-franchise"]',
+      title: 'Franchise Partners',
+      desc: 'Want to start your own 91 IDAM franchise? Drops a lead with our partnerships team via Zoho CRM.',
+      side: 'bottom',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="nav-agents"]',
+      title: 'Our Agents',
+      desc: 'Browse every certified agent on the platform. Each agent is vetted by a super-admin before going live.',
+      side: 'bottom',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="hero-search"]',
+      title: 'Quick search',
+      desc: 'Type a city, locality or project name. Live suggestions after 2 characters; press <kbd>Enter</kbd> to see all results.',
+      side: 'top',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="login-btn"]',
+      title: 'Sign in',
+      desc: 'Login with email + password and a 6-digit OTP. New users can sign up from the same modal.',
+      side: 'left',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="places"]',
+      title: 'Who 91 IDAM serves',
+      desc: 'Four customer segments: individual buyers/sellers/NRIs/tenants, franchise entrepreneurs, vendor professionals (builders, lawyers, loan agents), and institutional clients.',
+      side: 'top',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="sellers"]',
+      title: 'Browse by who\'s selling',
+      desc: 'Plots and land filtered by seller type — Dealer, Owner or Builder. 3,000+ properties under each.',
+      side: 'top',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="services"]',
+      title: 'Beyond property listings',
+      desc: 'The full 91 IDAM ecosystem: legal verification ("Property. Done Right."), franchise programs, verified vendor onboarding, and enterprise SLA delivery.',
+      side: 'top',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="list-cta"]',
+      title: 'Got a property to sell?',
+      desc: 'Click here to start a listing in 5 minutes. We verify documents and bring serious buyers within 48 hours.',
+      side: 'top',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="comparison"]',
+      title: 'Why us vs traditional brokers',
+      desc: 'Quick side-by-side: legal verification, transparency, time-to-close, tech enablement.',
+      side: 'top',
+    },
+    {
+      screen: 'home',
+      anchor: '[data-anchor="testimonials"]',
+      title: 'Customer trust',
+      desc: 'Real customer testimonials plus trust badges — Government Registered, ISO Certified, Legal Compliance.',
+      side: 'top',
+    },
+
+    // ============= LOGIN MODAL =============
+    {
+      screen: 'login',
+      anchor: '[data-anchor="login-card"]',
+      title: 'The login modal',
+      desc: 'Email + password is the first factor. After this we email a 6-digit OTP for the second factor. "Remember me" extends the session to 30 days.',
+      side: 'right',
+    },
+    {
+      screen: 'login',
+      anchor: '[data-anchor="login-cta"]',
+      title: 'Send OTP',
+      desc: 'Click <strong>Send OTP</strong> to email yourself a one-time code. Max 3 sends per 15 minutes; 5 wrong attempts → 24h account lock.',
+      side: 'top',
+    },
+
+    // ============= OTP =============
+    {
+      screen: 'otp',
+      anchor: '[data-anchor="otp-input"]',
+      title: 'Enter the 6-digit code',
+      desc: 'Code arrives in your inbox within seconds. Auto-advance + paste support; <kbd>Enter</kbd> submits.',
+      side: 'bottom',
+    },
+
+    // ============= SEARCH =============
+    {
+      screen: 'search',
+      anchor: '[data-anchor="filters"]',
+      title: '10 filter facets',
+      desc: 'Budget, type, area, posted-by, locality, approvals (DTCP/RERA/CMDA), ownership, facing, road width — multi-select chips.',
+      side: 'right',
+    },
+    {
+      screen: 'search',
+      anchor: '[data-anchor="sort"]',
+      title: 'Sort the results',
+      desc: 'Newest first, price low/high, area small/large, or alphabetical.',
+      side: 'left',
+    },
+    {
+      screen: 'search',
+      anchor: '[data-anchor="result-card"]',
+      title: 'Result card',
+      desc: 'Each card shows price, area, BHK, owner/agent and description. Click to open property details.',
+      side: 'top',
+    },
+    {
+      screen: 'search',
+      anchor: '[data-anchor="results-list"]',
+      title: 'Pagination + density',
+      desc: '24 results per page. The agent name on each card links to their profile. The phone icon contacts them directly (login-gated).',
+      side: 'left',
+    },
+
+    // ============= PROPERTY DETAILS =============
+    {
+      screen: 'property-details',
+      anchor: '[data-anchor="gallery"]',
+      title: 'Photo gallery',
+      desc: 'Up to 10 images. Click the cover for fullscreen, or scrub through thumbnails.',
+      side: 'bottom',
+    },
+    {
+      screen: 'property-details',
+      anchor: '[data-anchor="summary"]',
+      title: 'Summary',
+      desc: 'Price (with negotiable flag), category, area, status — at a glance.',
+      side: 'right',
+    },
+    {
+      screen: 'property-details',
+      anchor: '[data-anchor="attrs"]',
+      title: 'Property attributes',
+      desc: 'Bathrooms, parking, facing, floors, age, furnishing, plot area, road width — every detail buyers ask about.',
+      side: 'right',
+    },
+    {
+      screen: 'property-details',
+      anchor: '[data-anchor="facilities"]',
+      title: 'Amenities',
+      desc: 'Pool, gym, security, garden, power backup — visual tags so buyers can scan in seconds.',
+      side: 'right',
+    },
+    {
+      screen: 'property-details',
+      anchor: '[data-anchor="location"]',
+      title: 'Location',
+      desc: 'Full address + Google Maps link. Stored verbatim — no parsing — so both share URLs and embed URLs work.',
+      side: 'right',
+    },
+    {
+      screen: 'property-details',
+      anchor: '[data-anchor="similar"]',
+      title: 'Similar properties',
+      desc: 'Auto-recommended properties near this one. Helps buyers compare without leaving the page.',
+      side: 'top',
+    },
+    {
+      screen: 'property-details',
+      anchor: '[data-anchor="contact-card"]',
+      title: 'Contact the agent',
+      desc: 'Sticky contact card with the verified agent. Login required to send an enquiry — keeps spam out.',
+      side: 'left',
+    },
+
+    // ============= OUR AGENTS =============
+    {
+      screen: 'agents',
+      anchor: '[data-anchor="agents-hero"]',
+      title: 'Verified agents directory',
+      desc: 'Every agent here is vetted by a super-admin. Encrypted names are decrypted server-side so the real name shows up.',
+      side: 'bottom',
+    },
+    {
+      screen: 'agents',
+      anchor: '[data-anchor="agent-card"]',
+      title: 'Agent card',
+      desc: 'Photo, city, certification, rating and sales history. <strong>DETAILS</strong> opens the full profile.',
+      side: 'right',
+    },
+
+    // ============= AGENT DETAIL =============
+    {
+      screen: 'agent-detail',
+      anchor: '[data-anchor="ad-photo"]',
+      title: 'Photo + Contact CTA',
+      desc: 'The left rail with the agent\'s headshot and a direct Contact Me button.',
+      side: 'right',
+    },
+    {
+      screen: 'agent-detail',
+      anchor: '[data-anchor="ad-header"]',
+      title: 'Agent profile header',
+      desc: 'Company, name, rating + earned badges (DTCP, RERA, top-agent recognitions).',
+      side: 'bottom',
+    },
+    {
+      screen: 'agent-detail',
+      anchor: '[data-anchor="ad-tabs"]',
+      title: 'About / Properties / Reviews',
+      desc: 'About has the bio + specialties; Properties tab loads their active listings; Reviews show buyer feedback.',
+      side: 'bottom',
+    },
+    {
+      screen: 'agent-detail',
+      anchor: '[data-anchor="ad-contact"]',
+      title: 'Contact Me',
+      desc: 'Opens the contact popup pre-filled with this agent. Login is required before sending — anti-spam guard.',
+      side: 'right',
+    },
+
+    // ============= ABOUT =============
+    {
+      screen: 'about',
+      anchor: '[data-anchor="about-hero"]',
+      title: 'About 91 IDAM',
+      desc: 'Founded 2025, headquartered in Coimbatore. Operating on a franchise model with a tech-first approach.',
+      side: 'bottom',
+    },
+    {
+      screen: 'about',
+      anchor: '[data-anchor="about-mission"]',
+      title: 'Mission & Vision',
+      desc: 'Our mission is end-to-end real-estate services through tech and franchise. Vision is 100+ franchise locations across India.',
+      side: 'top',
+    },
+    {
+      screen: 'about',
+      anchor: '[data-anchor="about-values"]',
+      title: '8 Core Values',
+      desc: 'Public commitment, transparency, confidentiality, integrity, employee happiness, collaboration, time value, customer-centricity.',
+      side: 'top',
+    },
+    {
+      screen: 'about',
+      anchor: '[data-anchor="about-leadership"]',
+      title: 'Leadership',
+      desc: 'Founded by Mr. Pratheesh Kumar-E. 40+ years of combined real-estate wisdom on the leadership team.',
+      side: 'top',
+    },
+    {
+      screen: 'about',
+      anchor: '[data-anchor="about-segments"]',
+      title: 'Who we serve',
+      desc: '6 customer segments: home buyers, tenants, NRIs, brokers, developers, and franchise entrepreneurs.',
+      side: 'top',
+    },
+
+    // ============= WHY IDAM =============
+    {
+      screen: 'whyidam',
+      anchor: '[data-anchor="why-hero"]',
+      title: 'Why IDAM',
+      desc: 'Tech-first solutions, legal verification, franchise opportunities, 40+ years of industry wisdom — combined in one platform.',
+      side: 'bottom',
+    },
+    {
+      screen: 'whyidam',
+      anchor: '[data-anchor="why-problems"]',
+      title: 'Real estate\'s pain points',
+      desc: 'Legal disputes, hidden brokerage, slow closings, no follow-up. The status quo costs buyers and sellers time and money.',
+      side: 'top',
+    },
+    {
+      screen: 'whyidam',
+      anchor: '[data-anchor="why-solutions"]',
+      title: 'How we solve them',
+      desc: 'Verified listings, fixed transparent fees, 2-6 week closings, full lifecycle from registration to handover.',
+      side: 'top',
+    },
+    {
+      screen: 'whyidam',
+      anchor: '[data-anchor="why-cta"]',
+      title: 'Get started',
+      desc: 'Three doors: buy, list, partner. Each opens a guided flow.',
+      side: 'top',
+    },
+
+    // ============= HOW IT WORKS =============
+    {
+      screen: 'howitworks',
+      anchor: '[data-anchor="how-hero"]',
+      title: 'How IDAM works',
+      desc: 'Streamlined, tech-enabled processes for every real-estate journey — buying, selling, partnering, vendor onboarding.',
+      side: 'bottom',
+    },
+    {
+      screen: 'howitworks',
+      anchor: '[data-anchor="how-tabs"]',
+      title: 'Choose your path',
+      desc: '4 workflows: Property Transactions (default), Franchise Partnership, Service Providers, Enterprise Solutions.',
+      side: 'bottom',
+    },
+    {
+      screen: 'howitworks',
+      anchor: '[data-anchor="how-steps"]',
+      title: '4-step process',
+      desc: 'Discovery → Legal Verification → Buyer-Seller Matching → Agreement & Registration. Each step has expected duration and key features.',
+      side: 'top',
+    },
+
+    // ============= CAREERS =============
+    {
+      screen: 'careers',
+      anchor: '[data-anchor="careers-hero"]',
+      title: 'Careers',
+      desc: 'Apply to join 91 IDAM. HR responds within 48 hours. Submissions go through Zoho CRM.',
+      side: 'bottom',
+    },
+    {
+      screen: 'careers',
+      anchor: '[data-anchor="careers-form"]',
+      title: 'Application form',
+      desc: 'Required: name, email, phone, position. Optional: experience and a cover-letter message.',
+      side: 'right',
+    },
+    {
+      screen: 'careers',
+      anchor: '[data-anchor="careers-submit"]',
+      title: 'Submit application',
+      desc: 'Creates a Zoho lead with source=Careers. Duplicate-email submissions are blocked at the API.',
+      side: 'top',
+    },
+
+    // ============= CONTACT =============
+    {
+      screen: 'contact',
+      anchor: '[data-anchor="contact-hero"]',
+      title: 'Contact us',
+      desc: 'Reach the team — phone, email, or the contact form. Response within 1-2 business days.',
+      side: 'bottom',
+    },
+    {
+      screen: 'contact',
+      anchor: '[data-anchor="contact-map"]',
+      title: 'Our office',
+      desc: 'Coimbatore HQ. Click "Open in Maps" for directions.',
+      side: 'right',
+    },
+    {
+      screen: 'contact',
+      anchor: '[data-anchor="contact-info"]',
+      title: 'Phone & email',
+      desc: 'Live tel: + mailto: links. Office hours Mon-Sat 9 AM – 7 PM.',
+      side: 'right',
+    },
+    {
+      screen: 'contact',
+      anchor: '[data-anchor="contact-form"]',
+      title: 'Contact form',
+      desc: 'For non-urgent enquiries. Validates email format; messages must be ≥10 characters.',
+      side: 'left',
+    },
+
+    // ============= USER PROFILE — MY LISTINGS =============
+    {
+      screen: 'user-profile',
+      anchor: '[data-anchor="profile-sidebar"]',
+      title: 'Your dashboard',
+      desc: 'After login this is your home base. The sidebar swaps between My Listings, Responses, Contacted, Profile and Change Password. Super-admins see Manage too.',
+      side: 'right',
+    },
+    {
+      screen: 'user-profile',
+      anchor: '[data-anchor="my-listing"]',
+      title: 'My Listings — listing card',
+      desc: 'Each row shows status (Active / Pending / Rejected), price, enquiry count, view count, edit + delete actions.',
+      side: 'top',
+    },
+    {
+      screen: 'user-profile',
+      anchor: '[data-anchor="nav-responses"]',
+      title: 'View Responses',
+      desc: 'Click here to see who has reached out about your listings.',
+      side: 'right',
+    },
+
+    // ============= START SELLING =============
+    {
+      screen: 'start-selling',
+      anchor: '[data-anchor="sell-form"]',
+      title: 'List a property',
+      desc: 'Multi-section form — identity, type, location, price, specs, photos. Submission goes to admin for approval (24-48 hours).',
+      side: 'right',
+    },
+    {
+      screen: 'start-selling',
+      anchor: '[data-anchor="sell-type"]',
+      title: 'Property type',
+      desc: 'Choose <strong>Residential Plot/Land</strong> or <strong>Commercial Plot/Land</strong>. This drives the rest of the form (state, city, pincode, road width and amenity options change accordingly).',
+      side: 'right',
+    },
+    {
+      screen: 'start-selling',
+      anchor: '[data-anchor="sell-road-width"]',
+      title: 'Road Width Type',
+      desc: 'Pick the unit your road width is measured in — typically <strong>Feet</strong> in Tamil Nadu. Buyers filter properties by this on the search page.',
+      side: 'right',
+    },
+    {
+      screen: 'start-selling',
+      anchor: '[data-anchor="sell-location"]',
+      title: 'Location Details',
+      desc: 'State, City/District and Pincode are required. Locality is free text. Google Maps URL is optional and stored verbatim — both share URLs and embed URLs work.',
+      side: 'top',
+    },
+    {
+      screen: 'start-selling',
+      anchor: '[data-anchor="sell-price"]',
+      title: 'Price & area',
+      desc: 'Price in rupees, area in sq.ft. The platform formats lakhs / crores automatically.',
+      side: 'top',
+    },
+    {
+      screen: 'start-selling',
+      anchor: '[data-anchor="sell-images"]',
+      title: 'Upload photos',
+      desc: 'Up to 10 images, JPG/PNG, ≤5 MB each. The first image is used as the cover.',
+      side: 'top',
+    },
+    {
+      screen: 'start-selling',
+      anchor: '[data-anchor="sell-submit"]',
+      title: 'Submit for approval',
+      desc: 'Once approved, the listing appears in /search-property and you start receiving enquiries.',
+      side: 'top',
+    },
+
+    // ============= VIEW RESPONSES =============
+    {
+      screen: 'responses',
+      anchor: '[data-anchor="enquiry-group"]',
+      title: 'Grouped by property',
+      desc: 'Buyer enquiries are grouped under each listing. Click the header to expand or collapse. Counter chip shows total enquiries per group.',
+      side: 'top',
+    },
+    {
+      screen: 'responses',
+      anchor: '[data-anchor="enquiry-row"]',
+      title: 'A buyer enquiry',
+      desc: 'Buyer name, contact, message and status badge (PENDING / APPROVED / CONTACTED). Email + phone are visible only after the buyer submits.',
+      side: 'top',
+    },
+    {
+      screen: 'responses',
+      anchor: '[data-anchor="enquiry-action"]',
+      title: 'Mark Contacted',
+      desc: 'Once you have called the buyer, mark the enquiry contacted. Closed enquiries drop to the bottom of the list.',
+      side: 'top',
+    },
+
+    // ============= CONTACTED =============
+    {
+      screen: 'contacted',
+      anchor: '[data-anchor="contact-row"]',
+      title: 'Contacted tab',
+      desc: 'People who reached out via the agent\'s Contact-Me form. Shows the originating agent, contact info, and message.',
+      side: 'top',
+    },
+
+    // ============= MANAGE — AGENTS TAB (super-admin) =============
+    {
+      screen: 'manage',
+      anchor: '[data-anchor="manage-tabs"]',
+      title: 'Manage — super-admin only',
+      desc: 'This entire section is visible <strong>only to super-admins</strong>. It has two tabs: <strong>Agents</strong> — every agent in the application — and <strong>Properties</strong> — every property posted by those agents.',
+      side: 'bottom',
+    },
+    {
+      screen: 'manage',
+      anchor: '[data-anchor="manage-tab-agents"]',
+      title: 'Agents tab',
+      desc: 'Lists <strong>every agent registered on the platform</strong> — Active, Pending and Rejected combined. Only super-admins can see this list. Use it to monitor who\'s on the platform, approve newcomers, or remove anyone who shouldn\'t be here.',
+      side: 'bottom',
+    },
+    {
+      screen: 'manage',
+      anchor: '[data-anchor="manage-table"]',
+      title: 'Agent moderation table',
+      desc: 'One row per agent: ID, decrypted name, email, status badge, joined date, plus their listing count and lead count so you can spot inactive accounts at a glance.',
+      side: 'top',
+    },
+    {
+      screen: 'manage',
+      anchor: '[data-anchor="manage-delete"]',
+      title: 'Delete an agent',
+      desc: 'Permanently removes that agent from the platform. Cascades to all their properties and enquiries. Approve / reject for pending agents runs through a single endpoint that decrypts the name server-side. Confirmation modal required.',
+      side: 'left',
+    },
+
+    // ============= MANAGE — PROPERTIES TAB =============
+    {
+      screen: 'manage-properties',
+      anchor: '[data-anchor="manage-tab-properties-p"]',
+      title: 'Properties tab',
+      desc: 'Click <strong>Properties</strong> to switch from the agent list to the property list. The page now shows every property listed on the platform.',
+      side: 'bottom',
+    },
+    {
+      screen: 'manage-properties',
+      anchor: '[data-anchor="manage-prop-table"]',
+      title: 'All agent properties',
+      desc: 'Lists <strong>every property posted by every agent</strong> across the platform — Active (live in search), Pending (awaiting approval) and Rejected combined. Only super-admins can see this view. Columns show ID, title, city, owning agent, status, file count, enquiry count and submission date.',
+      side: 'top',
+    },
+    {
+      screen: 'manage-properties',
+      anchor: '[data-anchor="manage-prop-delete"]',
+      title: 'Delete a property',
+      desc: 'Removes the listing from the public site immediately. Use it to clear duplicates, fraud, or low-quality submissions. The owning agent is notified by email and any open enquiries are archived.',
+      side: 'left',
+    },
+
+    // ============= WRAP =============
+    {
+      screen: 'home',
+      anchor: '[data-anchor="logo"]',
+      title: "🎉 You're set!",
+      desc: "That's 91 IDAM end-to-end — every tab, every flow. Click <strong>Restart tour</strong> any time, or <strong>Exit</strong> to dive into the docs.",
+      side: 'bottom',
+    },
+  ];
+
+  /* ============================================================
+     Screen swap helper
+     ============================================================ */
+  const screens = Array.from(document.querySelectorAll('.app-screen'));
+  let currentScreen = null;
+
+  function showScreen(name) {
+    if (currentScreen === name) return;
+    screens.forEach((el) => { el.hidden = el.dataset.screen !== name; });
+    currentScreen = name;
+    void document.body.offsetHeight;
+  }
+
+  /* ============================================================
+     localStorage flag
+     ============================================================ */
+  const KEY = 'idam.demo.tour.v1';
+  function readState() {
+    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; }
+  }
+  function writeState(s) {
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {}
+  }
+  function isFirstVisit() { return !readState().completed; }
+  function markCompleted() { writeState({ ...readState(), completed: Date.now() }); }
+
+  /* ============================================================
+     Driver.js
+     ============================================================ */
+  let d = null;
+
+  function makeDriverSteps() {
+    return STEPS.map((s, idx) => ({
+      element: s.anchor,
+      popover: {
+        title: s.title,
+        description: s.desc,
+        side: s.side || 'bottom',
+        align: 'start',
+        showProgress: true,
+        progressText: `${idx + 1} of ${STEPS.length}`,
+        nextBtnText: idx === STEPS.length - 1 ? 'Done ✓' : 'Next →',
+        prevBtnText: '← Back',
+      },
+      onHighlightStarted: () => {
+        if (s.screen) showScreen(s.screen);
+      },
+    }));
+  }
+
+  function startTour(jumpTo = 0) {
+    if (d && d.isActive && d.isActive()) d.destroy();
+    const startScreen = STEPS[jumpTo]?.screen || STEPS[0].screen;
+    showScreen(startScreen);
+
+    d = driver({
+      showProgress: true,
+      animate: true,
+      smoothScroll: true,
+      allowClose: true,
+      overlayOpacity: 0.65,
+      stagePadding: 8,
+      stageRadius: 10,
+      popoverClass: 'idam-tour-popover',
+      onCloseClick: () => { d.destroy(); },
+      onHighlighted: () => {
+        // Sync the steps-panel highlight whenever the active step changes.
+        renderStepsPanelHighlight();
+      },
+      onDestroyed: () => {
+        const idx = d.getActiveIndex?.();
+        if (typeof idx === 'number' && idx >= STEPS.length - 1) {
+          markCompleted();
+        }
+      },
+      steps: makeDriverSteps(),
+    });
+
+    d.drive(jumpTo);
+  }
+
+  /* ============================================================
+     Jump-to-any-step panel
+     ============================================================ */
+  const stepsBtn = document.getElementById('steps-btn');
+  const stepsPanel = document.getElementById('steps-panel');
+  const stepsBackdrop = document.getElementById('steps-panel-backdrop');
+  const stepsCloseBtn = document.getElementById('steps-panel-close');
+  const stepsList = document.getElementById('steps-panel-list');
+
+  // Pretty screen labels for the group headers.
+  const SCREEN_LABELS = {
+    home: '🏠 Home',
+    login: '🔐 Login',
+    otp: '✉️ OTP verification',
+    search: '🔍 Search Properties',
+    'property-details': '📋 Property Details',
+    agents: '👥 Our Agents',
+    'agent-detail': '👤 Agent Detail',
+    about: 'ℹ️ About',
+    whyidam: '✨ Why IDAM',
+    howitworks: '⚙️ How It Works',
+    careers: '💼 Careers',
+    contact: '📞 Contact',
+    'user-profile': '🧑‍💼 User Profile',
+    'start-selling': '🏷️ Start Selling',
+    responses: '📬 View Responses',
+    contacted: '📇 Contacted',
+    manage: '🛡️ Manage — Agents tab',
+    'manage-properties': '🛡️ Manage — Properties tab',
+  };
+
+  function buildStepsPanel() {
+    // Group consecutive steps by screen so users can scan by section.
+    const groups = [];
+    let cur = null;
+    STEPS.forEach((s, idx) => {
+      if (!cur || cur.screen !== s.screen) {
+        cur = { screen: s.screen, items: [] };
+        groups.push(cur);
+      }
+      cur.items.push({ idx, ...s });
+    });
+
+    stepsList.innerHTML = groups
+      .map((g) => `
+        <li class="steps-group">
+          <div class="steps-group-head">${SCREEN_LABELS[g.screen] || g.screen}</div>
+          <ol class="steps-group-items">
+            ${g.items
+              .map(
+                (it) => `
+                <li class="steps-item" data-idx="${it.idx}" tabindex="0" role="button">
+                  <span class="steps-num">${it.idx + 1}</span>
+                  <div class="steps-item-body">
+                    <div class="steps-item-title">${escapeHtml(it.title)}</div>
+                    <div class="steps-item-desc">${stripTags(it.desc)}</div>
+                  </div>
+                </li>`
+              )
+              .join('')}
+          </ol>
+        </li>
+      `)
+      .join('');
+
+    stepsList.querySelectorAll('.steps-item').forEach((el) => {
+      el.addEventListener('click', () => jumpToStep(Number(el.dataset.idx)));
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          jumpToStep(Number(el.dataset.idx));
+        }
+      });
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+  function stripTags(s) {
+    return String(s).replace(/<[^>]+>/g, '');
+  }
+
+  function renderStepsPanelHighlight() {
+    if (!d || !d.isActive || !d.isActive()) return;
+    const idx = d.getActiveIndex?.();
+    stepsList.querySelectorAll('.steps-item').forEach((el) => {
+      el.classList.toggle('current', Number(el.dataset.idx) === idx);
+    });
+  }
+
+  function openStepsPanel() {
+    stepsPanel.hidden = false;
+    stepsBackdrop.hidden = false;
+    stepsBtn.setAttribute('aria-expanded', 'true');
+    renderStepsPanelHighlight();
+    // Scroll the current step into view inside the panel.
+    const cur = stepsList.querySelector('.steps-item.current');
+    if (cur) cur.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+  function closeStepsPanel() {
+    stepsPanel.hidden = true;
+    stepsBackdrop.hidden = true;
+    stepsBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  function jumpToStep(idx) {
+    if (idx < 0 || idx >= STEPS.length) return;
+    closeStepsPanel();
+    if (d && d.isActive && d.isActive()) {
+      // Driver already running — just move.
+      showScreen(STEPS[idx].screen);
+      d.moveTo(idx);
+    } else {
+      // Tour was closed — restart from the chosen step.
+      startTour(idx);
+    }
+  }
+
+  stepsBtn.addEventListener('click', () => {
+    if (stepsPanel.hidden) openStepsPanel();
+    else closeStepsPanel();
+  });
+  stepsCloseBtn.addEventListener('click', closeStepsPanel);
+  stepsBackdrop.addEventListener('click', closeStepsPanel);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !stepsPanel.hidden) closeStepsPanel();
+  });
+
+  document.getElementById('restart-btn').addEventListener('click', () => {
+    writeState({});
+    startTour();
+  });
+
+  buildStepsPanel();
+
+  window.addEventListener('load', () => {
+    showScreen('home');
+    if (isFirstVisit()) {
+      setTimeout(startTour, 500);
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
