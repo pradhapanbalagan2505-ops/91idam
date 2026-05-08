@@ -1,0 +1,17 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "viewport": { "width": 1440, "height": 900 },
+  "outDir": "docs-portal/assets/screenshots",
+  "pages": [
+    { "name": "home",              "path": "/#/home",                    "fullPage": true,  "wait": "header" },
+    { "name": "search-property",   "path": "/#/search-property",         "fullPage": true,  "wait": "main, .max-w-7xl" },
+    { "name": "our-agents",        "path": "/#/our-agents",              "fullPage": true,  "wait": "h1" },
+    { "name": "about",             "path": "/#/about",                   "fullPage": true,  "wait": "h1" },
+    { "name": "whyidam",           "path": "/#/whyidam",                 "fullPage": true,  "wait": "h1" },
+    { "name": "howitworks",        "path": "/#/howitworks",              "fullPage": true,  "wait": "h1" },
+    { "name": "careers",           "path": "/#/careers",                 "fullPage": true,  "wait": "form" },
+    { "name": "contact",           "path": "/#/contact",                 "fullPage": true,  "wait": "form" },
+    { "name": "start-selling",     "path": "/#/start-selling",           "fullPage": true,  "wait": "form, h1" }
+  ],
+  "annotations": []
+}
